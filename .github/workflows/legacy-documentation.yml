@@ -1,0 +1,36 @@
+name: Legacy Documentation
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  inventory
+
+  technology
+
+  architecture
+
+  module
+
+  database
+
+  interface
+
+  business-rule
+
+  sequence
+
+  specification
+
+  gap-analysis
+
+Each job
+
+- validates previous outputs
+
+- uploads generated artifacts
+
+Gap Analysis
+
+must always run last.
