@@ -10,17 +10,31 @@ Technology Discovery
 
 ↓
 
-Architecture Discovery
+Architecture Discovery + Custom Framework Detection
+
+---
+
+Stage 1.5
+
+Transaction Class Enumeration
+
+↓
+
+DB Object Class Enumeration
+
+↓
+
+Servlet Enumeration
 
 ---
 
 Stage 2
 
-Module Analysis
+Module Analysis (per-module + per-transaction)
 
 ↓
 
-Database Analysis
+Database Analysis (from DB object enumeration)
 
 ↓
 
@@ -30,17 +44,21 @@ Interface Analysis
 
 Stage 3
 
-Business Rule Extraction
+Business Rule Extraction (per transaction class)
 
 ↓
 
-Sequence Discovery
+Sequence Discovery (per transaction class)
 
 ---
 
 Stage 4
 
-Specification Generation
+Per-Transaction Specification Generation
+
+↓
+
+System Specification Generation
 
 ↓
 

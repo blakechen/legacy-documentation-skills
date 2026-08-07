@@ -10,7 +10,37 @@ Technology
 
 Architecture
 
+Custom Framework Detection
+
 Validation
+
+---
+
+## Phase 1.5
+
+Artifact Enumeration (CRITICAL)
+
+Enumerate ALL transaction/action classes
+
+Enumerate ALL DB object classes
+
+Enumerate ALL servlets
+
+Build master lists
+
+Validation
+
+### Gate Check (added from lessons learned)
+
+Output files MUST exist on disk before proceeding:
+
+- `docs/enumeration/transaction-classes.txt`
+- `docs/enumeration/db-object-classes.txt`
+- `docs/enumeration/servlet-classes.txt`
+
+Each file MUST contain `ClassName|Path` entries (not just counts).
+
+If gate fails → STOP. Do not proceed to Phase 2.
 
 ---
 
@@ -20,7 +50,9 @@ Structural Analysis
 
 Modules
 
-Database
+Per-Transaction-Class Analysis
+
+Database (from DB object enumeration)
 
 Interfaces
 
@@ -32,9 +64,9 @@ Validation
 
 Behavior Analysis
 
-Business Rules
+Business Rules (per transaction class)
 
-Sequences
+Sequences (per transaction class)
 
 Validation
 
@@ -44,7 +76,9 @@ Validation
 
 Documentation
 
-Specifications
+Per-Transaction Specifications
+
+System Specifications
 
 Gap Analysis
 
@@ -58,4 +92,8 @@ Inventory fails
 
 or
 
-Architecture cannot be established.
+Architecture cannot be established
+
+or
+
+Transaction class enumeration finds zero classes.
