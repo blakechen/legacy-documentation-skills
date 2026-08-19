@@ -97,7 +97,7 @@ This Skill SHALL NOT
 
 - analyse business rules
 
-- analyse source code flow
+- analyse source code flow (owned by module-analysis, see shared/logic-depth.md)
 
 - generate specifications
 

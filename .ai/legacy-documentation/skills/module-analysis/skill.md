@@ -27,6 +27,7 @@ dependencies:
 outputs:
   - docs/modules/
   - docs/modules/module-index.md
+  - docs/modules/transactions/
 ---
 
 # Objective
@@ -37,7 +38,10 @@ The objective is to describe what each module contains,
 how it is organized,
 and how it interacts with other modules.
 
-Business behaviour is outside the scope of this Skill.
+Business meaning (WHY a rule exists) is outside the scope of this Skill.
+
+Program logic (HOW each method processes a request) is IN scope
+and is owned by this Skill.
 
 ---
 
@@ -67,17 +71,23 @@ This Skill SHALL
 
 - identify configuration related to the module
 
+- document, for every primary unit, the step-by-step processing logic of every method
+
+- quote source excerpts evidencing each critical decision, calculation and SQL statement
+
+- map input fields through intermediate variables to database columns and message fields
+
+- restate each method's logic as language-neutral pseudocode
+
 This Skill SHALL NOT
 
-- analyse business rules
+- assign business meaning or business justification to logic (see business-rule-extraction)
 
-- explain transaction flow
+- allocate BR-IDs
 
-- analyse SQL
+- design or normalise the data model (see database-analysis)
 
-- generate specifications
-
-- analyse validation logic
+- generate specifications (see specification-generation)
 
 ---
 
@@ -209,13 +219,22 @@ If Architecture Discovery identified a dispatcher pattern:
 
 4. Generate one document per transaction class.
 
+Apply shared/logic-depth.md.
+
+Use skills/templates/transaction.md as the REQUIRED structure for each
+transaction class document. Do not omit sections.
+
 Each transaction class document SHALL contain:
 
-- Class name and location
+- Class name, file path, and line range
 
-- All public state methods (e.g., prompt, checkuser, confirm, result)
+- A State Methods index listing EVERY public method
 
-- For each state method: input parameters, validation logic, database access, external calls, redirect/output target
+- One `### Method:` subsection per indexed method, each containing
+  Processing Flow, Pseudocode, Key Source Excerpts, Field Mapping,
+  Branches and Conditions, Database Access, External Calls, Error Paths
+
+- An End-to-End Processing Flow narrative across the state methods
 
 - Related JSP pages
 
@@ -223,7 +242,9 @@ Each transaction class document SHALL contain:
 
 - Related properties/configuration
 
-- Error handling
+This Skill OWNS the method-level logic narrative for the whole pipeline.
+
+Downstream Skills reference these documents. They do not re-derive them.
 
 ---
 
@@ -485,6 +506,8 @@ transactions/AbankSngMergeTrsf.md
 
 ## Module Document Structure
 
+Use skills/templates/module.md as the required structure.
+
 Every module document shall contain
 
 # Overview
@@ -503,6 +526,10 @@ Every module document shall contain
 
 # Important Classes
 
+# Transaction Class Index
+
+# Key Processing Flows
+
 # Dependencies
 
 # Configuration
@@ -515,15 +542,17 @@ Every module document shall contain
 
 ## Output Rules
 
+Document the observable processing logic of every method at the depth defined in
+shared/logic-depth.md.
+
+Quote source for every branch, calculation and SQL statement.
+Never paraphrase inside a code fence.
+
 Never infer undocumented behaviour.
 
-Never hallucinate methods or classes that do not exist.
+Never hallucinate methods, classes, tables or columns that do not exist.
 
-Document observable transaction flow within each class.
-
-Document validation logic found in state methods.
-
-Document SQL and DB object usage found in state methods.
+Never shorten a document to save space. Depth is the deliverable.
 
 ---
 
@@ -547,9 +576,15 @@ Document SQL and DB object usage found in state methods.
 
 ??No hallucinations
 
-??No business rules
-
 ??Per-transaction document count matches enumeration count
+
+??Every transaction document matches skills/templates/transaction.md
+
+??Every public method has a `### Method:` subsection
+
+??Every method subsection has Processing Flow, Pseudocode, at least one source excerpt with file:line, and Field Mapping
+
+??No business meaning assigned (BR-IDs referenced only, never invented)
 
 ---
 

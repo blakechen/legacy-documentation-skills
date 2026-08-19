@@ -56,6 +56,13 @@ For each primary unit, document:
 
 - Error handling
 
+The list above is the minimum FACT set. Facts alone are NOT depth.
+
+For each primary unit, also apply shared/logic-depth.md: per-method processing flow,
+pseudocode, source excerpts, and field mapping.
+
+A document containing every fact above and no processing narrative is INCOMPLETE.
+
 ---
 
 ## Anti-Pattern
@@ -63,6 +70,8 @@ For each primary unit, document:
 Documenting only at the package or module level when the system has finer-grained transaction units is INSUFFICIENT.
 
 Treating all transaction classes as one group is FORBIDDEN.
+
+Listing facts about a unit without explaining how the unit processes a request is INSUFFICIENT.
 
 ---
 
@@ -93,3 +102,9 @@ The AI produced `docs/modules/module-index.md` (one summary file) instead of 458
 When facing 400+ classes, the AI defaulted to high-level summaries rather than attempting even a subset at proper depth.
 
 **Fix**: It is acceptable to process in batches. It is NOT acceptable to skip depth entirely. Even if only 6 classes are documented per pass, those 6 must be at full depth. Progress tracking ensures eventual completion.
+
+### Problem: Coverage fixed, depth still missing
+
+After enumeration was gated, the pipeline produced one file per transaction class, but each file was a set of fact tables. Readers still could not tell what a program does with a request.
+
+**Fix**: Apply shared/logic-depth.md. The unit of completion is a depth-complete document, not an existing file.

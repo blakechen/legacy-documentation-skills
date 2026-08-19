@@ -101,6 +101,8 @@ Apply shared/enumeration-first.md at every stage.
 
 Apply shared/iterative-depth.md at every stage.
 
+Apply shared/logic-depth.md at every stage.
+
 Apply shared/custom-framework-recognition.md at every stage.
 
 ---
@@ -185,6 +187,23 @@ The orchestrator MUST NOT substitute "I identified ~N classes" for an actual per
 
 ---
 
+## Critical: Depth Gate
+
+Coverage and depth are separate gates. Both are mandatory.
+
+Before reporting completion, the orchestrator MUST verify:
+
+1. `ls docs/modules/transactions/*.md | wc -l` equals the line count of
+   `docs/enumeration/transaction-classes.txt`.
+
+2. `docs/gap-analysis/depth-report.md` exists and reports Depth-Complete Rate of 100%.
+
+A unit whose document exists but is not depth-complete is NOT done.
+
+Producing 458 shallow documents is a FAILED run, not a partial success.
+
+---
+
 ## Critical: Batching for Scale (added from lessons learned)
 
 When enumeration yields a large number of primary units (e.g., 400+ transaction classes):
@@ -198,6 +217,19 @@ When enumeration yields a large number of primary units (e.g., 400+ transaction 
 4. Track batch progress in `docs/gap-analysis/progress.md`.
 
 5. A system-level summary document is produced ONCE at the end, not as a substitute for per-unit documents.
+
+6. A batch is complete only when every unit in it is depth-complete.
+   Reducing depth to fit a batch is FORBIDDEN. Reduce the batch size instead.
+
+7. Recommended batch size when full depth is required: 5-10 transaction classes per pass.
+
+8. `docs/gap-analysis/progress.md` SHALL record, per batch:
+
+   `batch N | package | units in batch | depth-complete | remaining | date`
+
+   and a running total `X / Total units depth-complete`.
+
+9. The next pass resumes from the first unit not marked depth-complete.
 
 ---
 

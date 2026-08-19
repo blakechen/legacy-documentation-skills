@@ -45,7 +45,10 @@ Generate implementation-independent specifications.
 
 Specifications shall be based only on verified documentation.
 
-This Skill does not analyse source code.
+This Skill does not perform primary source analysis.
+
+Source code may be read only to verify a statement already present in upstream
+documentation.
 
 ---
 
@@ -75,7 +78,9 @@ This Skill SHALL
 
 This Skill SHALL NOT
 
-- analyse source code
+- perform primary source analysis (module-analysis owns method-level logic)
+
+- reduce the depth of upstream module documentation
 
 - discover new business rules
 
@@ -177,7 +182,8 @@ gap-analysis
 
 Generate software specifications using previously generated documentation.
 
-Source code may be consulted to verify and enrich specifications.
+Source code may be read only to verify a statement already present in upstream
+documentation. Depth comes from docs/modules/transactions/, not from re-reading source.
 
 Do not infer undocumented behavior.
 
@@ -187,21 +193,38 @@ Do not infer undocumented behavior.
 
 Apply shared/enumeration-first.md.
 
+Apply shared/logic-depth.md.
+
+Use skills/templates/transaction.md as the required structure.
+
 1. Obtain the complete transaction class list from Module Analysis.
 
 2. For EVERY transaction class, generate a specification under docs/specifications/transactions/.
 
 3. Each transaction specification SHALL contain:
 
-   - Purpose
+   - Purpose, entry URL and routing parameters
 
-   - Entry URL/parameters
+   - A State Methods index
 
-   - All state methods with their behavior
+   - One `### Method:` subsection per method, carrying forward from
+     docs/modules/transactions/[ClassName].md:
+
+     * Processing Flow (verbatim or clarified, never shortened)
+
+     * Pseudocode (verbatim)
+
+     * Field Mapping (verbatim)
+
+     * Branches and Conditions
+
+   - In place of Key Source Excerpts, a reference line:
+
+     `Source evidence: ../../modules/transactions/[ClassName].md#method-[name]`
 
    - Input fields and validation rules
 
-   - Database tables accessed (with operations)
+   - Database tables accessed, with operations and columns
 
    - External system calls
 
@@ -216,6 +239,9 @@ Apply shared/enumeration-first.md.
    - Related sequences (reference)
 
 4. Do NOT produce only a system-level summary. Per-transaction specs are MANDATORY.
+
+5. A specification whose method subsections are shorter than the corresponding
+   module document sections is INCOMPLETE.
 
 ---
 
@@ -271,6 +297,10 @@ References
 
 Generate Functional Specification
 
+Apply shared/logic-depth.md.
+
+Use skills/templates/specification.md as the required structure.
+
 Describe
 
 System Responsibilities
@@ -300,6 +330,10 @@ Referenced Database Objects
 # Step 3
 
 Generate Technical Specification
+
+Apply shared/logic-depth.md.
+
+Use skills/templates/specification.md as the required structure.
 
 Describe
 
@@ -467,7 +501,10 @@ Unresolved References
 
 Every statement must reference previously generated documentation.
 
-Never analyse source code.
+Never perform primary source analysis. Read source only to verify an existing statement.
+
+Never summarise away the processing flow, pseudocode or field mapping present in
+docs/modules/transactions/. Carry it forward.
 
 Never introduce new business rules.
 

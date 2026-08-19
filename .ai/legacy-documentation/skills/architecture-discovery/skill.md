@@ -510,7 +510,8 @@ Never describe business rules.
 
 Never describe user workflow.
 
-Never explain transaction flow.
+Never explain transaction flow here. Per-method processing flow is owned by
+module-analysis (see shared/logic-depth.md).
 
 Never infer missing components.
 

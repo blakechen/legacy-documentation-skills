@@ -264,9 +264,18 @@ gap-analysis
 
 Extract business rules from legacy implementation.
 
-The output must describe WHAT the system enforces.
+Each business rule entry describes WHAT the system enforces, in business terms.
 
-Not HOW the code works.
+HOW the code implements it is documented by module-analysis in
+docs/modules/transactions/[ClassName].md. Do not duplicate that narrative here.
+
+Instead, every rule SHALL link to the method subsection that implements it:
+
+`Implemented at: ../../modules/transactions/[ClassName].md#method-[name] (step N)`
+
+This division is intentional.
+
+It is not a reason for either document to be shallow.
 
 ---
 
@@ -623,6 +632,16 @@ SQL:
 Configuration:
 
 
+## Implemented At
+
+../../modules/transactions/[ClassName].md#method-[name], step N
+
+
+## Source
+
+path/to/Class.java:120-128
+
+
 ## Confidence
 
 High / Medium / Low
@@ -675,6 +694,8 @@ infer user requirements
 ??Rule has action
 
 ??Rule has evidence
+
+??Rule links to its implementing method subsection (Implemented At)
 
 ??Confidence assigned
 

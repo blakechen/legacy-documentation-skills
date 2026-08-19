@@ -86,7 +86,7 @@ This Skill SHALL NOT
 
 - generate specifications
 
-- analyse validation logic
+- analyse validation logic (owned by module-analysis, see shared/logic-depth.md)
 
 ---
 
