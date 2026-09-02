@@ -19,6 +19,7 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
@@ -30,6 +31,7 @@ dependencies:
 shared:
   - enumeration-first
   - iterative-depth
+  - logic-depth
   - custom-framework-recognition
 ---
 
@@ -120,7 +122,7 @@ shared:
 架構探索（Architecture Discovery，含自訂框架偵測）
 
 →
-交易／動作類別列舉
+成品列舉（交易／動作類別、資料庫物件類別、Servlet）
 
 →
 模組分析（逐模組「且」逐交易類別）
@@ -172,6 +174,10 @@ shared:
 ---
 
 ## 關鍵：列舉關卡（由經驗教訓新增）
+
+成品列舉由 `artifact-enumeration` Skill 負責。
+
+協調器只委派列舉工作並驗證其結果，不自行列舉。
 
 協調器在進入階段 2「之前」必須驗證：
 
@@ -256,6 +262,8 @@ overview/
 
 architecture/
 
+enumeration/（交易類別、資料庫物件類別、Servlet 主清單）
+
 modules/（含逐交易文件）
 
 database/（含由資料庫物件類別彙整的完整資料表對照）
@@ -268,7 +276,7 @@ sequence/（逐交易循序圖）
 
 specifications/（逐交易規格）
 
-gap-analysis/
+gap-analysis/（含 progress.md 與 depth-report.md）
 
 在回報完成前，先驗證所有必要文件都已存在。
 

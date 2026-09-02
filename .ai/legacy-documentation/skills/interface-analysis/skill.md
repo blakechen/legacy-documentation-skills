@@ -26,8 +26,22 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - mermaid-guidelines
+
+templates:
+  - api
 
 outputs:
   - docs/integration/interface-overview.md
@@ -195,6 +209,28 @@ Every file integration documented.
 sequence-discovery
 
 specification-generation
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/mermaid-guidelines.md
+
+Document structure SHALL follow:
+
+- skills/templates/api.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -548,29 +584,29 @@ docs/integration/external-systems.md
 
 ## Quality Checklist
 
-??REST documented
+☐ REST documented
 
-??SOAP documented
+☐ SOAP documented
 
-??MQ documented
+☐ MQ documented
 
-??Kafka documented
+☐ Kafka documented
 
-??JMS documented
+☐ JMS documented
 
-??File Transfer documented
+☐ File Transfer documented
 
-??External Systems documented
+☐ External Systems documented
 
-??Authentication documented
+☐ Authentication documented
 
-??Message Formats documented
+☐ Message Formats documented
 
-??Retry Strategy documented
+☐ Retry Strategy documented
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
 ---
 

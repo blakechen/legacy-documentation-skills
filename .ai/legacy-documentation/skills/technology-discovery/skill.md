@@ -34,6 +34,16 @@ supported-languages:
 dependencies:
   - inventory
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - logic-depth
+
 outputs:
   - docs/overview/technology-stack.md
   - docs/overview/frameworks.md
@@ -179,11 +189,31 @@ Every database technology has evidence.
 
 architecture-discovery
 
+artifact-enumeration
+
 module-analysis
 
 database-analysis
 
 interface-analysis
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/logic-depth.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -673,33 +703,33 @@ docs/overview/dependency-summary.md
 
 ## Quality Checklist
 
-??Every language classified
+☐ Every language classified
 
-??Every framework classified
+☐ Every framework classified
 
-??Runtime identified
+☐ Runtime identified
 
-??Build tools identified
+☐ Build tools identified
 
-??Databases identified
+☐ Databases identified
 
-??ORM identified
+☐ ORM identified
 
-??Messaging identified
+☐ Messaging identified
 
-??Security identified
+☐ Security identified
 
-??Logging identified
+☐ Logging identified
 
-??Testing identified
+☐ Testing identified
 
-??Container technologies identified
+☐ Container technologies identified
 
-??CI/CD identified
+☐ CI/CD identified
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
 ---
 

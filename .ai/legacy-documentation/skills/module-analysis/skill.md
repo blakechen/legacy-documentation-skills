@@ -23,6 +23,23 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - iterative-depth
+  - logic-depth
+
+templates:
+  - module
+  - transaction
 
 outputs:
   - docs/modules/
@@ -184,6 +201,31 @@ business-rule-extraction
 sequence-discovery
 
 specification-generation
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/iterative-depth.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/module.md
+- skills/templates/transaction.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -558,33 +600,33 @@ Never shorten a document to save space. Depth is the deliverable.
 
 ## Quality Checklist
 
-??Every module documented
+☐ Every module documented
 
-??Responsibilities identified
+☐ Responsibilities identified
 
-??Entry points identified
+☐ Entry points identified
 
-??Public interfaces identified
+☐ Public interfaces identified
 
-??Package structure documented
+☐ Package structure documented
 
-??Dependencies documented
+☐ Dependencies documented
 
-??Configuration documented
+☐ Configuration documented
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
-??Per-transaction document count matches enumeration count
+☐ Per-transaction document count matches enumeration count
 
-??Every transaction document matches skills/templates/transaction.md
+☐ Every transaction document matches skills/templates/transaction.md
 
-??Every public method has a `### Method:` subsection
+☐ Every public method has a `### Method:` subsection
 
-??Every method subsection has Processing Flow, Pseudocode, at least one source excerpt with file:line, and Field Mapping
+☐ Every method subsection has Processing Flow, Pseudocode, at least one source excerpt with file:line, and Field Mapping
 
-??No business meaning assigned (BR-IDs referenced only, never invented)
+☐ No business meaning assigned (BR-IDs referenced only, never invented)
 
 ---
 

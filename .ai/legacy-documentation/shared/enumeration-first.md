@@ -66,7 +66,15 @@ The enumeration MUST produce a persistent file (not just in-memory knowledge):
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
 
-Format: `ClassName|TargetTable(if applicable)|relative/path/to/file.java`
+Format:
+
+- `transaction-classes.txt` — `ClassName|relative/path/to/File.java`
+- `servlet-classes.txt` — `ClassName|relative/path/to/File.java`
+- `db-object-classes.txt` — `ClassName|relative/path/to/File.java|TargetTable`
+
+Write `UNKNOWN` as the target table when it cannot be determined. Never omit the field.
+
+The `artifact-enumeration` Skill owns these files.
 
 This file is the **gate** for all downstream Skills. No downstream Skill may begin until the enumeration file exists and contains a non-zero count.
 

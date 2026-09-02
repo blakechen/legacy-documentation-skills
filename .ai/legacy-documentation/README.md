@@ -80,6 +80,10 @@ Architecture Discovery
 
 ↓
 
+Artifact Enumeration
+
+↓
+
 Module Analysis
 
 ↓
@@ -126,7 +130,7 @@ orchestrators/
 
 skills/
 
-templates/
+skills/templates/
 
 shared/
 

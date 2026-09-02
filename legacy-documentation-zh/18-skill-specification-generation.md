@@ -23,19 +23,40 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
   - business-rule-extraction
   - sequence-discovery
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - logic-depth
+
+templates:
+  - specification
+  - transaction
+  - glossary
+
 outputs:
   - docs/specifications/system-specification.md
   - docs/specifications/functional-specification.md
   - docs/specifications/technical-specification.md
   - docs/specifications/module-specifications/
+  - docs/specifications/transactions/
   - docs/specifications/api-specification.md
   - docs/specifications/database-specification.md
+  - docs/specifications/glossary.md
+  - docs/specifications/assumptions.md
+  - docs/specifications/limitations.md
 ---
 
 # 目標
@@ -167,6 +188,31 @@ API 規格已完成。
 # 被以下 Skill 依賴
 
 gap-analysis
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/logic-depth.md
+
+文件結構應（SHALL）依循：
+
+- skills/templates/specification.md
+- skills/templates/transaction.md
+- skills/templates/glossary.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 

@@ -66,7 +66,15 @@
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
 
-格式：`ClassName|TargetTable(若適用)|relative/path/to/file.java`
+格式：
+
+- `transaction-classes.txt` — `ClassName|relative/path/to/File.java`
+- `servlet-classes.txt` — `ClassName|relative/path/to/File.java`
+- `db-object-classes.txt` — `ClassName|relative/path/to/File.java|TargetTable`
+
+無法判定目標資料表時寫 `UNKNOWN`，不得省略該欄位。
+
+這些檔案由 `artifact-enumeration` Skill 負責產生。
 
 這個檔案是所有下游 Skill 的**關卡**。
 在列舉檔案存在且數量非零之前，任何下游 Skill 都不得開始。

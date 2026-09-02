@@ -33,6 +33,18 @@ supported-languages:
   - Go
   - PHP
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+
+templates:
+  - system-overview
+
 outputs:
   - docs/overview/system-overview.md
   - docs/overview/project-structure.md
@@ -176,6 +188,8 @@ technology-discovery
 
 architecture-discovery
 
+artifact-enumeration
+
 module-analysis
 
 database-analysis
@@ -187,6 +201,27 @@ business-rule-extraction
 sequence-discovery
 
 specification-generation
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+
+Document structure SHALL follow:
+
+- skills/templates/system-overview.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -602,23 +637,23 @@ docs/overview/file-statistics.md
 
 # Quality Checklist
 
-??Every directory indexed
+☐ Every directory indexed
 
-??Every project indexed
+☐ Every project indexed
 
-??Every module indexed
+☐ Every module indexed
 
-??Every build file indexed
+☐ Every build file indexed
 
-??Every configuration indexed
+☐ Every configuration indexed
 
-??Every language identified
+☐ Every language identified
 
-??No assumptions
+☐ No assumptions
 
-??No hallucinations
+☐ No hallucinations
 
-??Evidence available
+☐ Evidence available
 
 ---
 

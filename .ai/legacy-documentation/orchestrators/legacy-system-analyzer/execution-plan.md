@@ -14,7 +14,7 @@ Custom Framework detected (if applicable).
 
 ## Artifact Enumeration (MANDATORY before Phase 2)
 
-After Architecture Discovery:
+After Architecture Discovery, the `artifact-enumeration` Skill runs.
 
 Enumerate ALL transaction/action classes.
 
@@ -34,7 +34,7 @@ Enumeration is NOT complete until:
 
 3. A persistent file exists at `docs/enumeration/servlet-classes.txt` with one entry per servlet.
 
-4. Each file contains `ClassName|Path` (and optionally `|TargetTable` for DB objects).
+4. Each file contains `ClassName|Path`, and `ClassName|Path|TargetTable` for DB objects.
 
 5. The line count of each file is verified against an independent scan.
 

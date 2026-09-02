@@ -23,7 +23,23 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - mermaid-guidelines
+  - logic-depth
+
+templates:
+  - database
 
 outputs:
   - docs/database/database-overview.md
@@ -172,6 +188,30 @@ business-rule-extraction
 sequence-discovery
 
 specification-generation
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/mermaid-guidelines.md
+- shared/logic-depth.md
+
+文件結構應（SHALL）依循：
+
+- skills/templates/database.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 

@@ -20,6 +20,8 @@
 
 產出物列舉（關鍵）
 
+Skill：artifact-enumeration
+
 列舉「所有」交易／動作類別
 
 列舉「所有」資料庫物件類別
@@ -39,6 +41,8 @@
 - `docs/enumeration/servlet-classes.txt`
 
 每個檔案必須包含 `ClassName|Path` 條目（不能只有數量）。
+
+db-object-classes.txt 多帶第三個欄位：`ClassName|Path|TargetTable`。
 
 若關卡未通過 → 停止。不得進入階段 2。
 

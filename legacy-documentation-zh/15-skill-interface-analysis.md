@@ -26,8 +26,22 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - mermaid-guidelines
+
+templates:
+  - api
 
 outputs:
   - docs/integration/interface-overview.md
@@ -195,6 +209,28 @@ YAML
 sequence-discovery
 
 specification-generation
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/mermaid-guidelines.md
+
+文件結構應（SHALL）依循：
+
+- skills/templates/api.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 

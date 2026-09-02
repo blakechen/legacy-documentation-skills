@@ -16,6 +16,8 @@ Architecture Discovery + Custom Framework Detection
 
 Stage 1.5
 
+Artifact Enumeration
+
 Transaction Class Enumeration
 
 ↓

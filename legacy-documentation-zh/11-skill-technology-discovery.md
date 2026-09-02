@@ -34,6 +34,16 @@ supported-languages:
 dependencies:
   - inventory
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - logic-depth
+
 outputs:
   - docs/overview/technology-stack.md
   - docs/overview/frameworks.md
@@ -184,6 +194,24 @@ module-analysis
 database-analysis
 
 interface-analysis
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/logic-depth.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 

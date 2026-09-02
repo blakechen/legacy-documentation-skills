@@ -24,19 +24,40 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
   - business-rule-extraction
   - sequence-discovery
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - logic-depth
+
+templates:
+  - specification
+  - transaction
+  - glossary
+
 outputs:
   - docs/specifications/system-specification.md
   - docs/specifications/functional-specification.md
   - docs/specifications/technical-specification.md
   - docs/specifications/module-specifications/
+  - docs/specifications/transactions/
   - docs/specifications/api-specification.md
   - docs/specifications/database-specification.md
+  - docs/specifications/glossary.md
+  - docs/specifications/assumptions.md
+  - docs/specifications/limitations.md
 ---
 
 # Objective
@@ -169,6 +190,31 @@ All references valid.
 # Required By
 
 gap-analysis
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/specification.md
+- skills/templates/transaction.md
+- skills/templates/glossary.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -544,27 +590,27 @@ docs/specifications/transactions/ (one file per transaction class)
 
 # Quality Checklist
 
-??Functional specification completed
+☐ Functional specification completed
 
-??Technical specification completed
+☐ Technical specification completed
 
-??Module specifications completed
+☐ Module specifications completed
 
-??API specification completed
+☐ API specification completed
 
-??Database specification completed
+☐ Database specification completed
 
-??Glossary completed
+☐ Glossary completed
 
-??Assumptions documented
+☐ Assumptions documented
 
-??Limitations documented
+☐ Limitations documented
 
-??Every statement traceable
+☐ Every statement traceable
 
-??No new knowledge introduced
+☐ No new knowledge introduced
 
-??No hallucinations
+☐ No hallucinations
 
 ---
 

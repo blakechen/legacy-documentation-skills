@@ -21,14 +21,30 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
   - business-rule-extraction
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - mermaid-guidelines
+  - logic-depth
+
+templates:
+  - sequence
+
 outputs:
   - docs/sequence/sequence-index.md
-  - docs/sequence/
+  - docs/sequence/transactions/
 ---
 
 # 目標
@@ -156,6 +172,30 @@ Mermaid 圖已產生。
 specification-generation
 
 gap-analysis
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/mermaid-guidelines.md
+- shared/logic-depth.md
+
+文件結構應（SHALL）依循：
+
+- skills/templates/sequence.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 

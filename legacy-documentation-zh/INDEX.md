@@ -5,7 +5,7 @@
 
 > **注意**：英文原檔仍是「實際運作」的版本。
 > 本中文版供閱讀、審閱與交流使用；修改中文版不會影響 skill 的執行行為。
-> 原始結構中有 9 個 `skill.md`、6 個 `README.md`、5 個 `notes.md` 同名，
+> 原始結構中有 12 個 `skill.md`、8 個 `README.md`、5 個 `notes.md` 同名，
 > 因此檔名加上編號前綴以避免衝突。
 
 ---
@@ -32,6 +32,7 @@
 | [10-skill-inventory.md](10-skill-inventory.md) | `skills/inventory/skill.md` |
 | [11-skill-technology-discovery.md](11-skill-technology-discovery.md) | `skills/technology-discovery/skill.md` |
 | [12-skill-architecture-discovery.md](12-skill-architecture-discovery.md) | `skills/architecture-discovery/skill.md` |
+| [12a-skill-artifact-enumeration.md](12a-skill-artifact-enumeration.md) | `skills/artifact-enumeration/skill.md` |
 | [13-skill-module-analysis.md](13-skill-module-analysis.md) | `skills/module-analysis/skill.md` |
 | [14-skill-database-analysis.md](14-skill-database-analysis.md) | `skills/database-analysis/skill.md` |
 | [15-skill-interface-analysis.md](15-skill-interface-analysis.md) | `skills/interface-analysis/skill.md` |
@@ -42,22 +43,24 @@
 
 ## 共用規則（shared/）
 
-被 skill 以 `Apply shared/X.md.` 實際掛載的有 4 個，以「★」標示。
+12 個共用規則現已全部掛載到 Skill 上（透過各 Skill 的 `shared:`
+前置資料與「# 共用規則」章節）。其中 7 個為全體適用，
+其餘 5 個依 Skill 性質選擇性掛載。
 
-| 中文檔案 | 對應原檔 | 已掛載 |
-|----------|----------|--------|
-| [30-shared-logic-depth.md](30-shared-logic-depth.md) | `shared/logic-depth.md` | ★ |
-| [30-shared-enumeration-first.md](30-shared-enumeration-first.md) | `shared/enumeration-first.md` | ★ |
-| [30-shared-iterative-depth.md](30-shared-iterative-depth.md) | `shared/iterative-depth.md` | ★ |
-| [30-shared-custom-framework-recognition.md](30-shared-custom-framework-recognition.md) | `shared/custom-framework-recognition.md` | ★ |
-| [30-shared-documentation-style.md](30-shared-documentation-style.md) | `shared/documentation-style.md` | |
-| [30-shared-evidence-rules.md](30-shared-evidence-rules.md) | `shared/evidence-rules.md` | |
-| [30-shared-output-schema.md](30-shared-output-schema.md) | `shared/output-schema.md` | |
-| [30-shared-confidence-scoring.md](30-shared-confidence-scoring.md) | `shared/confidence-scoring.md` | |
-| [30-shared-naming-conventions.md](30-shared-naming-conventions.md) | `shared/naming-conventions.md` | |
-| [30-shared-markdown-style.md](30-shared-markdown-style.md) | `shared/markdown-style.md` | |
-| [30-shared-mermaid-guidelines.md](30-shared-mermaid-guidelines.md) | `shared/mermaid-guidelines.md` | |
-| [30-shared-quality-checklist.md](30-shared-quality-checklist.md) | `shared/quality-checklist.md` | |
+| 中文檔案 | 對應原檔 | 掛載範圍 |
+|----------|----------|----------|
+| [30-shared-logic-depth.md](30-shared-logic-depth.md) | `shared/logic-depth.md` | 逐單元深度相關 Skill |
+| [30-shared-enumeration-first.md](30-shared-enumeration-first.md) | `shared/enumeration-first.md` | 產生逐單元文件的 Skill |
+| [30-shared-iterative-depth.md](30-shared-iterative-depth.md) | `shared/iterative-depth.md` | 模組分析、業務規則萃取 |
+| [30-shared-custom-framework-recognition.md](30-shared-custom-framework-recognition.md) | `shared/custom-framework-recognition.md` | 架構探索、成品列舉 |
+| [30-shared-documentation-style.md](30-shared-documentation-style.md) | `shared/documentation-style.md` | 全體 |
+| [30-shared-evidence-rules.md](30-shared-evidence-rules.md) | `shared/evidence-rules.md` | 全體 |
+| [30-shared-output-schema.md](30-shared-output-schema.md) | `shared/output-schema.md` | 全體 |
+| [30-shared-confidence-scoring.md](30-shared-confidence-scoring.md) | `shared/confidence-scoring.md` | 全體 |
+| [30-shared-naming-conventions.md](30-shared-naming-conventions.md) | `shared/naming-conventions.md` | 全體 |
+| [30-shared-markdown-style.md](30-shared-markdown-style.md) | `shared/markdown-style.md` | 全體 |
+| [30-shared-mermaid-guidelines.md](30-shared-mermaid-guidelines.md) | `shared/mermaid-guidelines.md` | 產出圖表的 Skill |
+| [30-shared-quality-checklist.md](30-shared-quality-checklist.md) | `shared/quality-checklist.md` | 全體 |
 
 ## 文件模板（templates/）
 
@@ -90,6 +93,12 @@
 | [55-example-websphere-README.md](55-example-websphere-README.md) | `examples/websphere/README.md` |
 | [55-example-websphere-notes.md](55-example-websphere-notes.md) | `examples/websphere/notes.md` |
 
+## 整合（integrations/）
+
+| 中文檔案 | 對應原檔 |
+|----------|----------|
+| [60-integrations-README.md](60-integrations-README.md) | `integrations/README.md` |
+
 ---
 
 ## 翻譯處理原則
@@ -102,3 +111,6 @@
 - **章節標題已中文化**，但結構層級與原檔完全一致。
 - **修正原檔亂碼**：原檔中的 `??` 是編碼損壞的符號，
   中文版依上下文還原為流程箭頭 `→` 與檢查框 `☐`。
+  英文原檔的這 158 處亂碼現已一併修正，兩版本不再有此差異。
+- **編號前綴**：`artifact-enumeration` 在管線中位於架構探索與模組分析之間，
+  為避免既有 13–19 全部重新編號，採用 `12a-` 前綴以維持排序。

@@ -22,14 +22,30 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
   - business-rule-extraction
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - mermaid-guidelines
+  - logic-depth
+
+templates:
+  - sequence
+
 outputs:
   - docs/sequence/sequence-index.md
-  - docs/sequence/
+  - docs/sequence/transactions/
 ---
 
 # Objective
@@ -160,6 +176,30 @@ gap-analysis
 
 ---
 
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/mermaid-guidelines.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/sequence.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
+
+---
+
 # Prompt
 
 # Sequence Discovery
@@ -184,9 +224,9 @@ Apply shared/enumeration-first.md.
 
 2. For EVERY major transaction class, generate at least one sequence diagram.
 
-3. Each diagram shall show the complete flow: User ??JSP ??Dispatcher ??Transaction Class ??DB/External ??Response.
+3. Each diagram shall show the complete flow: User → JSP → Dispatcher → Transaction Class → DB/External → Response.
 
-4. Include all state transitions within the transaction (e.g., prompt ??checkuser ??confirm ??result).
+4. Include all state transitions within the transaction (e.g., prompt → checkuser → confirm → result).
 
 5. Output one sequence file per transaction class under docs/sequence/transactions/.
 
@@ -270,26 +310,26 @@ Examples
 
 Controller
 
-??
+→
 Service
 
-??
+→
 Repository
 
-??
+→
 Database
 
 or
 
 REST
 
-??
+→
 Controller
 
-??
+→
 MQ
 
-??
+→
 External System
 
 Never infer missing calls.
@@ -488,25 +528,25 @@ Only document evidence-based interactions.
 
 # Quality Checklist
 
-??Entry point identified
+☐ Entry point identified
 
-??Participants identified
+☐ Participants identified
 
-??Invocation chain documented
+☐ Invocation chain documented
 
-??Database interaction documented
+☐ Database interaction documented
 
-??External interaction documented
+☐ External interaction documented
 
-??Exception flow documented
+☐ Exception flow documented
 
-??Mermaid valid
+☐ Mermaid valid
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
-??No inferred workflow
+☐ No inferred workflow
 
 ---
 

@@ -14,6 +14,8 @@
 
 ## 產出物列舉（進入階段 2 前為必要步驟）
 
+本階段由 `artifact-enumeration` Skill 執行。
+
 在架構探索之後：
 
 列舉「所有」交易／動作類別。
@@ -34,7 +36,7 @@
 
 3. `docs/enumeration/servlet-classes.txt` 實體檔案存在，且每個 servlet 一筆條目。
 
-4. 每個檔案都包含 `ClassName|Path`（資料庫物件可另加 `|TargetTable`）。
+4. 每個檔案都包含 `ClassName|Path`；資料庫物件為 `ClassName|Path|TargetTable`。
 
 5. 每個檔案的行數都已與獨立掃描結果核對過。
 

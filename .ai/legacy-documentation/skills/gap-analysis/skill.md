@@ -24,12 +24,24 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
   - business-rule-extraction
   - sequence-discovery
   - specification-generation
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - logic-depth
 
 outputs:
   - docs/gap-analysis/gap-report.md
@@ -144,6 +156,25 @@ Traceability verified.
 Improvement list generated.
 
 Quality report completed.
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/logic-depth.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -319,23 +350,23 @@ Cross-reference Validation
 
 Check
 
-Module ??Database
+Module → Database
 
-Module ??API
+Module → API
 
-Module ??Sequence
+Module → Sequence
 
-Business Rule ??Module
+Business Rule → Module
 
-Business Rule ??Database
+Business Rule → Database
 
-Business Rule ??Sequence
+Business Rule → Sequence
 
-API ??Sequence
+API → Sequence
 
-Database ??Specification
+Database → Specification
 
-Architecture ??Specification
+Architecture → Specification
 
 Report missing references.
 
@@ -475,19 +506,19 @@ docs/gap-analysis/progress.md
 
 The Gap Analysis Skill MUST perform the following numeric checks:
 
-1. Count lines in `docs/enumeration/transaction-classes.txt` ??expected transaction doc count.
+1. Count lines in `docs/enumeration/transaction-classes.txt` → expected transaction doc count.
 
-2. Count files in `docs/modules/transactions/*.md` ??actual transaction doc count.
+2. Count files in `docs/modules/transactions/*.md` → actual transaction doc count.
 
-3. Count files in `docs/business-rules/transactions/*.md` ??actual BR doc count.
+3. Count files in `docs/business-rules/transactions/*.md` → actual BR doc count.
 
-4. Count files in `docs/sequence/transactions/*.md` ??actual sequence doc count.
+4. Count files in `docs/sequence/transactions/*.md` → actual sequence doc count.
 
-5. Count files in `docs/specifications/transactions/*.md` ??actual spec doc count.
+5. Count files in `docs/specifications/transactions/*.md` → actual spec doc count.
 
-6. Count lines in `docs/enumeration/db-object-classes.txt` ??expected DB entries.
+6. Count lines in `docs/enumeration/db-object-classes.txt` → expected DB entries.
 
-7. Count entries in `docs/database/table-reference.md` ??actual DB entries.
+7. Count entries in `docs/database/table-reference.md` → actual DB entries.
 
 8. A file that exists but is not depth-complete (Step 1b) counts as MISSING for
    check 2 and check 5.
@@ -500,29 +531,29 @@ Coverage and depth are separate gates. Both must pass.
 
 # Quality Checklist
 
-??Coverage verified
+☐ Coverage verified
 
-??Consistency verified
+☐ Consistency verified
 
-??Traceability verified
+☐ Traceability verified
 
-??Cross-reference validated
+☐ Cross-reference validated
 
-??Orphans detected
+☐ Orphans detected
 
-??Duplicate documents detected
+☐ Duplicate documents detected
 
-??Quality metrics generated
+☐ Quality metrics generated
 
-??TODO prioritized
+☐ TODO prioritized
 
-??Enumeration-to-document count verified
+☐ Enumeration-to-document count verified
 
-??Depth verified (shared/logic-depth.md)
+☐ Depth verified (shared/logic-depth.md)
 
-??Depth-Complete Rate reported
+☐ Depth-Complete Rate reported
 
-??No hallucinations
+☐ No hallucinations
 
 ---
 

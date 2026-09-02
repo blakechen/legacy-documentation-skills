@@ -22,13 +22,30 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - iterative-depth
+  - logic-depth
+
+templates:
+  - business-rule
+
 outputs:
   - docs/business-rules/business-rule-index.md
-  - docs/business-rules/
+  - docs/business-rules/transactions/
+  - docs/business-rules/cross-cutting.md
 ---
 
 # 目標
@@ -175,11 +192,20 @@ docs/business-rules/
 
 business-rule-index.md
 
-BR-001.md
+transactions/[ClassName].md
 
-BR-002.md
+cross-cutting.md
 
-BR-003.md
+`transactions/` 底下每個交易類別一個檔案，檔名即類別名稱。
+
+該類別所擁有的每一條規則都寫在該檔案內，
+以「業務規則文件格式」呈現，並以 `## BR-NNN` 作為區段標題。
+
+不屬於任何單一交易類別的規則，寫入 `cross-cutting.md`。
+
+BR-ID 在所有檔案之間全域唯一。
+
+`business-rule-index.md` 記錄每個 BR-ID 對應到哪一個檔案。
 
 ---
 
@@ -241,6 +267,13 @@ SQL
 
 - 證據都已記錄
 
+- `ls docs/business-rules/transactions/*.md | wc -l` 等於
+  `docs/enumeration/transaction-classes.txt` 的行數
+
+即使某個交易類別萃取不到任何規則，仍必須產生對應檔案，
+並於檔內記錄 `No business rules found` 以及已檢視過的方法。
+缺少檔案是「落差」；萃取結果為空是「發現」。兩者不同。
+
 ---
 
 # 被以下 Skill 依賴
@@ -250,6 +283,30 @@ sequence-discovery
 specification-generation
 
 gap-analysis
+
+---
+
+# 共用規則
+
+本 Skill 的每一份產出都應（SHALL）符合：
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/iterative-depth.md
+- shared/logic-depth.md
+
+文件結構應（SHALL）依循：
+
+- skills/templates/business-rule.md
+
+違反任一共用規則的文件即為「未完成」，
+無論其內容多寡。
 
 ---
 
@@ -292,7 +349,12 @@ docs/modules/transactions/[ClassName].md 中。不要在此重複那份敘述。
 
 4. 「不要」在找到幾條規則後就停止。持續進行，直到每個交易類別都已被檢視。
 
-5. 輸出時依交易類別將規則分組。
+5. 逐一走過 `docs/enumeration/transaction-classes.txt` 的完整清單，
+   每個交易類別寫出一個檔案至
+   `docs/business-rules/transactions/[ClassName].md`。
+
+6. 該清單中的每一個交易類別都必須有檔案，
+   包含萃取不到任何規則的類別。
 
 ---
 
@@ -555,6 +617,10 @@ Catch
 
 # 業務規則文件格式
 
+每一條規則是其所屬檔案內的一個區段，不是獨立文件。
+
+區段標題使用 `## BR-NNN`，以確保錨點穩定。
+
 每條規則都必須包含：
 
 ```
@@ -683,6 +749,12 @@ path/to/Class.java:120-128
 ☐ 無虛構的業務意義
 
 ☐ 來源可追溯
+
+☐ docs/business-rules/transactions/ 底下每個交易類別各有一個檔案
+
+☐ 檔案數與 docs/enumeration/transaction-classes.txt 行數相符
+
+☐ 每個 BR-ID 都能從 business-rule-index.md 找到
 
 ---
 

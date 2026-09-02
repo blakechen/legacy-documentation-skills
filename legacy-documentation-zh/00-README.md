@@ -80,6 +80,10 @@
 
 ↓
 
+成品列舉（Artifact Enumeration）
+
+↓
+
 模組分析（Module Analysis）
 
 ↓
@@ -126,7 +130,7 @@ orchestrators/
 
 skills/
 
-templates/
+skills/templates/
 
 shared/
 

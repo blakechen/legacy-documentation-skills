@@ -23,13 +23,30 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - iterative-depth
+  - logic-depth
+
+templates:
+  - business-rule
+
 outputs:
   - docs/business-rules/business-rule-index.md
-  - docs/business-rules/
+  - docs/business-rules/transactions/
+  - docs/business-rules/cross-cutting.md
 ---
 
 # Objective
@@ -176,11 +193,20 @@ docs/business-rules/
 
 business-rule-index.md
 
-BR-001.md
+transactions/[ClassName].md
 
-BR-002.md
+cross-cutting.md
 
-BR-003.md
+One file per transaction class under `transactions/`, named after the class.
+
+Every rule owned by that class lives in that file, in the Business Rule
+Document Format, as a `## BR-NNN` section.
+
+Rules that belong to no single transaction class go in `cross-cutting.md`.
+
+BR-IDs are globally unique across all files.
+
+`business-rule-index.md` maps every BR-ID to its owning file.
 
 ---
 
@@ -242,6 +268,13 @@ Business rules are complete when:
 
 - evidence recorded
 
+- `ls docs/business-rules/transactions/*.md | wc -l` equals the line count of
+  `docs/enumeration/transaction-classes.txt`
+
+A transaction class that yields no rules still gets a file, recording
+`No business rules found` and the methods reviewed. A missing file is a gap;
+an empty result is a finding.
+
 ---
 
 # Required By
@@ -251,6 +284,30 @@ sequence-discovery
 specification-generation
 
 gap-analysis
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/iterative-depth.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/business-rule.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -293,7 +350,12 @@ Apply shared/iterative-depth.md.
 
 4. Do NOT stop after finding a few rules. Continue until every transaction class has been reviewed.
 
-5. Group rules by transaction class in the output.
+5. Write one file per transaction class to
+   `docs/business-rules/transactions/[ClassName].md`, iterating the complete
+   list in `docs/enumeration/transaction-classes.txt`.
+
+6. Every transaction class in that list gets a file, including classes that
+   yield no rules.
 
 ---
 
@@ -410,7 +472,7 @@ Example:
 
 PENDING
 
-??
+→
 APPROVED
 
 Only after manager approval.
@@ -573,6 +635,10 @@ only if evidence supports it.
 
 # Business Rule Document Format
 
+Each rule is a section inside its owning file, not a standalone document.
+
+Use `## BR-NNN` as the section heading so the anchor is stable.
+
 Each rule must contain:
 
 ```
@@ -685,25 +751,31 @@ infer user requirements
 
 # Quality Checklist
 
-??Rule has ID
+☐ Rule has ID
 
-??Rule has description
+☐ Rule has description
 
-??Rule has condition
+☐ Rule has condition
 
-??Rule has action
+☐ Rule has action
 
-??Rule has evidence
+☐ Rule has evidence
 
-??Rule links to its implementing method subsection (Implemented At)
+☐ Rule links to its implementing method subsection (Implemented At)
 
-??Confidence assigned
+☐ Confidence assigned
 
-??No assumptions
+☐ No assumptions
 
-??No invented business meaning
+☐ No invented business meaning
 
-??Source traceable
+☐ Source traceable
+
+☐ One file per transaction class under docs/business-rules/transactions/
+
+☐ File count matches docs/enumeration/transaction-classes.txt line count
+
+☐ Every BR-ID resolvable from business-rule-index.md
 
 ---
 

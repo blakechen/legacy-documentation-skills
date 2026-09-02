@@ -20,6 +20,8 @@ Validation
 
 Artifact Enumeration (CRITICAL)
 
+Skill: artifact-enumeration
+
 Enumerate ALL transaction/action classes
 
 Enumerate ALL DB object classes
@@ -39,6 +41,8 @@ Output files MUST exist on disk before proceeding:
 - `docs/enumeration/servlet-classes.txt`
 
 Each file MUST contain `ClassName|Path` entries (not just counts).
+
+db-object-classes.txt carries a third field: `ClassName|Path|TargetTable`.
 
 If gate fails → STOP. Do not proceed to Phase 2.
 

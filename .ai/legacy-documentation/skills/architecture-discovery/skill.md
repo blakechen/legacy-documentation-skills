@@ -24,6 +24,21 @@ dependencies:
   - inventory
   - technology-discovery
 
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - custom-framework-recognition
+  - mermaid-guidelines
+  - logic-depth
+
+templates:
+  - architecture
+
 outputs:
   - docs/architecture/architecture.md
   - docs/architecture/component-diagram.md
@@ -162,6 +177,8 @@ architecture diagrams are generated
 
 # Required By
 
+artifact-enumeration
+
 module-analysis
 
 database-analysis
@@ -171,6 +188,30 @@ interface-analysis
 sequence-discovery
 
 specification-generation
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/custom-framework-recognition.md
+- shared/mermaid-guidelines.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/architecture.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -561,25 +602,25 @@ No ER diagrams.
 
 ## Quality Checklist
 
-??Architectural pattern identified
+☐ Architectural pattern identified
 
-??Layers documented
+☐ Layers documented
 
-??Components documented
+☐ Components documented
 
-??Package structure documented
+☐ Package structure documented
 
-??External systems documented
+☐ External systems documented
 
-??Dependency graph completed
+☐ Dependency graph completed
 
-??Mermaid diagrams valid
+☐ Mermaid diagrams valid
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
-??No business rules
+☐ No business rules
 
 ---
 

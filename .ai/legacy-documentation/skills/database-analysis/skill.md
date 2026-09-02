@@ -24,7 +24,23 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
+
+shared:
+  - evidence-rules
+  - confidence-scoring
+  - documentation-style
+  - markdown-style
+  - naming-conventions
+  - output-schema
+  - quality-checklist
+  - enumeration-first
+  - mermaid-guidelines
+  - logic-depth
+
+templates:
+  - database
 
 outputs:
   - docs/database/database-overview.md
@@ -173,6 +189,30 @@ business-rule-extraction
 sequence-discovery
 
 specification-generation
+
+---
+
+# Shared Rules
+
+Every output of this Skill SHALL comply with:
+
+- shared/evidence-rules.md
+- shared/confidence-scoring.md
+- shared/documentation-style.md
+- shared/markdown-style.md
+- shared/naming-conventions.md
+- shared/output-schema.md
+- shared/quality-checklist.md
+- shared/enumeration-first.md
+- shared/mermaid-guidelines.md
+- shared/logic-depth.md
+
+Document structure SHALL follow:
+
+- skills/templates/database.md
+
+A document that violates a shared rule is INCOMPLETE,
+regardless of its content.
 
 ---
 
@@ -500,29 +540,29 @@ docs/database/er-diagram.md
 
 ## Quality Checklist
 
-??Database identified
+☐ Database identified
 
-??Schemas documented
+☐ Schemas documented
 
-??Tables documented
+☐ Tables documented
 
-??Views documented
+☐ Views documented
 
-??Sequences documented
+☐ Sequences documented
 
-??Repository layer documented
+☐ Repository layer documented
 
-??ORM documented
+☐ ORM documented
 
-??SQL documented
+☐ SQL documented
 
-??Transactions documented
+☐ Transactions documented
 
-??Mermaid ER Diagram valid
+☐ Mermaid ER Diagram valid
 
-??Evidence included
+☐ Evidence included
 
-??No hallucinations
+☐ No hallucinations
 
 ---
 

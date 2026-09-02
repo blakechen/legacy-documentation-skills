@@ -19,6 +19,7 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
@@ -30,6 +31,7 @@ dependencies:
 shared:
   - enumeration-first
   - iterative-depth
+  - logic-depth
   - custom-framework-recognition
 ---
 
@@ -113,34 +115,34 @@ Execute
 
 Inventory
 
-??
+→
 Technology Discovery
 
-??
+→
 Architecture Discovery (including custom framework detection)
 
-??
-Transaction/Action Class Enumeration
+→
+Artifact Enumeration (transaction/action classes, DB object classes, servlets)
 
-??
+→
 Module Analysis (per-module AND per-transaction-class)
 
-??
+→
 Database Analysis (enumerate ALL DB object classes)
 
-??
+→
 Interface Analysis
 
-??
+→
 Business Rule Extraction (iterate EVERY transaction class)
 
-??
+→
 Sequence Discovery (one sequence per major transaction)
 
-??
+→
 Specification Generation (one spec per transaction class)
 
-??
+→
 Gap Analysis
 
 ---
@@ -172,6 +174,10 @@ After identifying the DB object base class:
 ---
 
 ## Critical: Enumeration Gate (added from lessons learned)
+
+Artifact Enumeration is owned by the `artifact-enumeration` Skill.
+
+The orchestrator delegates the enumeration itself and verifies the result.
 
 The orchestrator MUST verify the following BEFORE proceeding to Phase 2:
 
@@ -212,7 +218,7 @@ When enumeration yields a large number of primary units (e.g., 400+ transaction 
 
 2. Instead, divide into batches by package/module group.
 
-3. Complete the FULL pipeline (Module ??Business Rules ??Sequence ??Spec) for each batch before moving to the next.
+3. Complete the FULL pipeline (Module → Business Rules → Sequence → Spec) for each batch before moving to the next.
 
 4. Track batch progress in `docs/gap-analysis/progress.md`.
 
@@ -256,6 +262,8 @@ overview/
 
 architecture/
 
+enumeration/ (transaction, DB object and servlet master lists)
+
 modules/ (including per-transaction documents)
 
 database/ (including complete table reference from DB object classes)
@@ -268,7 +276,7 @@ sequence/ (per-transaction sequences)
 
 specifications/ (per-transaction specifications)
 
-gap-analysis/
+gap-analysis/ (including progress.md and depth-report.md)
 
 Verify all required documents exist before reporting completion.
 

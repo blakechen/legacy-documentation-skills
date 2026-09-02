@@ -16,6 +16,8 @@
 
 階段 1.5
 
+成品列舉（artifact-enumeration）
+
 交易類別列舉（Transaction Class Enumeration）
 
 ↓
