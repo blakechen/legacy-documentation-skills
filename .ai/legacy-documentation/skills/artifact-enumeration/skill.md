@@ -43,6 +43,7 @@ dependencies:
 
 shared:
   - enumeration-first
+  - verification-tiers
   - fact-layer
   - prioritization
   - mechanical-verification
@@ -452,6 +453,13 @@ the scan did not find. Resolve before continuing.
 
 `UNAVAILABLE` - proceed, and record in `enumeration-report.md` that the
 enumeration rests on lexical extraction alone. Do not call it verified.
+This is Tier B.
+
+If this Skill's tools could not be run at all, the enumeration was produced
+by reading. That is Tier C, and `enumeration-report.md` SHALL carry the
+disclosure in shared/verification-tiers.md verbatim: the enumeration has NOT
+been checked for transitive inheritance, out-of-tree base classes, or
+reflection registration, and this run cannot say which of them it missed.
 
 Re-scanning the source with a different expression is NOT verification and
 SHALL NOT be reported as such.

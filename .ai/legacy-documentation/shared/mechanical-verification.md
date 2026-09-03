@@ -10,6 +10,11 @@ Make the completion criteria of this library decidable by a program.
 
 A completion claim that no program can refute is not a completion claim.
 
+Where no program CAN be run, say so. See shared/verification-tiers.md: a run
+that could not execute the gates is Tier C, and Tier C output carries
+`VERIFICATION: NONE`. Producing the same-looking report without that stamp is
+the failure this rule exists to prevent.
+
 Every gate in this library SHALL be expressed as a command with an exit
 status, and the orchestrator SHALL run it rather than assert its outcome.
 

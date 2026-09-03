@@ -8,6 +8,11 @@
 
 Bytecode oracle 狀態已記錄，且不是 `FAILED`。
 
+已寫出 `docs/verification-tier.txt`，標示層級 A 或 B。
+
+若根本無法執行指令，層級為 C，以人工宣告，
+並由 shared/verification-tiers.md 規範該次執行可以宣稱什麼。
+
 清冊盤點已完成。
 
 技術探索已完成。

@@ -21,6 +21,7 @@ POSIX shell 與 awk。不需安裝直譯器、沒有相依套件、沒有建置�
 | `factbase/resolve_calls.awk` | 呼叫點 → 目標型別（僅在無歧義時）。 |
 | `factbase/build_factbase.sh` | 執行上述兩者，寫出 `supertype.psv`、`ancestor.psv`、`calls-resolved.psv` |
 | `factbase/verify_bytecode.sh` | 獨立 oracle：`javap` 對照 factbase |
+| `verification_tier.sh` | 記錄本次執行的驗證強度究竟是多少 |
 
 ## Layer 2 — 結構
 
@@ -46,8 +47,9 @@ POSIX shell 與 awk。不需安裝直譯器、沒有相依套件、沒有建置�
     sh tools/selftest.sh
 
 對 `examples/fixtures/java-dispatcher` 執行整條工具鏈，並與 `expected/` 比對。
-共 20 項檢查，其中兩項「必須失敗」：
-一份看似合理但錯誤的文件，以及一個少了某個類別的 factbase。
+共 24 項檢查，其中三項「必須失敗或封鎖」：
+一份看似合理但錯誤的文件、一個少了某個類別的 factbase、
+以及一個與掃描結果不一致的 oracle。
 工具變更若改動預期輸出，在那些檔案被刻意更新之前，都視為迴歸。
 
 ---

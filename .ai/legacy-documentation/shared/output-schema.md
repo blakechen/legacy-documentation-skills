@@ -32,6 +32,14 @@ Input Documents
 
 Output Version
 
+Factbase commit
+
+Verification tier
+
+The tier is one of A, B or C, from `docs/verification-tier.txt`.
+See shared/verification-tiers.md. A document with no tier line is treated as
+Tier C.
+
 ---
 
 ## Cross References

@@ -8,6 +8,10 @@
 
 Bytecode Oracle（獨立驗證）
 
+↓
+
+宣告並持久化驗證層級
+
 即 shared/fact-layer.md 的 Layer 1 與 Layer 2。確定性。不經過模型。
 
 ---

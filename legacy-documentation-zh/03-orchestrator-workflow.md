@@ -22,7 +22,15 @@ Skill：fact-extraction
 
 `UNAVAILABLE` 可接受，且必須帶入後續每一份報告。
 
+`docs/verification-tier.txt` 必須存在，且標示層級 A 或 B。
+
 關卡未過 → 中止。沒有 factbase，任何文件 Skill 都不得執行。
+
+「例外」是：此環境根本無法執行指令。那屬於層級 C ——
+管線繼續，以人工寫出 `docs/verification-tier.txt` 內容為 `tier|C`，
+後續每個階段都套用 shared/verification-tiers.md 中的層級 C 規則。
+層級 C 是「已宣告的限制」，不是「未通過的關卡」。
+不宣告就略過關卡，才是未通過的關卡。
 
 ---
 

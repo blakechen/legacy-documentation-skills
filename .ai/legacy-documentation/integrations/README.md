@@ -22,11 +22,15 @@ Nothing in this library is AI-tool-specific.
 An AI tool is supported when it can read a Markdown instruction file from the
 repository, write files to disk, and execute a POSIX shell.
 
-The last requirement is not optional. See `shared/fact-layer.md`: the
-enumeration is queried from a parsed fact base, not searched for in text, and
-`shared/mechanical-verification.md` makes every completion gate a command.
-An integration that cannot run commands can produce documentation, but it
-cannot verify any of it.
+The last requirement is not optional for a verified run. See
+`shared/fact-layer.md`: the enumeration is queried from a parsed fact base,
+not searched for in text, and `shared/mechanical-verification.md` makes every
+completion gate a command.
+
+An integration that cannot run commands is supported, at Tier C. It gets
+every method in this library and none of the verification, and its output
+carries `VERIFICATION: NONE` so that nobody mistakes one for the other. See
+`shared/verification-tiers.md`.
 
 ---
 

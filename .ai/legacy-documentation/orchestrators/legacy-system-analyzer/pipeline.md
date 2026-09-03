@@ -8,6 +8,10 @@ Fact Extraction
 
 Bytecode Oracle (independent verification)
 
+↓
+
+Verification Tier declared and persisted
+
 Layers 1 and 2 of shared/fact-layer.md. Deterministic. No model.
 
 ---

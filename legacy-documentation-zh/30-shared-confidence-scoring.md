@@ -76,6 +76,11 @@ Repository 定義
 當某語言沒有 Layer 1 抽取器時，
 關於該語言程式碼的任何發現都不得為 High。
 
+在層級 C，任何發現都不得為 High。
+High 的依據是「factbase 中的事實」或「經 oracle 確認的事實」，
+而層級 C 兩者皆不存在。上限是 Medium。
+見 shared/verification-tiers.md。
+
 ---
 
 ## 規則

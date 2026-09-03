@@ -22,10 +22,14 @@
 只要一個 AI 工具能從程式碼庫讀取 Markdown 指令檔、能把檔案寫入磁碟、
 並且能執行 POSIX shell，它就屬於「支援」範圍。
 
-最後一項並非可選。見 `shared/fact-layer.md`：
+最後一項對「經過驗證的執行」而言並非可選。見 `shared/fact-layer.md`：
 列舉是從剖析出的事實庫「查詢」出來的，不是在文字中搜尋出來的；
 而 `shared/mechanical-verification.md` 讓每一道完成關卡都是一個指令。
-一個無法執行指令的整合可以產生文件，但無法驗證其中任何一項。
+
+無法執行指令的整合「仍在支援範圍」，屬於層級 C。
+它得到本技能組的全部方法，以及零驗證，
+而且其產出會標示 `VERIFICATION: NONE`，
+使任何人都不會把兩者混為一談。見 `shared/verification-tiers.md`。
 
 ---
 

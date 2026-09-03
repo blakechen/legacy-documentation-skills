@@ -22,6 +22,7 @@ answers plausibly and sometimes wrongly. See `shared/fact-layer.md`.
 | `factbase/resolve_calls.awk` | Call sites → target types where unambiguous. |
 | `factbase/build_factbase.sh` | Runs both; writes `supertype.psv`, `ancestor.psv`, `calls-resolved.psv` |
 | `factbase/verify_bytecode.sh` | Independent oracle: `javap` versus the factbase |
+| `verification_tier.sh` | Records how strong this run's verification actually was |
 
 ## Layer 2 — structure
 
@@ -47,8 +48,9 @@ answers plausibly and sometimes wrongly. See `shared/fact-layer.md`.
     sh tools/selftest.sh
 
 Runs the whole chain against `examples/fixtures/java-dispatcher` and compares
-with `expected/`. 20 checks, including two that must FAIL: a plausible but
-wrong document, and a class missing from the factbase. A tool change that
+with `expected/`. 24 checks, including three that must FAIL or block: a
+plausible but wrong document, a class missing from the factbase, and an
+oracle that disagrees with the scan. A tool change that
 alters the expected output is a regression until those files are updated on
 purpose.
 
@@ -88,6 +90,7 @@ Query it with the tools you already have:
 ## Order
 
     extract_java.sh  ->  build_factbase.sh  ->  verify_bytecode.sh
+                                                  ->  verification_tier.sh
                                             ->  enumerate.sh
                                                   ->  prioritize.sh
                                                   ->  archetypes.sh
@@ -111,6 +114,9 @@ Query it with the tools you already have:
     sh tools/factbase/verify_bytecode.sh --repo $REPO \
         --facts $REPO/docs/facts \
         --out $REPO/docs/facts/bytecode-verification.md
+
+    sh tools/verification_tier.sh --facts $REPO/docs/facts \
+        --out $REPO/docs/verification-tier.txt
 
     sh tools/factbase/enumerate.sh \
         --facts $REPO/docs/facts --out $REPO/docs/enumeration

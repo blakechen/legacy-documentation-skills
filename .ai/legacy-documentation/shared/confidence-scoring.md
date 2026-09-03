@@ -75,6 +75,10 @@ in question, the finding that rests on it SHALL NOT be High.
 Where no Layer 1 extractor exists for the language, no finding about that
 language's code is High.
 
+In Tier C no finding may be High at all. High is derived from a fact in the
+factbase or a fact confirmed by the oracle, and in Tier C neither exists.
+The ceiling is Medium. See shared/verification-tiers.md.
+
 ---
 
 ## Rules

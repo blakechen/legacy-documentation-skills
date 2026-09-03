@@ -33,6 +33,7 @@ dependencies:
 
 shared:
   - fact-layer
+  - verification-tiers
   - mechanical-verification
   - enumeration-first
   - iterative-depth
@@ -108,6 +109,8 @@ shared:
 絕不跳過前置 Skill。
 
 永遠遵循相依順序。
+
+每個階段都套用 shared/verification-tiers.md。
 
 每個階段都套用 shared/fact-layer.md。
 
@@ -186,7 +189,37 @@ Reflexion 檢查（以人的模型對照 factbase 檢驗）
 4. `UNAVAILABLE` 狀態帶入後續每一份報告，
    且該次執行不得使用「已驗證」一詞。
 
+5. `docs/verification-tier.txt` 存在，並標示本次執行達到的層級。
+
 協調器不得以「我讀過程式碼，找到 N 個類別」取代 factbase。
+
+---
+
+## 關鍵：先宣告層級，再做其他事
+
+套用 shared/verification-tiers.md。
+
+在 Phase 1 之前，協調器應確認此環境「能不能執行指令」，並把答案持久化。
+
+層級 A 或 B —— 工具跑得起來。照原樣進行。
+
+層級 C —— 工具跑不起來。管線仍然執行：
+本技能組中的每一項「方法」都原封不動適用。
+改變的是「可以宣稱什麼」。
+
+在層級 C，協調器應：
+
+- 以人工寫出 `docs/verification-tier.txt`，內容為 `tier|C` 並附理由
+- 在每一份索引、報告與摘要的開頭放上 `VERIFICATION: NONE` 區塊
+- 把列舉揭露帶進 `enumeration-report.md`
+- 回報「深度完備率：未量測（層級 C）」，絕不估算
+- 把每一項信心上限壓在 Medium
+- 對本次執行的任何產出物，絕不使用
+  已驗證、已確認、窮舉、完整、100% 等字眼
+
+省略上述任何一項的層級 C 執行，不是「部分成功」。
+它是「產出了與已驗證文件無從分辨、但其實未經驗證的文件」，
+而那正是本技能組存在的目的所要防止的失敗。
 
 ---
 
@@ -316,6 +349,8 @@ Reflexion 檢查（以人的模型對照 factbase 檢驗）
 
 產生
 
+verification-tier.txt（本次執行達到的層級，以及理由）
+
 facts/（factbase、事實串流、bytecode 驗證報告）
 
 overview/
@@ -349,6 +384,13 @@ gap-analysis/（含 progress.md、depth-report.md、staleness-report.md）
 執行 shared/quality-checklist.md 中的每一道關卡指令，並回報其結束狀態。
 不得以宣稱代替執行。
 
-結果報告為「與原始碼一致；意義未驗證」。
-本管線驗證的是「文件與其所引用的程式碼相符」，
-不驗證「指派給它們的業務意義是否正確」。
+結果以本次執行的層級用詞回報，見 shared/verification-tiers.md：
+
+層級 A —— 「與原始碼一致；意義未驗證。」
+
+層級 B —— 「與詞法讀取到的原始碼一致；未經獨立驗證。」
+
+層級 C —— 「VERIFICATION: NONE。」
+
+在任何層級：本管線能驗證的是「文件與其所引用的程式碼相符」，
+它永遠不驗證「指派給它們的業務意義是否正確」。

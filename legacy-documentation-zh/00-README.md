@@ -134,6 +134,8 @@ Characterization 測試
 
 文件必須是
 
+- 標示自身驗證強度的（層級 A、B 或 C）
+
 - 由剖析出的事實庫推導而來，而非靠閱讀
 
 - 以編譯產物獨立驗證過
@@ -209,6 +211,10 @@ Windsurf
 ## 環境需求
 
 POSIX shell 與 `awk`。不需安裝任何東西。
+
+若連這個都沒有，本技能組仍然可以執行，屬於層級 C：
+完整的方法、零驗證，且每一份報告都標示 `VERIFICATION: NONE`。
+見 `shared/verification-tiers.md`。
 
 若要以編譯產物作為獨立 oracle，需要 `javap`、`javac` 與 `jar`。
 它們不存在時會被記錄，而不是繞過。

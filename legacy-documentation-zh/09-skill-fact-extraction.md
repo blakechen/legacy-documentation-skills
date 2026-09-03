@@ -27,6 +27,7 @@ dependencies:
 
 shared:
   - fact-layer
+  - verification-tiers
   - mechanical-verification
   - evidence-rules
   - confidence-scoring
@@ -45,6 +46,7 @@ outputs:
   - docs/facts/resolution.psv
   - docs/facts/manifest.psv
   - docs/facts/bytecode-verification.md
+  - docs/verification-tier.txt
 ---
 
 # 目標
@@ -189,6 +191,30 @@ bytecode-verification.md
 
 ## 步驟 5
 
+宣告驗證層級。
+
+    sh tools/verification_tier.sh \
+        --facts <repo>/docs/facts --out <repo>/docs/verification-tier.txt
+
+套用 shared/verification-tiers.md。
+
+`A` —— 已建立 factbase，且 oracle 已驗證它。
+
+`B` —— 已建立 factbase，但沒有編譯產物可供對照。
+
+`BLOCKED` —— oracle 與掃描結果不一致。中止。
+
+若本 Skill 根本無法執行 —— 此環境不能執行指令 —— 該次執行屬於層級 C。
+以人工寫出 `docs/verification-tier.txt`，內容為 `tier|C`，
+並在 `reason` 指名具體的限制，
+接著把層級 C 的規則帶入後續每一個 Skill。
+
+層級會被引用在每一份產生文件的中繼資料區塊中。
+
+---
+
+## 步驟 6
+
 回報。
 
 載明
@@ -210,6 +236,8 @@ bytecode-verification.md
 `docs/facts/bytecode-verification.md` 存在，且其狀態已被記錄。
 
 oracle 狀態不是 `FAILED`。
+
+`docs/verification-tier.txt` 存在，且標示為層級 A 或 B。
 
 ---
 
@@ -246,6 +274,8 @@ gap-analysis
 ☐ 已執行 bytecode oracle，或已記錄其不存在
 
 ☐ oracle 狀態逐字引用
+
+☐ 已宣告並持久化驗證層級
 
 ☐ 未描述任何類別
 

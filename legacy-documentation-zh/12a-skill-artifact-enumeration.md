@@ -42,6 +42,7 @@ dependencies:
 
 shared:
   - enumeration-first
+  - verification-tiers
   - fact-layer
   - prioritization
   - mechanical-verification
@@ -447,7 +448,13 @@ Oracle 是 bytecode，不是第二次搜尋。
 編譯產物中存在掃描沒找到的類別。解決後才可繼續。
 
 `UNAVAILABLE` — 繼續，但要在 `enumeration-report.md` 中載明
-本次列舉僅依賴詞法抽取。不得稱之為已驗證。
+本次列舉僅依賴詞法抽取。不得稱之為已驗證。這是層級 B。
+
+若本 Skill 的工具根本無法執行，列舉就是「讀」出來的。
+那是層級 C，`enumeration-report.md` 應逐字載明
+shared/verification-tiers.md 中的揭露：
+本列舉「沒有」檢查遞移繼承、原始碼樹之外的基底類別、以及反射註冊，
+而且本次執行無法指出漏了哪些。
 
 以不同表示式重新掃描原始碼「不是」驗證，也不得如此回報。
 

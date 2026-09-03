@@ -16,6 +16,8 @@ Verify against compiled artefacts
 
 `docs/facts/types.psv` MUST exist and be non-empty.
 
+`docs/verification-tier.txt` MUST exist and name tier A or B.
+
 `docs/facts/bytecode-verification.md` MUST exist.
 
 Its status MUST NOT be `FAILED`.
@@ -23,6 +25,12 @@ Its status MUST NOT be `FAILED`.
 `UNAVAILABLE` is permitted and MUST be carried into every later report.
 
 If the gate fails → STOP. No documentation Skill may run without a factbase.
+
+EXCEPT where the environment cannot execute commands at all. That is Tier C:
+the pipeline proceeds, `docs/verification-tier.txt` is written by hand with
+`tier|C`, and every later phase applies the Tier C rules in
+shared/verification-tiers.md. Tier C is a declared limitation, not a failed
+gate. Skipping the gate without declaring it is a failed gate.
 
 ---
 

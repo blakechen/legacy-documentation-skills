@@ -33,6 +33,7 @@ dependencies:
 
 shared:
   - fact-layer
+  - verification-tiers
   - mechanical-verification
   - enumeration-first
   - iterative-depth
@@ -108,6 +109,8 @@ Produce complete documentation for an unknown legacy repository.
 Never skip prerequisite Skills.
 
 Always follow dependency order.
+
+Apply shared/verification-tiers.md at every stage.
 
 Apply shared/fact-layer.md at every stage.
 
@@ -189,8 +192,38 @@ The orchestrator SHALL verify BEFORE Phase 1:
 4. An `UNAVAILABLE` status is carried into every later report, and the word
    "verified" is not used for that run.
 
+5. `docs/verification-tier.txt` exists and names the tier this run achieved.
+
 The orchestrator MUST NOT accept "I read the code and found N classes" in
 place of a factbase.
+
+---
+
+## Critical: Declare the Tier Before Anything Else
+
+Apply shared/verification-tiers.md.
+
+Before Phase 1 the orchestrator SHALL establish whether this environment can
+execute commands at all, and persist the answer.
+
+Tier A or B - the tools ran. Proceed as written.
+
+Tier C - the tools could not be run. The pipeline still runs: every method in
+this library applies unchanged. What changes is what may be claimed.
+
+In Tier C the orchestrator SHALL:
+
+- write `docs/verification-tier.txt` by hand with `tier|C` and a reason
+- open every index, report and summary with the `VERIFICATION: NONE` block
+- carry the enumeration disclosure into `enumeration-report.md`
+- report `Depth-Complete Rate: NOT MEASURED (Tier C)`, never an estimate
+- cap every confidence at Medium
+- never use the words verified, confirmed, exhaustive, complete or 100%
+  about anything this run produced
+
+A Tier C run that omits these is not a partial success. It is a run that
+produced documentation indistinguishable from verified documentation without
+being verified, which is the failure this library exists to prevent.
 
 ---
 
@@ -323,6 +356,8 @@ Stop on critical failures.
 
 Generate
 
+verification-tier.txt (which tier this run achieved, and why)
+
 facts/ (factbase, fact streams, bytecode verification)
 
 overview/
@@ -356,6 +391,15 @@ Verify transaction class count matches generated document count.
 Run every gate command in shared/quality-checklist.md and report its exit
 status. Do not assert a gate.
 
-Report the result as "consistent with source; meaning not verified". The
-pipeline verifies that documents match the code they cite. It does not
-verify that the business meaning assigned to them is right.
+Report the result in the wording of this run's tier, from
+shared/verification-tiers.md:
+
+Tier A - "Consistent with source; meaning not verified."
+
+Tier B - "Consistent with source as read lexically; not independently
+verified."
+
+Tier C - "VERIFICATION: NONE."
+
+In every tier: the pipeline can verify that documents match the code they
+cite. It never verifies that the business meaning assigned to them is right.

@@ -22,6 +22,12 @@
 
 ## 必要中繼資料
 
+除下列項目外，另需記錄 `Factbase commit` 與 `Verification tier`。
+層級為 A、B 或 C 之一，取自 `docs/verification-tier.txt`，
+見 shared/verification-tiers.md。
+沒有層級標示的文件一律視為層級 C。
+
+
 文件名稱
 
 由哪個 Skill 產生

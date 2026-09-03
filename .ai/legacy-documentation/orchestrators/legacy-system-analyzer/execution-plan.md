@@ -8,6 +8,11 @@ Fact extraction completed.
 
 Bytecode oracle status recorded and not `FAILED`.
 
+`docs/verification-tier.txt` written, naming tier A or B.
+
+Where commands cannot be run at all, the tier is C, declared by hand, and
+shared/verification-tiers.md governs what the run may claim.
+
 Inventory completed.
 
 Technology completed.

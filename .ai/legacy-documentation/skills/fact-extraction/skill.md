@@ -28,6 +28,7 @@ dependencies:
 
 shared:
   - fact-layer
+  - verification-tiers
   - mechanical-verification
   - evidence-rules
   - confidence-scoring
@@ -46,6 +47,7 @@ outputs:
   - docs/facts/resolution.psv
   - docs/facts/manifest.psv
   - docs/facts/bytecode-verification.md
+  - docs/verification-tier.txt
 ---
 
 # Objective
@@ -193,6 +195,30 @@ Do not write the word "verified" anywhere in that run.
 
 ## Step 5
 
+Declare the verification tier.
+
+    sh tools/verification_tier.sh \
+        --facts <repo>/docs/facts --out <repo>/docs/verification-tier.txt
+
+Apply shared/verification-tiers.md.
+
+`A` - factbase built and the oracle VERIFIED it.
+
+`B` - factbase built, no compiled artefacts to check it against.
+
+`BLOCKED` - the oracle disagrees with the scan. STOP.
+
+If this Skill could not be run at all -- the environment cannot execute
+commands -- the run is Tier C. Write `docs/verification-tier.txt` by hand
+with `tier|C` and a `reason` naming the specific limitation, and carry the
+Tier C rules into every later Skill.
+
+The tier is quoted in every generated document's metadata block.
+
+---
+
+## Step 6
+
 Report.
 
 State
@@ -214,6 +240,8 @@ State
 `docs/facts/bytecode-verification.md` exists and its status is recorded.
 
 Oracle status is not `FAILED`.
+
+`docs/verification-tier.txt` exists and names tier A or B.
 
 ---
 
@@ -250,6 +278,8 @@ gap-analysis
 ☐ Bytecode oracle run or its absence recorded
 
 ☐ Oracle status quoted verbatim
+
+☐ Verification tier declared and persisted
 
 ☐ No class described
 

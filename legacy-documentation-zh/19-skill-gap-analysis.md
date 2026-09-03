@@ -44,6 +44,7 @@ shared:
   - enumeration-first
   - logic-depth
   - mechanical-verification
+  - verification-tiers
   - incremental-update
   - fact-layer
 
@@ -334,6 +335,18 @@ exit 3 表示列舉中有單元完全沒有文件。
 通過的執行結果應報告為「與原始碼一致；意義未驗證」，
 不得報告為「已驗證的文件」。見 shared/mechanical-verification.md。
 
+用詞取決於 `docs/verification-tier.txt` 中的層級：
+
+層級 A —— 「與原始碼一致；意義未驗證。」
+
+層級 B —— 「與詞法讀取到的原始碼一致；未經獨立驗證。」
+
+層級 C —— 檢查無法執行。應回報
+`深度完備率：未量測（層級 C）`、已有文件的單元數，
+以及「已對照原始碼檢查過的單元文件數：0」。
+每一份報告開頭都要放 shared/verification-tiers.md 的
+`VERIFICATION: NONE` 區塊。估算該比率是「禁止」的。
+
 ---
 
 # 步驟 2
@@ -602,7 +615,11 @@ docs/gap-analysis/progress.md
 
 ☐ Reflexion 的 divergence 與 absence 皆已解決（shared/reflexion-model.md）
 
-☐ 結果報告為「與原始碼一致；意義未驗證」
+☐ 已從 docs/verification-tier.txt 讀取驗證層級並標示於報告
+
+☐ 結果用詞符合該層級
+
+☐ 層級 C：已放上 VERIFICATION: NONE 區塊，且未宣稱任何比率
 
 ☐ 無幻覺內容
 

@@ -134,6 +134,8 @@ Gap Analysis (depth and staleness, by tool)
 
 Documentation is
 
+- labelled with the strength of its own verification (tier A, B or C)
+
 - derived from a parsed fact base, not from reading
 
 - independently verified against compiled artefacts
@@ -210,6 +212,10 @@ Six depth-complete documents beat 458 shallow ones.
 ## Requirements
 
 A POSIX shell and `awk`. Nothing to install.
+
+Where even that is unavailable, the library still runs, at Tier C: the whole
+method, none of the verification, and every report stamped
+`VERIFICATION: NONE`. See `shared/verification-tiers.md`.
 
 `javap`, `javac` and `jar`, when compiled artefacts are to be used as an
 independent oracle. Their absence is recorded, not worked around.

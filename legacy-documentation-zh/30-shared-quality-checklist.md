@@ -24,6 +24,7 @@
 
 | 關卡 | 指令 | 負責 Skill |
 |---|---|---|
+| 已宣告驗證層級 | `tools/verification_tier.sh` | fact-extraction |
 | 已建立 factbase | `tools/factbase/build_factbase.sh` | fact-extraction |
 | 原始碼掃描已獨立檢查 | `tools/factbase/verify_bytecode.sh` | fact-extraction |
 | 列舉由 factbase 推導 | `tools/factbase/enumerate.sh` | artifact-enumeration |
@@ -35,6 +36,11 @@
 | 文件符合現行原始碼 | `tools/verify/staleness.sh` | gap-analysis |
 
 若某個 Skill 在沒有指令輸出的情況下回報關卡通過，即違反本檢查清單。
+
+若這些指令根本無法執行，該次執行屬於層級 C：
+宣告它、為每一份文件蓋上標示、並放棄所有原本要靠關卡支撐的宣稱。
+見 shared/verification-tiers.md。
+無聲地略過關卡才是違規；宣告它無法執行則不是。
 
 ---
 

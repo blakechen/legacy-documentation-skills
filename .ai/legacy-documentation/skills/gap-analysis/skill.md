@@ -44,6 +44,7 @@ shared:
   - enumeration-first
   - logic-depth
   - mechanical-verification
+  - verification-tiers
   - incremental-update
   - fact-layer
 
@@ -311,6 +312,19 @@ That is the only reason to open the source in this Skill.
 Report a passing run as "consistent with source; meaning not verified". Do
 not report it as verified documentation. See
 shared/mechanical-verification.md.
+
+The wording depends on the tier in `docs/verification-tier.txt`:
+
+Tier A - "Consistent with source; meaning not verified."
+
+Tier B - "Consistent with source as read lexically; not independently
+verified."
+
+Tier C - the checks could not be run. Report
+`Depth-Complete Rate: NOT MEASURED (Tier C)`, the count of units with a
+document, and `Units whose document was checked against source: 0`.
+Open every report with the `VERIFICATION: NONE` block from
+shared/verification-tiers.md. Estimating the rate is FORBIDDEN.
 
 For EVERY file in docs/modules/transactions/ and docs/specifications/transactions/,
 evaluate the Definition of Depth-Complete and record one row:
@@ -617,7 +631,11 @@ Coverage and depth are separate gates. Both must pass.
 
 ☐ Reflexion divergences and absences resolved (shared/reflexion-model.md)
 
-☐ Result reported as "consistent with source; meaning not verified"
+☐ Verification tier read from docs/verification-tier.txt and stamped on the report
+
+☐ Result wording matches the tier
+
+☐ In Tier C: VERIFICATION: NONE block present, no rate claimed
 
 ☐ No hallucinations
 

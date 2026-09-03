@@ -24,6 +24,7 @@ shared/mechanical-verification.md.
 
 | Gate | Command | Owner |
 |---|---|---|
+| Verification tier declared | `tools/verification_tier.sh` | fact-extraction |
 | Factbase built | `tools/factbase/build_factbase.sh` | fact-extraction |
 | Source scan independently checked | `tools/factbase/verify_bytecode.sh` | fact-extraction |
 | Enumeration derived from the factbase | `tools/factbase/enumerate.sh` | artifact-enumeration |
@@ -36,6 +37,11 @@ shared/mechanical-verification.md.
 
 A Skill that reports a gate as passed without the command output is in
 violation of this checklist.
+
+Where the commands cannot be run at all, the run is Tier C: declare it, stamp
+every document, and drop every claim the gates would have supported. See
+shared/verification-tiers.md. Silently skipping a gate is the violation;
+declaring that it could not run is not.
 
 ---
 

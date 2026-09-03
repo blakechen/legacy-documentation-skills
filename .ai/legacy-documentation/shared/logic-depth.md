@@ -191,6 +191,12 @@ The pipeline is complete only when the rate is 100% AND the tool exits 0.
 
 A rate asserted without running the tool is not a rate.
 
+In Tier C the tool cannot be run, so there is no rate. Report
+`Depth-Complete Rate: NOT MEASURED (Tier C)` and the two counts that ARE
+knowable: units with a document, and units whose document was checked
+against source (which is zero). Estimating the rate is FORBIDDEN.
+See shared/verification-tiers.md.
+
 ### What passing does not mean
 
 These checks decide consistency with the cited source. They do not decide

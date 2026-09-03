@@ -99,7 +99,15 @@ twice.
 
 If no compiled artefact exists, the oracle records `UNAVAILABLE` and the
 enumeration report SHALL state that the result rests on lexical extraction
-alone. The word "verified" SHALL NOT be used for that run.
+alone. The word "verified" SHALL NOT be used for that run. That is Tier B.
+
+If the enumeration could not be queried at all -- no commands can be run in
+this environment -- the run is Tier C. The enumeration was produced by
+reading, and the report SHALL carry the disclosure in
+shared/verification-tiers.md naming the three things reading cannot check:
+transitive inheritance, out-of-tree base classes, and reflection
+registration. On the library's own fixture, a plain text search finds 3 of
+the 6 transaction classes.
 
 ---
 

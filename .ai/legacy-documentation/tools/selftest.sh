@@ -155,6 +155,40 @@ if grep -q 'execute_whenAmountDAILYMAX' \
     ok "documented branches become named tests"
 else bad "documented branches become named tests"; fi
 
+echo "== 12. verification tier =="
+# Tier B: a factbase with no oracle report beside it.
+rm -f "$WORK/facts/bytecode-verification.md"
+sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts" \
+   --out "$WORK/tier-b.txt" > /dev/null
+grep -q '^tier|B$' "$WORK/tier-b.txt" \
+    && ok "no oracle report yields tier B" || bad "no oracle report yields tier B"
+
+# Tier C: no factbase to speak of.
+mkdir -p "$WORK/nofacts"; : > "$WORK/nofacts/types.psv"
+sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/nofacts" \
+   --out "$WORK/tier-c.txt" > /dev/null
+grep -q '^tier|C$' "$WORK/tier-c.txt" \
+    && ok "an empty factbase yields tier C" || bad "an empty factbase yields tier C"
+
+if [ -f "$WORK/bytecode.md" ]; then
+    # Tier A: the oracle verified the scan.
+    cp "$WORK/bytecode.md" "$WORK/facts/bytecode-verification.md"
+    sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts" \
+       --out "$WORK/tier-a.txt" > /dev/null
+    grep -q '^tier|A$' "$WORK/tier-a.txt" \
+        && ok "a VERIFIED oracle yields tier A" || bad "a VERIFIED oracle yields tier A"
+    # A disagreeing oracle is not a tier; it blocks.
+    cp "$WORK/bytecode-bad.md" "$WORK/facts.broken/bytecode-verification.md"
+    sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts.broken" \
+       --out "$WORK/tier-blocked.txt" > /dev/null
+    RC=$?
+    if [ "$RC" = 2 ] && grep -q '^tier|BLOCKED$' "$WORK/tier-blocked.txt"; then
+        ok "a FAILED oracle blocks rather than downgrading the tier"
+    else bad "a FAILED oracle blocks rather than downgrading the tier (rc=$RC)"; fi
+else
+    printf '  skip  tier A and BLOCKED (JDK tools not present)\n'
+fi
+
 echo
 echo "passed: $PASS   failed: $FAIL"
 [ "$FAIL" = 0 ] || exit 1

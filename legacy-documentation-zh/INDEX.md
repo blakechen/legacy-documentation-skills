@@ -46,7 +46,7 @@
 
 ## 共用規則（shared/）
 
-19 個共用規則現已全部掛載到 Skill 上（透過各 Skill 的 `shared:`
+20 個共用規則現已全部掛載到 Skill 上（透過各 Skill 的 `shared:`
 前置資料與「# 共用規則」章節）。其中 7 個為全體適用，
 其餘依 Skill 性質選擇性掛載。
 
@@ -54,6 +54,7 @@
 |----------|----------|----------|
 | [30-shared-fact-layer.md](30-shared-fact-layer.md) | `shared/fact-layer.md` | 全體 |
 | [30-shared-mechanical-verification.md](30-shared-mechanical-verification.md) | `shared/mechanical-verification.md` | 全體 |
+| [30-shared-verification-tiers.md](30-shared-verification-tiers.md) | `shared/verification-tiers.md` | 全體 |
 | [30-shared-logic-depth.md](30-shared-logic-depth.md) | `shared/logic-depth.md` | 逐單元深度相關 Skill |
 | [30-shared-business-rule-criteria.md](30-shared-business-rule-criteria.md) | `shared/business-rule-criteria.md` | 業務規則萃取 |
 | [30-shared-prioritization.md](30-shared-prioritization.md) | `shared/prioritization.md` | 協調器、成品列舉 |
