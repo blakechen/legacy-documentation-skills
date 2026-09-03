@@ -1,0 +1,6 @@
+AcctInquiryTrx|src/com/example/bank/trx/AcctInquiryTrx.java
+BaseInquiryTrx|src/com/example/bank/trx/BaseInquiryTrx.java
+CardInquiryTrx|src/com/example/bank/trx/CardInquiryTrx.java
+LegacyFxTrx|src/com/example/bank/trx/LegacyFxTrx.java
+LoanInquiryTrx|src/com/example/bank/trx/LoanInquiryTrx.java
+TransferTrx|src/com/example/bank/trx/TransferTrx.java

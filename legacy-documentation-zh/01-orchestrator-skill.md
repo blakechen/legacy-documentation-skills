@@ -16,6 +16,7 @@ outputs:
   - docs/
 
 dependencies:
+  - fact-extraction
   - inventory
   - technology-discovery
   - architecture-discovery
@@ -26,12 +27,21 @@ dependencies:
   - business-rule-extraction
   - sequence-discovery
   - specification-generation
+  - archetype-clustering
+  - reflexion-check
   - gap-analysis
 
 shared:
+  - fact-layer
+  - mechanical-verification
   - enumeration-first
   - iterative-depth
   - logic-depth
+  - business-rule-criteria
+  - prioritization
+  - archetypes
+  - reflexion-model
+  - incremental-update
   - custom-framework-recognition
 ---
 
@@ -99,6 +109,10 @@ shared:
 
 永遠遵循相依順序。
 
+每個階段都套用 shared/fact-layer.md。
+
+每個階段都套用 shared/mechanical-verification.md。
+
 每個階段都套用 shared/enumeration-first.md。
 
 每個階段都套用 shared/iterative-depth.md。
@@ -113,6 +127,9 @@ shared:
 
 執行順序
 
+事實抽取（Fact Extraction，把原始碼剖析成 factbase；以 bytecode 驗證）
+
+→
 清冊盤點（Inventory）
 
 →
@@ -122,10 +139,16 @@ shared:
 架構探索（Architecture Discovery，含自訂框架偵測）
 
 →
-成品列舉（交易／動作類別、資料庫物件類別、Servlet）
+成品列舉（從 factbase 查詢；接著排定優先序）
 
 →
-模組分析（逐模組「且」逐交易類別）
+原型分群（收斂複製貼上家族）
+
+→
+Reflexion 檢查（以人的模型對照 factbase 檢驗）
+
+→
+模組分析（逐模組「且」逐交易類別，依優先序）
 
 →
 資料庫分析（列舉「所有」資料庫物件類別）
@@ -147,13 +170,35 @@ shared:
 
 ---
 
+## 關鍵：事實先於文件
+
+本管線中沒有任何步驟會用「閱讀」去確立剖析器可以確立的事實。
+見 shared/fact-layer.md。
+
+協調器應在階段 1 之前驗證：
+
+1. `docs/facts/factbase.sqlite` 存在，且型別數量大於零。
+
+2. `docs/facts/bytecode-verification.md` 存在。
+
+3. 其狀態為 `VERIFIED` 或 `UNAVAILABLE`。`FAILED` 封鎖整條管線。
+
+4. `UNAVAILABLE` 狀態帶入後續每一份報告，
+   且該次執行不得使用「已驗證」一詞。
+
+協調器不得以「我讀過程式碼，找到 N 個類別」取代 factbase。
+
+---
+
 ## 關鍵：交易層級的深度
 
 在架構探索之後，協調器應：
 
 1. 辨識出 dispatcher／router 類別及其路由機制。
 
-2. 列舉「每一個」被 dispatcher 引用、或繼承自交易基底類別的交易／動作類別。
+2. 以對 factbase 的「查詢」列舉每一個交易／動作類別：
+   基底類別之下的遞移閉包，加上僅由字串常值透過反射指名的類別。
+   對 `extends <Base>` 做文字搜尋不構成列舉。
 
 3. 將這份完整清單交給模組分析、業務規則萃取、循序探索與規格產生。
 
@@ -196,13 +241,21 @@ shared:
 ## 關鍵：深度關卡
 
 涵蓋率與深度是兩道獨立的關卡。兩者皆為必要。
+兩者皆由程式判定。見 shared/mechanical-verification.md。
 
 在回報完成之前，協調器必須驗證：
 
 1. `ls docs/modules/transactions/*.md | wc -l` 的結果等於
    `docs/enumeration/transaction-classes.txt` 的行數。
 
-2. `docs/gap-analysis/depth-report.md` 存在，且回報的「深度完備率」為 100%。
+2. `tools/verify/run_depth_checks.py` exit 0，
+   且其報告顯示深度完備率 100%。
+   協調器應「執行」該指令。沒有指令輸出而宣稱的比率不是比率。
+
+3. `tools/verify/staleness.py` exit 0：
+   沒有任何文件描述的是此後已改動過的原始碼。
+
+4. 每一筆 reflexion 的 divergence 與 absence 都有記錄的解決說明。
 
 一個單元即使文件存在，只要未達深度完備，就「不算」完成。
 
@@ -216,7 +269,8 @@ shared:
 
 1. 協調器不得嘗試在單一回合內完成所有類別的文件。
 
-2. 而應依套件／模組群組切分為批次。
+2. 應改依「優先序」切分批次，來源為 `docs/enumeration/batches.txt`。
+   見 shared/prioritization.md。依套件名稱切分是字典序，不是計畫。
 
 3. 每個批次都要跑完「完整」管線（模組 → 業務規則 → 循序圖 → 規格），才進入下一批。
 
@@ -228,6 +282,10 @@ shared:
    為了塞進批次而降低深度是「禁止」的。應該縮小的是批次大小。
 
 7. 需要完整深度時的建議批次大小：每回合 5-10 個交易類別。
+
+7a. 在第一批之前，先以 archetype-clustering 收斂複製貼上家族。
+    一個 40 個近乎相同單元的家族，是「1 份完整深度文件 + 39 份差異文件」，
+    不是 40 份完整文件，也不是 1 份摘要。見 shared/archetypes.md。
 
 8. `docs/gap-analysis/progress.md` 應逐批記錄：
 
@@ -258,6 +316,8 @@ shared:
 
 產生
 
+facts/（factbase、JSONL 事實串流、bytecode 驗證報告）
+
 overview/
 
 architecture/
@@ -276,8 +336,19 @@ sequence/（逐交易循序圖）
 
 specifications/（逐交易規格）
 
-gap-analysis/（含 progress.md 與 depth-report.md）
+characterization/（對照已記錄分支的可執行測試）
+
+model/（unit-state.json，供增量重跑使用）
+
+gap-analysis/（含 progress.md、depth-report.md、staleness-report.md）
 
 在回報完成前，先驗證所有必要文件都已存在。
 
 驗證交易類別數量與已產生的文件數量相符。
+
+執行 shared/quality-checklist.md 中的每一道關卡指令，並回報其結束狀態。
+不得以宣稱代替執行。
+
+結果報告為「與原始碼一致；意義未驗證」。
+本管線驗證的是「文件與其所引用的程式碼相符」，
+不驗證「指派給它們的業務意義是否正確」。

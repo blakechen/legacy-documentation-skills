@@ -168,9 +168,43 @@ A unit that is not DEPTH-COMPLETE is NOT counted as documented, regardless of wh
 
 ## Verification
 
+Depth-Complete is decided by a program, not by reading.
+
+    python3 tools/verify/run_depth_checks.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/gap-analysis/depth-report.md
+
+Four checks, described in shared/mechanical-verification.md:
+
+| Check | Decides |
+|---|---|
+| structure | the six conditions above, using the factbase for the method list |
+| excerpts | every quoted block is byte-identical to the lines it cites |
+| branches | pseudocode branch count is consistent with source decision count |
+| fields | every mapped field exists in the method; every table is enumerated |
+
 Depth-Complete Rate = depth-complete units / enumeration line count.
 
-The pipeline is complete only when the rate is 100%.
+The pipeline is complete only when the rate is 100% AND the tool exits 0.
+
+A rate asserted without running the tool is not a rate.
+
+### What passing does not mean
+
+These checks decide consistency with the cited source. They do not decide
+whether the business meaning is right. A document can pass every check and
+still describe a correctly quoted method with the wrong purpose.
+
+Report a passing run as "consistent with source; meaning not verified".
+
+### Delta documents
+
+A member of a multi-member archetype is documented as a delta against its
+representative. See shared/archetypes.md. Its completion criterion is the
+completeness of its Differences table and its own Field Mapping, not the
+presence of all four elements restated.
 
 ---
 

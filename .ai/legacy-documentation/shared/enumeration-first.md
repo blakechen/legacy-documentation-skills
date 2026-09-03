@@ -50,11 +50,56 @@ Producing a single summary instead of per-item documents is FORBIDDEN.
 
 ---
 
+## Enumeration Is a Query, Not a Search
+
+The master lists are produced by `tools/factbase/enumerate.py` from the
+factbase built by the `fact-extraction` Skill. See shared/fact-layer.md.
+
+A Skill SHALL NOT build an enumeration by grepping for `extends <Base>`.
+
+Three things that text search cannot do, and that the enumeration requires:
+
+### Transitive inheritance
+
+`A extends B`, `B extends StdTrxObject`. A search for `extends StdTrxObject`
+returns B and misses A. The factbase stores the transitive closure of the
+hierarchy, so A is found at depth 2. The enumeration report records the depth
+of every entry; any entry with depth > 1 is one a text search would have
+missed.
+
+### External base classes
+
+When the base class ships in a jar there is no source to read. The closure
+still forms: the unresolved supertype becomes an `EXTERNAL:<SimpleName>`
+node, and every class below it is still enumerated.
+
+### Reflection registration
+
+`Class.forName(prefix + code)` names no class in the source text. The
+enumeration matches string literals against the type table and records which
+entries were found this way, and which literals named no known class at all.
+A literal that names nothing is a finding: a class outside the scanned roots,
+or a dead registration.
+
+---
+
 ## Verification
 
-The enumeration list count must match the actual file count for that artifact type.
+The count must be confirmed by an INDEPENDENT source, not by a second search.
 
-If they do not match, re-scan.
+    tools/factbase/verify_bytecode.py
+
+reads compiled classes and jars with `javap` and compares the true supertype
+of every class with the factbase. The two share no code and read different
+inputs.
+
+Running a similar search with a different regular expression is not
+independent verification. It is the same method making the same mistake
+twice.
+
+If no compiled artefact exists, the oracle records `UNAVAILABLE` and the
+enumeration report SHALL state that the result rests on lexical extraction
+alone. The word "verified" SHALL NOT be used for that run.
 
 ---
 

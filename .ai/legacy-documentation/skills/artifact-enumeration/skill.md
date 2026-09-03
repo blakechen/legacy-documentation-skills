@@ -39,9 +39,13 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - fact-extraction
 
 shared:
   - enumeration-first
+  - fact-layer
+  - prioritization
+  - mechanical-verification
   - custom-framework-recognition
   - evidence-rules
   - confidence-scoring
@@ -55,7 +59,12 @@ outputs:
   - docs/enumeration/transaction-classes.txt
   - docs/enumeration/db-object-classes.txt
   - docs/enumeration/servlet-classes.txt
+  - docs/enumeration/enumeration-evidence.jsonl
+  - docs/enumeration/enumeration-config.json
   - docs/enumeration/enumeration-report.md
+  - docs/enumeration/priority.txt
+  - docs/enumeration/batches.txt
+  - docs/enumeration/priority-report.md
 ---
 
 # Objective
@@ -66,7 +75,15 @@ This Skill is the gate between Phase 1 and Phase 2.
 
 Apply shared/enumeration-first.md.
 
+Apply shared/fact-layer.md.
+
+Apply shared/prioritization.md.
+
 Apply shared/custom-framework-recognition.md.
+
+The lists are QUERIED from the factbase produced by `fact-extraction`. They
+are not produced by searching source text. See shared/enumeration-first.md,
+"Enumeration Is a Query, Not a Search".
 
 This Skill records identity and location only.
 
@@ -197,6 +214,10 @@ Guessing is prohibited.
 # Completion Criteria
 
 Enumeration is complete when
+
+docs/facts/factbase.sqlite exists and its bytecode oracle status is recorded
+
+and
 
 docs/enumeration/transaction-classes.txt exists and line count > 0
 
@@ -360,99 +381,58 @@ before concluding that no base class exists.
 
 ## Step 3
 
-Enumerate Transaction Classes
+Configure the bases.
 
-Find EVERY class that
+Write `docs/enumeration/enumeration-config.json`
 
-extends or implements the transaction base class
+    {
+      "transaction_base": ["StdTrxObject"],
+      "db_object_base":   ["StdDbObject"],
+      "servlet_base":     ["javax.servlet.http.HttpServlet"]
+    }
 
-or
+A simple name is enough; a base class that lives in a jar is matched as an
+`EXTERNAL:` node.
 
-is referenced by the dispatcher routing mechanism
-
-or
-
-is registered in a routing configuration file
-
-Union the results of all three searches.
-
-Deduplicate by fully qualified class name.
-
-Write one line per class to
-
-`docs/enumeration/transaction-classes.txt`
-
-Format
-
-`ClassName|relative/path/to/File.java`
-
-A count is NOT enumeration.
-
-`grep -c` output is NOT enumeration.
-
-The file must contain the actual names and paths.
+If the bases are not yet known, run Step 4 with no config. The tool proposes
+one from the hierarchy and writes it. A proposal is not a conclusion:
+review it against Steps 1 and 2 and correct it before continuing.
 
 ---
 
 ## Step 4
 
-Enumerate DB Object Classes
+Enumerate.
 
-Find EVERY class that
+    python3 tools/factbase/enumerate.py \
+        --db <repo>/docs/facts/factbase.sqlite \
+        --out <repo>/docs/enumeration
 
-extends the DB object base class
+This writes the three master lists in the documented pipe-separated format,
+plus `enumeration-evidence.jsonl` carrying the provenance of every entry, and
+`enumeration-report.md`.
 
-or
+The tool resolves, and the Skill SHALL report:
 
-declares a table mapping annotation
-
-or
-
-is registered in an ORM mapping file
-
-Extract the target table name from each class.
-
-Write one line per class to
-
-`docs/enumeration/db-object-classes.txt`
-
-Format
-
-`ClassName|relative/path/to/File.java|TargetTable`
-
-Write `UNKNOWN` as the target table when it cannot be determined.
-
-Do not infer a table name from the class name.
+- transitive subclasses, at any depth below the base
+- subclasses of a base class that is not in the source tree
+- classes named only by a string literal, through reflection
+- string literals that look like unit names but match no known class
 
 ---
 
 ## Step 5
 
-Enumerate Servlets
+Read the discovery breakdown.
 
-Find EVERY class that
+`enumeration-report.md` records the inheritance depth of every entry.
 
-extends HttpServlet
+Every entry with depth > 1 is an entry a `grep "extends <Base>"` would have
+missed. State how many there are. If the number is zero in a system with a
+custom framework, be suspicious of the configured base rather than pleased.
 
-or
-
-is declared in web.xml
-
-or
-
-carries a servlet annotation
-
-or
-
-is declared in a container-specific deployment descriptor
-
-Write one line per class to
-
-`docs/enumeration/servlet-classes.txt`
-
-Format
-
-`ClassName|relative/path/to/File.java`
+Every dangling class reference SHALL be resolved: a class outside the scanned
+roots, or a dead registration. Record which.
 
 ---
 
@@ -460,23 +440,21 @@ Format
 
 Independent Verification
 
-For each generated file
+The oracle is the bytecode, not a second search.
 
-count the lines
+`docs/facts/bytecode-verification.md` is produced by the `fact-extraction`
+Skill. Read its status.
 
-re-scan the repository with a different search expression
+`VERIFIED` - proceed.
 
-compare the two counts
+`FAILED` - Phase 2 is BLOCKED. Classes exist in the compiled artefact that
+the scan did not find. Resolve before continuing.
 
-If the counts differ
+`UNAVAILABLE` - proceed, and record in `enumeration-report.md` that the
+enumeration rests on lexical extraction alone. Do not call it verified.
 
-report the difference
-
-identify the missing entries
-
-re-scan
-
-Do not proceed while a discrepancy is unresolved.
+Re-scanning the source with a different expression is NOT verification and
+SHALL NOT be reported as such.
 
 ---
 
@@ -484,61 +462,53 @@ Do not proceed while a discrepancy is unresolved.
 
 Path Validation
 
-For every entry in every file
+`enumerate.py` writes only entries whose type came from a parsed file, so
+every path resolves by construction.
 
-confirm the recorded path resolves to an existing file
+Confirm the file count independently:
 
-Remove no entry silently.
+    wc -l docs/enumeration/*.txt
 
-An unresolvable path is a defect and must be reported and corrected.
+and confirm that every path in every list exists.
+
+An unresolvable path is a defect in the factbase and SHALL be reported.
 
 ---
 
 ## Step 8
 
-Enumeration Report
+Prioritise.
 
-Generate `docs/enumeration/enumeration-report.md`
+    python3 tools/factbase/prioritize.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --enumeration <repo>/docs/enumeration \
+        [--usage usage.csv --usage-map codes.csv] [--since 3.years]
 
-Record
+Produces `priority.txt`, `batches.txt` and `priority-report.md`.
 
-Dispatcher Class and Routing Mechanism
+Ask the site for the runtime usage file. It is the strongest of the three
+signals and the only one the repository cannot supply. If it is not
+available, record that the ranking rests on reachability and churn alone.
 
-Transaction Base Class
-
-DB Object Base Class
-
-Transaction Class Count
-
-DB Object Class Count
-
-Servlet Count
-
-Verification Method used for each count
-
-Unresolved Discrepancies
-
-Classes with UNKNOWN target table
+Report every unreachable unit by name. Unreachable is a candidate for dead
+code, not a verdict: schedulers, message listeners and operator scripts are
+entry points this scan does not model.
 
 ---
 
 ## Step 9
 
-Batching Advice
+Enumeration Report
 
-If the transaction class count exceeds 50
+`enumerate.py` generates `docs/enumeration/enumeration-report.md`.
 
-propose a batch plan grouped by package or module
+Add to it, by hand:
 
-record the proposed batches in the enumeration report
-
-Format
-
-`batch N | package | units in batch`
-
-The orchestrator consumes this plan.
-
-This Skill does not execute the batches.
+- which bases were configured and which were auto-detected, and why the
+  auto-detected ones were accepted
+- the resolution of every dangling class reference
+- the oracle status, quoted
+- whether a runtime usage file was supplied
 
 ---
 
@@ -607,13 +577,30 @@ Zero transaction classes is a critical failure, not an empty result.
 
 ☐ Every recorded path resolves to an existing file
 
-☐ Every count independently verified
+☐ Every count verified against the bytecode oracle, or the oracle's
+  absence recorded
+
+☐ Inheritance depth of every entry recorded
+
+☐ Entries found only through the transitive closure counted and reported
+
+☐ Entries found only through reflection counted and reported
+
+☐ Every dangling class reference resolved
+
+☐ priority.txt, batches.txt and priority-report.md generated
+
+☐ Unreachable units listed by name
+
+☐ Runtime usage file requested, and its absence recorded if not supplied
 
 ☐ Enumeration report generated
 
 ☐ No approximate counts
 
 ☐ No sampling
+
+☐ No enumeration produced by text search alone
 
 ☐ No behaviour described
 

@@ -13,3 +13,38 @@ Every Skill shall verify:
 - Mermaid valid (if present)
 - Output files generated
 - Traceability preserved
+
+---
+
+# Mechanical Gates
+
+Assertion is not verification. Every gate below is a command with an exit
+status, and the Skill that owns it SHALL run it. See
+shared/mechanical-verification.md.
+
+| Gate | Command | Owner |
+|---|---|---|
+| Factbase built | `tools/factbase/build_factbase.py` | fact-extraction |
+| Source scan independently checked | `tools/factbase/verify_bytecode.py` | fact-extraction |
+| Enumeration derived from the factbase | `tools/factbase/enumerate.py` | artifact-enumeration |
+| Units ordered by value | `tools/factbase/prioritize.py` | artifact-enumeration |
+| Clone families collapsed | `tools/factbase/archetypes.py` | archetype-clustering |
+| Domain variables derived | `tools/factbase/domain_variables.py` | business-rule-extraction |
+| Architecture model tested | `tools/reflexion/reflexion.py` | reflexion-check |
+| Documents depth-complete | `tools/verify/run_depth_checks.py` | gap-analysis |
+| Documents match current source | `tools/verify/staleness.py` | gap-analysis |
+
+A Skill that reports a gate as passed without the command output is in
+violation of this checklist.
+
+---
+
+# Self-Test
+
+The tools themselves are covered by a fixture:
+
+    sh tools/selftest.sh
+
+A change to a tool that alters the expected output in
+`examples/fixtures/java-dispatcher/expected/` is a regression until those
+files are updated deliberately.

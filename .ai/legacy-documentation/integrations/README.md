@@ -10,14 +10,23 @@ Every integration does the same three things.
 
 1. Make the AI read `orchestrators/legacy-system-analyzer/skill.md` first.
 
-2. Give the AI read access to `skills/`, `shared/` and `skills/templates/`.
+2. Give the AI read access to `skills/`, `shared/`, `skills/templates/` and
+   `tools/`, and permission to RUN the tools. The pipeline's gates are
+   commands with exit statuses; a tool the AI may read but not run is a gate
+   that will be asserted rather than checked.
 
 3. Point the AI's working output at `docs/` in the target repository.
 
-Nothing in this library is tool-specific.
+Nothing in this library is AI-tool-specific.
 
-A tool is supported when it can read a Markdown instruction file from the
-repository and write files to disk.
+An AI tool is supported when it can read a Markdown instruction file from the
+repository, write files to disk, and execute `python3`.
+
+The last requirement is not optional. See `shared/fact-layer.md`: the
+enumeration is queried from a parsed fact base, not searched for in text, and
+`shared/mechanical-verification.md` makes every completion gate a command.
+An integration that cannot run commands can produce documentation, but it
+cannot verify any of it.
 
 ---
 

@@ -1,0 +1,6 @@
+ARCH-001|AcctInquiryTrx|AcctInquiryTrx|1.000
+ARCH-002|BaseInquiryTrx|BaseInquiryTrx|1.000
+ARCH-001|CardInquiryTrx|AcctInquiryTrx|1.000
+ARCH-003|LegacyFxTrx|LegacyFxTrx|1.000
+ARCH-001|LoanInquiryTrx|AcctInquiryTrx|1.000
+ARCH-004|TransferTrx|TransferTrx|1.000

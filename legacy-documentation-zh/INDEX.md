@@ -29,10 +29,13 @@
 
 | 中文檔案 | 對應原檔 |
 |----------|----------|
+| [09-skill-fact-extraction.md](09-skill-fact-extraction.md) | `skills/fact-extraction/skill.md` |
 | [10-skill-inventory.md](10-skill-inventory.md) | `skills/inventory/skill.md` |
 | [11-skill-technology-discovery.md](11-skill-technology-discovery.md) | `skills/technology-discovery/skill.md` |
 | [12-skill-architecture-discovery.md](12-skill-architecture-discovery.md) | `skills/architecture-discovery/skill.md` |
 | [12a-skill-artifact-enumeration.md](12a-skill-artifact-enumeration.md) | `skills/artifact-enumeration/skill.md` |
+| [12b-skill-archetype-clustering.md](12b-skill-archetype-clustering.md) | `skills/archetype-clustering/skill.md` |
+| [12c-skill-reflexion-check.md](12c-skill-reflexion-check.md) | `skills/reflexion-check/skill.md` |
 | [13-skill-module-analysis.md](13-skill-module-analysis.md) | `skills/module-analysis/skill.md` |
 | [14-skill-database-analysis.md](14-skill-database-analysis.md) | `skills/database-analysis/skill.md` |
 | [15-skill-interface-analysis.md](15-skill-interface-analysis.md) | `skills/interface-analysis/skill.md` |
@@ -43,13 +46,20 @@
 
 ## 共用規則（shared/）
 
-12 個共用規則現已全部掛載到 Skill 上（透過各 Skill 的 `shared:`
+19 個共用規則現已全部掛載到 Skill 上（透過各 Skill 的 `shared:`
 前置資料與「# 共用規則」章節）。其中 7 個為全體適用，
-其餘 5 個依 Skill 性質選擇性掛載。
+其餘依 Skill 性質選擇性掛載。
 
 | 中文檔案 | 對應原檔 | 掛載範圍 |
 |----------|----------|----------|
+| [30-shared-fact-layer.md](30-shared-fact-layer.md) | `shared/fact-layer.md` | 全體 |
+| [30-shared-mechanical-verification.md](30-shared-mechanical-verification.md) | `shared/mechanical-verification.md` | 全體 |
 | [30-shared-logic-depth.md](30-shared-logic-depth.md) | `shared/logic-depth.md` | 逐單元深度相關 Skill |
+| [30-shared-business-rule-criteria.md](30-shared-business-rule-criteria.md) | `shared/business-rule-criteria.md` | 業務規則萃取 |
+| [30-shared-prioritization.md](30-shared-prioritization.md) | `shared/prioritization.md` | 協調器、成品列舉 |
+| [30-shared-archetypes.md](30-shared-archetypes.md) | `shared/archetypes.md` | 原型分群、模組分析 |
+| [30-shared-reflexion-model.md](30-shared-reflexion-model.md) | `shared/reflexion-model.md` | Reflexion 檢查 |
+| [30-shared-incremental-update.md](30-shared-incremental-update.md) | `shared/incremental-update.md` | 落差分析、協調器 |
 | [30-shared-enumeration-first.md](30-shared-enumeration-first.md) | `shared/enumeration-first.md` | 產生逐單元文件的 Skill |
 | [30-shared-iterative-depth.md](30-shared-iterative-depth.md) | `shared/iterative-depth.md` | 模組分析、業務規則萃取 |
 | [30-shared-custom-framework-recognition.md](30-shared-custom-framework-recognition.md) | `shared/custom-framework-recognition.md` | 架構探索、成品列舉 |
@@ -99,6 +109,16 @@
 |----------|----------|
 | [60-integrations-README.md](60-integrations-README.md) | `integrations/README.md` |
 
+## 工具（tools/）
+
+| 中文檔案 | 對應原檔 |
+|----------|----------|
+| [70-tools-README.md](70-tools-README.md) | `tools/README.md` |
+
+工具本身（Python 原始碼、fixture、`selftest.sh`）不翻譯：
+它們是可執行的程式碼，翻譯會使其與實際行為脫節。
+程式碼中的註解與 docstring 維持英文。
+
 ---
 
 ## 翻譯處理原則
@@ -114,3 +134,8 @@
   英文原檔的這 158 處亂碼現已一併修正，兩版本不再有此差異。
 - **編號前綴**：`artifact-enumeration` 在管線中位於架構探索與模組分析之間，
   為避免既有 13–19 全部重新編號，採用 `12a-` 前綴以維持排序。
+  同理，`archetype-clustering` 與 `reflexion-check` 採用 `12b-`、`12c-`；
+  `fact-extraction` 在清冊盤點之前執行，採用 `09-`。
+- **不翻譯的部分**：`tools/` 下的 Python 程式碼、
+  `examples/fixtures/` 下的 fixture 原始碼與預期輸出。
+  這些是可執行的產出物，只有 `tools/README.md` 有中文版。

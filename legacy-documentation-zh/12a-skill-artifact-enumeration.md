@@ -38,9 +38,13 @@ dependencies:
   - inventory
   - technology-discovery
   - architecture-discovery
+  - fact-extraction
 
 shared:
   - enumeration-first
+  - fact-layer
+  - prioritization
+  - mechanical-verification
   - custom-framework-recognition
   - evidence-rules
   - confidence-scoring
@@ -54,7 +58,12 @@ outputs:
   - docs/enumeration/transaction-classes.txt
   - docs/enumeration/db-object-classes.txt
   - docs/enumeration/servlet-classes.txt
+  - docs/enumeration/enumeration-evidence.jsonl
+  - docs/enumeration/enumeration-config.json
   - docs/enumeration/enumeration-report.md
+  - docs/enumeration/priority.txt
+  - docs/enumeration/batches.txt
+  - docs/enumeration/priority-report.md
 ---
 
 # 目標
@@ -70,6 +79,15 @@ outputs:
 本 Skill 只記錄身分與位置。
 
 行為、邏輯與業務意義都不在本 Skill 的範圍內。
+
+
+套用 shared/fact-layer.md。
+
+套用 shared/prioritization.md。
+
+清單是從 `fact-extraction` 所建立的 factbase「查詢」出來的，
+不是從原始碼文字「搜尋」出來的。
+見 shared/enumeration-first.md 之「列舉是查詢，不是搜尋」。
 
 ---
 
@@ -359,99 +377,58 @@ gap-analysis
 
 ## 步驟 3
 
-列舉交易類別
+設定基底類別。
 
-找出「每一個」符合下列任一條件的類別
+寫入 `docs/enumeration/enumeration-config.json`
 
-繼承或實作交易基底類別
+    {
+      "transaction_base": ["StdTrxObject"],
+      "db_object_base":   ["StdDbObject"],
+      "servlet_base":     ["javax.servlet.http.HttpServlet"]
+    }
 
-或
+只寫簡單名稱即可；隨 jar 出貨的基底類別會被對應到 `EXTERNAL:` 節點。
 
-被派發器的路由機制所參照
-
-或
-
-登錄在路由設定檔中
-
-將三種搜尋的結果取聯集。
-
-以完整類別名稱去除重複。
-
-每個類別寫一行到
-
-`docs/enumeration/transaction-classes.txt`
-
-格式
-
-`ClassName|relative/path/to/File.java`
-
-「數量」不是列舉。
-
-`grep -c` 的輸出不是列舉。
-
-檔案必須包含實際的名稱與路徑。
+若尚未確定基底類別，先不帶 config 執行步驟 4。
+工具會從階層提出一份建議並寫出。建議不是結論：
+對照步驟 1 與步驟 2 審視它，修正後才繼續。
 
 ---
 
 ## 步驟 4
 
-列舉資料庫物件類別
+列舉。
 
-找出「每一個」符合下列任一條件的類別
+    python3 tools/factbase/enumerate.py \
+        --db <repo>/docs/facts/factbase.sqlite \
+        --out <repo>/docs/enumeration
 
-繼承資料庫物件基底類別
+這會依既定的管線分隔格式寫出三份主清單，
+加上記錄每筆條目來源的 `enumeration-evidence.jsonl`，
+以及 `enumeration-report.md`。
 
-或
+工具會處理、且本 Skill 應回報：
 
-宣告了資料表對應註解
-
-或
-
-登錄在 ORM 對應檔中
-
-從每個類別取出目標資料表名稱。
-
-每個類別寫一行到
-
-`docs/enumeration/db-object-classes.txt`
-
-格式
-
-`ClassName|relative/path/to/File.java|TargetTable`
-
-無法判定目標資料表時，寫 `UNKNOWN`。
-
-不得從類別名稱反推資料表名稱。
+- 基底類別之下任何深度的遞移子類別
+- 不在原始碼樹內之基底類別的子類別
+- 僅由字串常值透過反射指名的類別
+- 看起來像單元名稱、卻對應不到任何已知類別的字串常值
 
 ---
 
 ## 步驟 5
 
-列舉 Servlet
+閱讀來源分佈。
 
-找出「每一個」符合下列任一條件的類別
+`enumeration-report.md` 記錄每一筆條目的繼承深度。
 
-繼承 HttpServlet
+每一筆深度 > 1 的條目，都是 `grep "extends <Base>"` 會漏掉的條目。
+載明有多少筆。
+若一個使用自訂框架的系統這個數字是零，
+應該懷疑所設定的基底類別，而不是感到滿意。
 
-或
-
-宣告於 web.xml
-
-或
-
-帶有 servlet 註解
-
-或
-
-宣告於容器專屬的部署描述檔
-
-每個類別寫一行到
-
-`docs/enumeration/servlet-classes.txt`
-
-格式
-
-`ClassName|relative/path/to/File.java`
+每一筆指向不存在之物的類別參照都應被解決：
+是掃描範圍外的類別，或是一筆死掉的註冊。記錄屬於哪一種。
 
 ---
 
@@ -459,23 +436,20 @@ gap-analysis
 
 獨立驗證
 
-對每一個已產生的檔案
+Oracle 是 bytecode，不是第二次搜尋。
 
-計算行數
+`docs/facts/bytecode-verification.md` 由 `fact-extraction` Skill 產生。
+閱讀其狀態。
 
-以「不同的」搜尋表達式重新掃描程式碼庫
+`VERIFIED` — 繼續。
 
-比對兩次的數量
+`FAILED` — 階段 2 遭封鎖。
+編譯產物中存在掃描沒找到的類別。解決後才可繼續。
 
-若數量不一致
+`UNAVAILABLE` — 繼續，但要在 `enumeration-report.md` 中載明
+本次列舉僅依賴詞法抽取。不得稱之為已驗證。
 
-回報差異
-
-指出缺少的條目
-
-重新掃描
-
-差異未解決前，不得繼續。
+以不同表示式重新掃描原始碼「不是」驗證，也不得如此回報。
 
 ---
 
@@ -483,61 +457,52 @@ gap-analysis
 
 路徑驗證
 
-對每個檔案中的每一筆條目
+`enumerate.py` 只會寫出「型別來自已剖析檔案」的條目，
+因此每個路徑就結構而言必然可解析。
 
-確認記錄的路徑能解析到實際存在的檔案
+獨立確認檔案數：
 
-不得無聲移除任何條目。
+    wc -l docs/enumeration/*.txt
 
-無法解析的路徑是缺陷，必須回報並修正。
+並確認每份清單中的每個路徑都存在。
+
+無法解析的路徑是 factbase 的缺陷，應予回報。
 
 ---
 
 ## 步驟 8
 
-列舉報告
+排定優先序。
 
-產生 `docs/enumeration/enumeration-report.md`
+    python3 tools/factbase/prioritize.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --enumeration <repo>/docs/enumeration \
+        [--usage usage.csv --usage-map codes.csv] [--since 3.years]
 
-記錄
+產生 `priority.txt`、`batches.txt` 與 `priority-report.md`。
 
-派發器類別與路由機制
+向現場索取執行期使用量檔案。
+它是三個訊號中最強的一個，也是唯一儲存庫無法提供的一個。
+若無法取得，載明排序僅依賴可達性與變更頻率。
 
-交易基底類別
-
-資料庫物件基底類別
-
-交易類別數量
-
-資料庫物件類別數量
-
-Servlet 數量
-
-每個數量所使用的驗證方法
-
-尚未解決的差異
-
-目標資料表為 UNKNOWN 的類別
+逐一指名每一個不可達的單元。
+不可達是死碼的候選，不是判決：
+排程器、訊息監聽器與維運腳本都是此掃描不模擬的進入點。
 
 ---
 
 ## 步驟 9
 
-批次規劃建議
+列舉報告
 
-若交易類別數量超過 50
+`enumerate.py` 會產生 `docs/enumeration/enumeration-report.md`。
 
-依套件或模組提出批次計畫
+以人工補上：
 
-將建議的批次記錄在列舉報告中
-
-格式
-
-`batch N | package | units in batch`
-
-此計畫由協調器（orchestrator）取用。
-
-本 Skill 不負責執行這些批次。
+- 哪些基底類別是設定的、哪些是自動偵測的，以及自動偵測者為何被接受
+- 每一筆指向不存在之物的類別參照的解決結果
+- oracle 狀態，逐字引用
+- 是否提供了執行期使用量檔案
 
 ---
 
@@ -590,7 +555,7 @@ docs/enumeration/enumeration-report.md
 
 # 品質檢查清單
 
-☐ 已辨識派發器，或已明確記錄為 NONE
+☐ 已辨識 dispatcher，或明確記錄為 NONE
 
 ☐ 已辨識交易基底類別
 
@@ -602,20 +567,34 @@ docs/enumeration/enumeration-report.md
 
 ☐ servlet-classes.txt 存在且行數 > 0
 
-☐ 每一行都符合所宣告的管線分隔格式
+☐ 每一行皆符合所定義的管線分隔格式
 
-☐ 每一個記錄的路徑都能解析到實際存在的檔案
+☐ 每個記錄的路徑都對應到存在的檔案
 
-☐ 每一個數量都經過獨立驗證
+☐ 每個數量皆已對照 bytecode oracle 驗證，或已記錄 oracle 不存在
+
+☐ 已記錄每一筆條目的繼承深度
+
+☐ 已計算並回報「僅由遞移閉包找到」的條目數
+
+☐ 已計算並回報「僅由反射找到」的條目數
+
+☐ 每一筆指向不存在之物的類別參照皆已解決
+
+☐ 已產生 priority.txt、batches.txt 與 priority-report.md
+
+☐ 已逐一指名不可達的單元
+
+☐ 已索取執行期使用量檔案，若未提供則已記錄
 
 ☐ 已產生列舉報告
 
-☐ 沒有近似數量
+☐ 沒有近似計數
 
-☐ 沒有取樣
+☐ 沒有抽樣
 
-☐ 沒有描述任何行為
+☐ 沒有僅靠文字搜尋產生的列舉
 
----
+☐ 未描述任何行為
 
 結束。

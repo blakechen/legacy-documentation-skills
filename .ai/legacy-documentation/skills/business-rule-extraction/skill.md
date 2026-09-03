@@ -23,12 +23,14 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - fact-extraction
   - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
 
 shared:
+  - business-rule-criteria
   - evidence-rules
   - confidence-scoring
   - documentation-style
@@ -39,14 +41,19 @@ shared:
   - enumeration-first
   - iterative-depth
   - logic-depth
+  - fact-layer
+  - archetypes
 
 templates:
   - business-rule
 
 outputs:
+  - docs/business-rules/domain-variables.txt
+  - docs/business-rules/domain-variables-report.md
   - docs/business-rules/business-rule-index.md
   - docs/business-rules/transactions/
   - docs/business-rules/cross-cutting.md
+  - docs/business-rules/technical-logic.md
 ---
 
 # Objective
@@ -56,6 +63,13 @@ Discover business rules implemented inside the system.
 Convert technical conditions into readable rules.
 
 Every rule must be traceable to source evidence.
+
+Apply shared/business-rule-criteria.md.
+
+A rule is a condition that reads or writes a DOMAIN VARIABLE. Everything else
+is technical logic and belongs in the module document. Without this test,
+every null check becomes a business rule and the rules that matter are lost
+in the noise.
 
 ---
 
@@ -96,6 +110,10 @@ This Skill SHALL NOT
 - invent missing rules
 
 - create functional specifications
+
+- record technical logic as a business rule
+
+- report a rule without naming the domain variable it governs
 
 ---
 
@@ -256,6 +274,13 @@ Possible rule with incomplete evidence.
 
 Business rules are complete when:
 
+- `docs/business-rules/domain-variables.txt` exists and is non-empty
+
+- every recorded rule names at least one domain variable
+
+- `docs/business-rules/technical-logic.md` exists, so that what was excluded
+  is visible and reviewable
+
 - all validation logic reviewed
 
 - all decision points reviewed
@@ -361,6 +386,47 @@ Apply shared/iterative-depth.md.
 
 # Rule Discovery Process
 
+## Step 0
+
+Derive the domain variables.
+
+    python3 tools/factbase/domain_variables.py \
+        --db <repo>/docs/facts/factbase.sqlite \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/business-rules/domain-variables.txt
+
+This produces the set of DB columns, input fields and configuration keys the
+business owns, each with its evidence.
+
+The list is derived from code and is therefore incomplete wherever a field
+name is built dynamically. Add such names by hand and record why.
+
+No rule extraction begins before this file exists.
+
+---
+
+## Step 0b
+
+Apply the test.
+
+For every candidate condition, ask:
+
+> Which domain variable does this condition read or write?
+
+Names one          -> business rule. Record the variable in the evidence.
+
+Names none         -> technical logic. Record it in
+                      `docs/business-rules/technical-logic.md` with a count
+                      per unit, not as a rule.
+
+Cannot tell        -> record as a rule with confidence Low and state what
+                      evidence is missing. Do not drop it silently.
+
+See shared/business-rule-criteria.md for the always-technical and
+always-business lists.
+
+---
+
 ## Step 1
 
 Analyse Conditional Logic
@@ -397,13 +463,29 @@ Rule:
 
 Large transaction requires approval.
 
+Domain variable:
+
+TRSFAMT (input-field), LIMIT_CTL.DAILY_MAX (db-column)
+
 Evidence:
 
 Class
 
 Method
 
-Condition
+Line range
+
+Outcome when true, outcome when false
+
+Counter-example, which is NOT a rule:
+
+Source:
+
+if(acctNo == null) return;
+
+No domain variable is read for a business decision; this is a guard. It is
+recorded in technical-logic.md and appears in the module document's
+Processing Flow, not here.
 
 
 ---

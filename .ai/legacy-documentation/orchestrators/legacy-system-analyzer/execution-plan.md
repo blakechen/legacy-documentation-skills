@@ -2,6 +2,12 @@
 
 ## Prerequisites
 
+Fact extraction completed.
+
+`docs/facts/factbase.sqlite` exists.
+
+Bytecode oracle status recorded and not `FAILED`.
+
 Inventory completed.
 
 Technology completed.
@@ -36,7 +42,15 @@ Enumeration is NOT complete until:
 
 4. Each file contains `ClassName|Path`, and `ClassName|Path|TargetTable` for DB objects.
 
-5. The line count of each file is verified against an independent scan.
+5. `docs/enumeration/enumeration-evidence.jsonl` records, per entry, the
+   inheritance depth and how it was discovered.
+
+6. The count is confirmed against the BYTECODE ORACLE, not against a second
+   text search. See shared/enumeration-first.md. Where no compiled artefact
+   exists, the report says so and the run is not described as verified.
+
+7. `docs/enumeration/priority.txt` exists, so that batching is by value
+   rather than by package name.
 
 If the gate is not met, downstream Skills MUST NOT proceed.
 
@@ -46,7 +60,12 @@ If the gate is not met, downstream Skills MUST NOT proceed.
 
 For repositories where enumeration yields > 50 primary units:
 
-1. The orchestrator SHALL divide work into batches by module/package.
+0. Archetype clustering runs first. A copy-and-paste family is one full-depth
+   document plus delta documents, not N full documents.
+   See shared/archetypes.md.
+
+1. The orchestrator SHALL divide work into batches by PRIORITY, from
+   `docs/enumeration/batches.txt`. See shared/prioritization.md.
 
 2. Each batch SHALL complete ALL downstream Skills (Module Analysis → Business Rules → Sequence → Specification) for its scope before moving to the next batch.
 
@@ -60,6 +79,8 @@ For repositories where enumeration yields > 50 primary units:
 
 ## Parallel Execution
 
+Nothing executes before Fact Extraction.
+
 Allowed
 
 Module Analysis
@@ -70,7 +91,10 @@ Interface Analysis
 
 may execute independently after
 
-Architecture Discovery AND Artifact Enumeration.
+Architecture Discovery AND Artifact Enumeration AND Archetype Clustering.
+
+Reflexion Check may run in parallel with Phase 2, but its divergences and
+absences MUST be resolved before Specification Generation.
 
 ---
 
@@ -118,8 +142,19 @@ Per-Transaction Specifications complete.
 
 ---
 
+Characterization Test Generation
+
+must wait until
+
+Per-Transaction Specifications complete.
+
+---
+
 Gap Analysis
 
 always executes last.
 
 Must verify per-transaction document count matches enumeration count.
+
+Must run tools/verify/staleness.py, then tools/verify/run_depth_checks.py,
+and report their exit statuses. Assertion is not verification.

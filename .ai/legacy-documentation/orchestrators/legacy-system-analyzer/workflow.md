@@ -1,5 +1,31 @@
 # Workflow
 
+## Phase 0
+
+Fact Extraction (MANDATORY, runs first)
+
+Skill: fact-extraction
+
+Parse source into a factbase
+
+Resolve the transitive type hierarchy
+
+Verify against compiled artefacts
+
+### Gate Check
+
+`docs/facts/factbase.sqlite` MUST exist and contain types.
+
+`docs/facts/bytecode-verification.md` MUST exist.
+
+Its status MUST NOT be `FAILED`.
+
+`UNAVAILABLE` is permitted and MUST be carried into every later report.
+
+If the gate fails → STOP. No documentation Skill may run without a factbase.
+
+---
+
 ## Phase 1
 
 Repository Discovery
@@ -22,29 +48,62 @@ Artifact Enumeration (CRITICAL)
 
 Skill: artifact-enumeration
 
-Enumerate ALL transaction/action classes
+Query ALL transaction/action classes from the factbase
 
-Enumerate ALL DB object classes
+Query ALL DB object classes
 
-Enumerate ALL servlets
+Query ALL servlets
 
-Build master lists
+Rank by documentation value
 
-Validation
-
-### Gate Check (added from lessons learned)
+### Gate Check
 
 Output files MUST exist on disk before proceeding:
 
 - `docs/enumeration/transaction-classes.txt`
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
+- `docs/enumeration/enumeration-evidence.jsonl`
+- `docs/enumeration/priority.txt`
 
 Each file MUST contain `ClassName|Path` entries (not just counts).
 
 db-object-classes.txt carries a third field: `ClassName|Path|TargetTable`.
 
-If gate fails → STOP. Do not proceed to Phase 2.
+The enumeration report MUST record the inheritance depth of every entry and
+the resolution of every dangling class reference.
+
+If gate fails → STOP. Do not proceed.
+
+---
+
+## Phase 1.6
+
+Archetype Clustering
+
+Skill: archetype-clustering
+
+Collapse copy-and-paste families
+
+Assign full-depth or delta mode to every unit
+
+---
+
+## Phase 1.7
+
+Reflexion Check
+
+Skill: reflexion-check
+
+Obtain a module map from a person who knows the system
+
+Compute convergence, divergence, absence
+
+### Gate Check
+
+Every divergence and every absence has a recorded resolution.
+
+An absence caused by missing classes returns the pipeline to Phase 1.5.
 
 ---
 
@@ -54,7 +113,7 @@ Structural Analysis
 
 Modules
 
-Per-Transaction-Class Analysis
+Per-Unit Analysis, in priority order
 
 Database (from DB object enumeration)
 
@@ -68,9 +127,11 @@ Validation
 
 Behavior Analysis
 
-Business Rules (per transaction class)
+Domain Variables (derived, before any rule extraction)
 
-Sequences (per transaction class)
+Business Rules (per unit, domain-variable test applied)
+
+Sequences (per unit)
 
 Validation
 
@@ -80,17 +141,27 @@ Validation
 
 Documentation
 
-Per-Transaction Specifications
+Per-Unit Specifications
 
 System Specifications
 
-Gap Analysis
+Characterization Tests
+
+Gap Analysis (staleness first, then depth; both by tool)
 
 Validation
 
 ---
 
 Stop immediately if
+
+Fact extraction fails
+
+or
+
+The bytecode oracle reports FAILED
+
+or
 
 Inventory fails
 

@@ -79,13 +79,28 @@ Listing facts about a unit without explaining how the unit processes a request i
 
 When the primary unit count exceeds what can be processed in a single pass (typically > 20 units):
 
-1. Group units by module/package (e.g., `com.abank.trx`, `com.lb.wibc.trx`).
+1. Order units by documentation value, not by package name.
+   See shared/prioritization.md. Consume `docs/enumeration/priority.txt`
+   and `docs/enumeration/batches.txt`.
 
-2. Process one group at a time, completing all depth requirements for that group before moving to the next.
+2. Collapse copy-and-paste families first. See shared/archetypes.md.
+   Document each archetype's representative at full depth and every other
+   member as a delta. This is not a reduction in depth; a delta document is
+   depth-complete when its Differences table is complete.
 
-3. Track progress explicitly (e.g., "batch 1 of N complete, M/Total classes documented").
+3. Process one batch at a time, completing all depth requirements for that
+   batch before moving to the next.
 
-4. Never produce a summary document as a substitute for per-unit documents.
+4. Track progress explicitly (e.g., "batch 1 of N complete, M/Total classes documented").
+
+5. Never produce a summary document as a substitute for per-unit documents.
+
+### Why not by package
+
+Alphabetical order spends the same effort on a unit nothing has called since
+2011 as on the one that moves money, and hides that behind a percentage.
+Reachability, change frequency and runtime usage are all already available in
+the repository.
 
 ---
 

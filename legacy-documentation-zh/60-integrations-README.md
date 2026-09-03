@@ -10,14 +10,22 @@
 
 1. 讓 AI 先讀 `orchestrators/legacy-system-analyzer/skill.md`。
 
-2. 給 AI 對 `skills/`、`shared/` 與 `skills/templates/` 的讀取權限。
+2. 給 AI 對 `skills/`、`shared/`、`skills/templates/` 與 `tools/` 的讀取權限，
+   並允許它「執行」這些工具。
+   本管線的關卡都是具有結束狀態碼的指令；
+   一個只能讀、不能執行的工具，就是一道只會被宣稱、不會被檢查的關卡。
 
 3. 把 AI 的產出目標指向目標程式碼庫中的 `docs/`。
 
-這套 Library 沒有任何內容是綁定特定工具的。
+這套 Library 沒有任何內容是綁定特定 AI 工具的。
 
-只要一個工具能從程式碼庫讀取 Markdown 指令檔、並能把檔案寫入磁碟，
-它就屬於「支援」範圍。
+只要一個 AI 工具能從程式碼庫讀取 Markdown 指令檔、能把檔案寫入磁碟、
+並且能執行 `python3`，它就屬於「支援」範圍。
+
+最後一項並非可選。見 `shared/fact-layer.md`：
+列舉是從剖析出的事實庫「查詢」出來的，不是在文字中搜尋出來的；
+而 `shared/mechanical-verification.md` 讓每一道完成關卡都是一個指令。
+一個無法執行指令的整合可以產生文件，但無法驗證其中任何一項。
 
 ---
 

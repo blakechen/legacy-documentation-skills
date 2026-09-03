@@ -22,12 +22,14 @@ tags:
 dependencies:
   - inventory
   - architecture-discovery
+  - fact-extraction
   - artifact-enumeration
   - module-analysis
   - database-analysis
   - interface-analysis
 
 shared:
+  - business-rule-criteria
   - evidence-rules
   - confidence-scoring
   - documentation-style
@@ -38,14 +40,19 @@ shared:
   - enumeration-first
   - iterative-depth
   - logic-depth
+  - fact-layer
+  - archetypes
 
 templates:
   - business-rule
 
 outputs:
+  - docs/business-rules/domain-variables.txt
+  - docs/business-rules/domain-variables-report.md
   - docs/business-rules/business-rule-index.md
   - docs/business-rules/transactions/
   - docs/business-rules/cross-cutting.md
+  - docs/business-rules/technical-logic.md
 ---
 
 # 目標
@@ -55,6 +62,14 @@ outputs:
 將技術性條件轉換為可讀的規則。
 
 每一條規則都必須可追溯回原始碼證據。
+
+
+套用 shared/business-rule-criteria.md。
+
+規則是「讀取或寫入領域變數」的條件。
+其餘一律是技術邏輯，屬於模組文件。
+沒有這道判定，每一個 null 檢查都會變成業務規則，
+真正重要的規則會淹沒在雜訊裡。
 
 ---
 
@@ -255,6 +270,13 @@ SQL
 
 業務規則在以下項目都完成時才算完整：
 
+- `docs/business-rules/domain-variables.txt` 存在且非空
+
+- 每一條記錄的規則都指名了至少一個領域變數
+
+- `docs/business-rules/technical-logic.md` 存在，
+  使被排除的內容可見、可審閱
+
 - 所有驗證邏輯都已檢視
 
 - 所有決策點都已檢視
@@ -359,6 +381,46 @@ docs/modules/transactions/[ClassName].md 中。不要在此重複那份敘述。
 ---
 
 # 規則探索流程
+
+## 步驟 0
+
+推導領域變數。
+
+    python3 tools/factbase/domain_variables.py \
+        --db <repo>/docs/facts/factbase.sqlite \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/business-rules/domain-variables.txt
+
+這會產生業務所擁有的 DB 欄位、輸入欄位與組態鍵的集合，各附證據。
+
+該清單由程式碼推導而來，因此凡欄位名稱是動態組出來的地方都會不完整。
+以人工補上這類名稱，並記錄理由。
+
+在這個檔案存在之前，不開始任何規則抽取。
+
+---
+
+## 步驟 0b
+
+套用判定。
+
+對每一個候選條件，問：
+
+> 這個條件讀取或寫入了哪一個領域變數？
+
+指出某一個   → 業務規則。把該變數記入證據。
+
+沒有指出     → 技術邏輯。記入
+              `docs/business-rules/technical-logic.md`，
+              以每單元計數的方式記錄，不記為規則。
+
+無法判斷     → 以信心 Low 記為規則，並說明缺少哪些證據。
+              不得無聲丟棄。
+
+「一律技術邏輯」與「一律業務規則」的清單見
+shared/business-rule-criteria.md。
+
+---
 
 ## 步驟 1
 

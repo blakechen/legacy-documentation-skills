@@ -68,6 +68,10 @@
 
 ↓
 
+事實抽取（Fact Extraction：剖析、建 factbase、以 bytecode 驗證）
+
+↓
+
 清冊盤點（Inventory）
 
 ↓
@@ -80,7 +84,19 @@
 
 ↓
 
-成品列舉（Artifact Enumeration）
+成品列舉（Artifact Enumeration，從 factbase 查詢）
+
+↓
+
+優先序排定（Prioritization）
+
+↓
+
+原型分群（Archetype Clustering）
+
+↓
+
+Reflexion 檢查（Reflexion Check）
 
 ↓
 
@@ -108,19 +124,29 @@
 
 ↓
 
-落差分析（Gap Analysis）
+Characterization 測試
+
+↓
+
+落差分析（Gap Analysis，深度與過期皆由工具判定）
 
 ---
 
 文件必須是
 
-- 具決定性的（deterministic）
+- 由剖析出的事實庫推導而來，而非靠閱讀
+
+- 以編譯產物獨立驗證過
+
+- 由可執行的關卡檢查，而非由宣稱
 
 - 以證據為本的（evidence-based）
 
 - 與實作無關的（implementation-independent）
 
 - 可追溯的（traceable）
+
+- 綁定版本的，使「有效引用」與「已腐爛的引用」可以區分
 
 ---
 
@@ -134,7 +160,11 @@ skills/templates/
 
 shared/
 
+tools/          確定性的抽取與驗證工具（Python 3，無相依套件）
+
 examples/
+
+examples/fixtures/   golden case；執行 `sh tools/selftest.sh`
 
 integrations/
 
@@ -167,6 +197,23 @@ Windsurf
 每一個陳述都必須可追溯。
 
 每一個 Skill 只負責單一職責。
+
+剖析器負責確立事實。模型負責指派意義。絕不反過來。
+
+一個沒有任何程式能夠推翻的完成宣告，不算是完成宣告。
+
+六份深度完備的文件，勝過 458 份淺薄的文件。
+
+---
+
+## 環境需求
+
+Python 3.8 以上，僅標準函式庫。
+
+若要以編譯產物作為獨立 oracle，需要 `javap` 與 `javac`。
+它們不存在時會被記錄，而不是繞過。
+
+其他無。
 
 ---
 

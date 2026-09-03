@@ -2,6 +2,12 @@
 
 ## 前置條件
 
+事實抽取已完成。
+
+`docs/facts/factbase.sqlite` 存在。
+
+Bytecode oracle 狀態已記錄，且不是 `FAILED`。
+
 清冊盤點已完成。
 
 技術探索已完成。
@@ -38,7 +44,15 @@
 
 4. 每個檔案都包含 `ClassName|Path`；資料庫物件為 `ClassName|Path|TargetTable`。
 
-5. 每個檔案的行數都已與獨立掃描結果核對過。
+5. `docs/enumeration/enumeration-evidence.jsonl` 逐筆記錄了
+   繼承深度與發現方式。
+
+6. 數量已對照 **BYTECODE ORACLE** 確認，而不是對照第二次文字搜尋。
+   見 shared/enumeration-first.md。
+   若不存在編譯產物，報告載明此事，且該次執行不得描述為已驗證。
+
+7. `docs/enumeration/priority.txt` 存在，
+   使批次依價值而非依套件名稱切分。
 
 若關卡未達成，下游 Skill 不得繼續執行。
 
@@ -48,7 +62,12 @@
 
 當程式碼庫列舉出的主要單元超過 50 個時：
 
-1. 協調器應依模組／套件將工作切分為批次。
+0. 先執行原型分群。一個複製貼上家族是
+   「1 份完整深度文件 + 若干差異文件」，而不是 N 份完整文件。
+   見 shared/archetypes.md。
+
+1. 協調器應依「優先序」切分批次，來源為 `docs/enumeration/batches.txt`。
+   見 shared/prioritization.md。
 
 2. 每個批次都應在其範圍內完成「所有」下游 Skill（模組分析 → 業務規則 → 循序圖 → 規格），才可進入下一批次。
 
@@ -62,6 +81,8 @@
 
 ## 平行執行
 
+在事實抽取之前，什麼都不執行。
+
 允許
 
 模組分析
@@ -70,7 +91,10 @@
 
 介接分析
 
-可在「架構探索」與「產出物列舉」完成後獨立執行。
+可在「架構探索」、「產出物列舉」與「原型分群」完成後獨立執行。
+
+Reflexion 檢查可與階段 2 平行執行，
+但其 divergence 與 absence 必須在規格產生之前解決。
 
 ---
 
@@ -118,8 +142,20 @@
 
 ---
 
+Characterization 測試產生
+
+必須等待
+
+逐交易規格完成。
+
+---
+
 落差分析
 
 永遠最後執行。
 
 必須驗證逐交易文件數量與列舉數量相符。
+
+必須執行 tools/verify/staleness.py，接著執行
+tools/verify/run_depth_checks.py，並回報兩者的結束狀態。
+宣稱不等於驗證。

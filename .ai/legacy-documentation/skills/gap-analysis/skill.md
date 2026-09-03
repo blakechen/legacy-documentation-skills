@@ -22,6 +22,7 @@ tags:
 
 dependencies:
   - inventory
+  - fact-extraction
   - technology-discovery
   - architecture-discovery
   - artifact-enumeration
@@ -42,6 +43,9 @@ shared:
   - quality-checklist
   - enumeration-first
   - logic-depth
+  - mechanical-verification
+  - incremental-update
+  - fact-layer
 
 outputs:
   - docs/gap-analysis/gap-report.md
@@ -49,6 +53,9 @@ outputs:
   - docs/gap-analysis/consistency-report.md
   - docs/gap-analysis/traceability-report.md
   - docs/gap-analysis/depth-report.md
+  - docs/gap-analysis/depth-report.json
+  - docs/gap-analysis/staleness-report.md
+  - docs/model/unit-state.json
   - docs/gap-analysis/todo.md
 ---
 
@@ -58,11 +65,14 @@ Evaluate the generated documentation.
 
 This Skill performs quality assurance only.
 
-Source code may be read ONLY for two mechanical checks:
+Apply shared/mechanical-verification.md.
 
-1. counting the public methods declared in a primary unit class
+The mechanical checks are performed by running a program, not by reading.
+`tools/verify/run_depth_checks.py` decides all four, using the factbase for
+the source-side facts. This Skill runs it and reports what it returns.
 
-2. confirming that a quoted `file:line` excerpt resolves to the quoted text
+Source code may be read only to explain a finding the tool has already
+raised.
 
 Interpreting logic, judging correctness, or writing documentation from source
 is FORBIDDEN.
@@ -250,11 +260,58 @@ See Step 1b.
 
 ---
 
+# Step 1a
+
+Staleness Review
+
+Apply shared/incremental-update.md.
+
+    python3 tools/verify/staleness.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --state <repo>/docs/model/unit-state.json \
+        --out <repo>/docs/gap-analysis/staleness-report.md
+
+A stale document describes source that has since changed. It is a false claim
+about the current system and counts as MISSING, not as a warning.
+
+Run this BEFORE the depth review: a stale document usually fails the excerpt
+check too, and patching its excerpts instead of regenerating it produces a
+document that is half-true.
+
+After a unit passes its depth checks, re-run with `--record` so the next run
+knows what it was verified against.
+
+---
+
 # Step 1b
 
 Depth Review
 
 Apply shared/logic-depth.md.
+
+Run the checks; do not perform them by reading:
+
+    python3 tools/verify/run_depth_checks.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/gap-analysis/depth-report.md \
+        --json-out <repo>/docs/gap-analysis/depth-report.json
+
+Exit 0 means every unit is depth-complete. Exit 1 means at least one failed.
+Exit 3 means a unit in the enumeration has no document at all.
+
+Report the Depth-Complete Rate the tool computed. A rate stated without the
+tool output is not a rate.
+
+For every FAIL the tool raises, add one line of explanation naming the cause.
+That is the only reason to open the source in this Skill.
+
+Report a passing run as "consistent with source; meaning not verified". Do
+not report it as verified documentation. See
+shared/mechanical-verification.md.
 
 For EVERY file in docs/modules/transactions/ and docs/specifications/transactions/,
 evaluate the Definition of Depth-Complete and record one row:
@@ -549,9 +606,19 @@ Coverage and depth are separate gates. Both must pass.
 
 ☐ Enumeration-to-document count verified
 
-☐ Depth verified (shared/logic-depth.md)
+☐ Depth verified by running tools/verify/run_depth_checks.py
 
-☐ Depth-Complete Rate reported
+☐ Depth-Complete Rate taken from the tool output, not asserted
+
+☐ Every tool FAIL explained
+
+☐ Staleness checked before depth
+
+☐ Verified units recorded with tools/verify/staleness.py --record
+
+☐ Reflexion divergences and absences resolved (shared/reflexion-model.md)
+
+☐ Result reported as "consistent with source; meaning not verified"
 
 ☐ No hallucinations
 

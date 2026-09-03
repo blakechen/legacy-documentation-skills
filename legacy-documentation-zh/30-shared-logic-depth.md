@@ -171,11 +171,45 @@ log
 
 ## 驗證
 
-深度完備率 ＝ 深度完備的單元數 ÷ 列舉檔案的行數。
+深度完備由程式判定，不是靠閱讀。
 
-只有當此比率為 100% 時，管線才算完成。
+    python3 tools/verify/run_depth_checks.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/gap-analysis/depth-report.md
 
----
+四項檢查，說明於 shared/mechanical-verification.md：
+
+| 檢查 | 判定內容 |
+|---|---|
+| structure | 上述六項條件，方法清單取自 factbase |
+| excerpts | 每段引文與其標示行號逐位元組相符 |
+| branches | 虛擬碼分支數與原始碼判斷點數一致 |
+| fields | 每個對應欄位存在於方法中；每個資料表都已被列舉 |
+
+深度完備率 = 深度完備單元數 / 列舉檔案行數。
+
+唯有比率為 100% 且工具 exit 0 時，管線才算完成。
+
+沒有執行工具就宣稱的比率，不是比率。
+
+### 通過「不」代表什麼
+
+這些檢查判定的是「與所引用之原始碼的一致性」，
+不判定業務意義是否正確。
+一份文件可以通過每一項檢查，卻仍以錯誤的用途
+描述一個被正確引用的方法。
+
+通過的執行結果應報告為「與原始碼一致；意義未驗證」。
+
+### 差異文件
+
+多成員原型的成員，以差異文件對照其代表單元撰寫。
+見 shared/archetypes.md。
+其完成條件是差異表與自身 Field Mapping 的完整性，
+而不是重述四項元素。
+
 
 ## 經驗教訓
 

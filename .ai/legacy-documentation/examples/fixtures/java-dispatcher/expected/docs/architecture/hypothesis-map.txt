@@ -1,0 +1,20 @@
+# A person's belief about this system, written BEFORE reading the code.
+# Deliberately imperfect: it predicts one relationship that does not exist
+# and misses one that does. Both are the point.
+
+module Web          Front controller, routing, request entry
+module Inquiry      Read-only account, card and loan enquiries
+module Transfer     Money movement between accounts
+module Persistence  Database access objects
+
+# First match wins.
+map ^com\.example\.bank\.web\.        -> Web
+map ^com\.example\.bank\.util\.       -> Web
+map InquiryTrx$                        -> Inquiry
+map ^com\.example\.bank\.trx\.TransferTrx$ -> Transfer
+map ^com\.example\.bank\.db\.          -> Persistence
+
+edge Web -> Inquiry
+edge Web -> Transfer
+edge Web -> Persistence     # believed: the controller reads the account directly
+edge Inquiry -> Persistence

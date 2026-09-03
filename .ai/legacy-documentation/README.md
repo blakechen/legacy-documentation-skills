@@ -68,6 +68,10 @@ Repository
 
 ↓
 
+Fact Extraction (parse; build factbase; verify against bytecode)
+
+↓
+
 Inventory
 
 ↓
@@ -80,7 +84,19 @@ Architecture Discovery
 
 ↓
 
-Artifact Enumeration
+Artifact Enumeration (queried from the factbase)
+
+↓
+
+Prioritization
+
+↓
+
+Archetype Clustering
+
+↓
+
+Reflexion Check
 
 ↓
 
@@ -108,19 +124,29 @@ Specification Generation
 
 ↓
 
-Gap Analysis
+Characterization Tests
+
+↓
+
+Gap Analysis (depth and staleness, by tool)
 
 ---
 
 Documentation is
 
-- deterministic
+- derived from a parsed fact base, not from reading
+
+- independently verified against compiled artefacts
+
+- checked by executable gates, not by assertion
 
 - evidence-based
 
 - implementation-independent
 
 - traceable
+
+- version-pinned, so a citation can be told from a citation that has rotted
 
 ---
 
@@ -134,7 +160,11 @@ skills/templates/
 
 shared/
 
+tools/          deterministic extraction and verification (Python 3, no deps)
+
 examples/
+
+examples/fixtures/   golden cases; `sh tools/selftest.sh`
 
 integrations/
 
@@ -167,6 +197,24 @@ Evidence is mandatory.
 Every statement must be traceable.
 
 Every Skill has a single responsibility.
+
+A parser establishes facts. A model assigns meaning. Never the other way
+round.
+
+A completion claim that no program can refute is not a completion claim.
+
+Six depth-complete documents beat 458 shallow ones.
+
+---
+
+## Requirements
+
+Python 3.8 or later, standard library only.
+
+`javap` and `javac`, when compiled artefacts are to be used as an
+independent oracle. Their absence is recorded, not worked around.
+
+Nothing else.
 
 ---
 

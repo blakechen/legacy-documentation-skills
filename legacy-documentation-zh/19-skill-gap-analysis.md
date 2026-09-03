@@ -22,6 +22,7 @@ tags:
 
 dependencies:
   - inventory
+  - fact-extraction
   - technology-discovery
   - architecture-discovery
   - artifact-enumeration
@@ -42,6 +43,9 @@ shared:
   - quality-checklist
   - enumeration-first
   - logic-depth
+  - mechanical-verification
+  - incremental-update
+  - fact-layer
 
 outputs:
   - docs/gap-analysis/gap-report.md
@@ -49,6 +53,9 @@ outputs:
   - docs/gap-analysis/consistency-report.md
   - docs/gap-analysis/traceability-report.md
   - docs/gap-analysis/depth-report.md
+  - docs/gap-analysis/depth-report.json
+  - docs/gap-analysis/staleness-report.md
+  - docs/model/unit-state.json
   - docs/gap-analysis/todo.md
 ---
 
@@ -58,11 +65,14 @@ outputs:
 
 本 Skill 只執行品質保證。
 
-原始碼「僅」能為了以下兩項機械式檢查而閱讀：
+套用 shared/mechanical-verification.md。
 
-1. 計算主要單元類別中所宣告的 public method 數量
+機械檢查由「執行程式」完成，不是靠閱讀。
+`tools/verify/run_depth_checks.py` 判定全部四項，
+其原始碼端的事實取自 factbase。
+本 Skill 執行它，並回報它的結果。
 
-2. 確認引用的 `file:line` 能對應到所引述的文字
+原始碼僅可在「解釋工具已經提出的發現」時閱讀。
 
 詮釋邏輯、判斷正確性、或依原始碼撰寫文件，皆為「禁止」。
 
@@ -240,6 +250,30 @@ specifications/
 
 ---
 
+# 步驟 1a
+
+過期檢查
+
+套用 shared/incremental-update.md。
+
+    python3 tools/verify/staleness.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --state <repo>/docs/model/unit-state.json \
+        --out <repo>/docs/gap-analysis/staleness-report.md
+
+過期文件描述的是此後已經改動過的原始碼。
+它是對現行系統的不實陳述，計為 MISSING，不是警告。
+
+在深度檢查「之前」執行：過期文件通常也會在引文檢查上失敗，
+而修補它的引文卻不重新產生，會得到一份半真的文件。
+
+單元通過深度檢查後，以 `--record` 重跑一次，
+讓下一輪知道它是對照什麼版本驗證的。
+
+---
+
 # 步驟 1b
 
 深度審查
@@ -278,6 +312,27 @@ specifications/
 深度完備率 ＝ 深度完備的單元數 ÷ 列舉檔案的行數。
 
 若深度完備率低於 100%，即使每個檔案都存在，管線仍「未」完成。
+
+
+執行檢查，不要靠閱讀來做：
+
+    python3 tools/verify/run_depth_checks.py \
+        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+        --docs <repo>/docs/modules/transactions \
+        --enumeration <repo>/docs/enumeration \
+        --out <repo>/docs/gap-analysis/depth-report.md \
+        --json-out <repo>/docs/gap-analysis/depth-report.json
+
+exit 0 表示每個單元都深度完備。exit 1 表示至少一個失敗。
+exit 3 表示列舉中有單元完全沒有文件。
+
+回報工具計算出的深度完備率。沒有工具輸出而宣稱的比率不是比率。
+
+工具提出的每一筆 FAIL，補上一行說明其成因。
+這是本 Skill 唯一需要打開原始碼的理由。
+
+通過的執行結果應報告為「與原始碼一致；意義未驗證」，
+不得報告為「已驗證的文件」。見 shared/mechanical-verification.md。
 
 ---
 
@@ -535,9 +590,19 @@ docs/gap-analysis/progress.md
 
 ☐ 已驗證列舉對文件的數量
 
-☐ 已驗證深度（shared/logic-depth.md）
+☐ 深度已由執行 tools/verify/run_depth_checks.py 驗證
 
-☐ 已回報深度完備率
+☐ 深度完備率取自工具輸出，而非宣稱
+
+☐ 工具每一筆 FAIL 皆已說明
+
+☐ 已在深度檢查之前執行過期檢查
+
+☐ 已通過的單元以 tools/verify/staleness.py --record 記錄
+
+☐ Reflexion 的 divergence 與 absence 皆已解決（shared/reflexion-model.md）
+
+☐ 結果報告為「與原始碼一致；意義未驗證」
 
 ☐ 無幻覺內容
 

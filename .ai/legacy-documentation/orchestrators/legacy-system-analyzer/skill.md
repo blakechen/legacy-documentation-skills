@@ -16,6 +16,7 @@ outputs:
   - docs/
 
 dependencies:
+  - fact-extraction
   - inventory
   - technology-discovery
   - architecture-discovery
@@ -26,12 +27,21 @@ dependencies:
   - business-rule-extraction
   - sequence-discovery
   - specification-generation
+  - archetype-clustering
+  - reflexion-check
   - gap-analysis
 
 shared:
+  - fact-layer
+  - mechanical-verification
   - enumeration-first
   - iterative-depth
   - logic-depth
+  - business-rule-criteria
+  - prioritization
+  - archetypes
+  - reflexion-model
+  - incremental-update
   - custom-framework-recognition
 ---
 
@@ -99,6 +109,10 @@ Never skip prerequisite Skills.
 
 Always follow dependency order.
 
+Apply shared/fact-layer.md at every stage.
+
+Apply shared/mechanical-verification.md at every stage.
+
 Apply shared/enumeration-first.md at every stage.
 
 Apply shared/iterative-depth.md at every stage.
@@ -113,6 +127,9 @@ Apply shared/custom-framework-recognition.md at every stage.
 
 Execute
 
+Fact Extraction (parse the source into a factbase; verify against bytecode)
+
+→
 Inventory
 
 →
@@ -122,10 +139,16 @@ Technology Discovery
 Architecture Discovery (including custom framework detection)
 
 →
-Artifact Enumeration (transaction/action classes, DB object classes, servlets)
+Artifact Enumeration (queried from the factbase; then prioritised)
 
 →
-Module Analysis (per-module AND per-transaction-class)
+Archetype Clustering (collapse copy-and-paste families)
+
+→
+Reflexion Check (test a person's model against the factbase)
+
+→
+Module Analysis (per-module AND per-transaction-class, in priority order)
 
 →
 Database Analysis (enumerate ALL DB object classes)
@@ -143,7 +166,31 @@ Sequence Discovery (one sequence per major transaction)
 Specification Generation (one spec per transaction class)
 
 →
-Gap Analysis
+Characterization Test Generation
+
+→
+Gap Analysis (staleness, then depth; both by tool)
+
+---
+
+## Critical: Facts Before Documentation
+
+Nothing in this pipeline reads source to establish a fact a parser can
+establish. See shared/fact-layer.md.
+
+The orchestrator SHALL verify BEFORE Phase 1:
+
+1. `docs/facts/factbase.sqlite` exists and its type count is greater than zero.
+
+2. `docs/facts/bytecode-verification.md` exists.
+
+3. Its status is `VERIFIED` or `UNAVAILABLE`. `FAILED` BLOCKS the pipeline.
+
+4. An `UNAVAILABLE` status is carried into every later report, and the word
+   "verified" is not used for that run.
+
+The orchestrator MUST NOT accept "I read the code and found N classes" in
+place of a factbase.
 
 ---
 
@@ -153,7 +200,10 @@ After Architecture Discovery, the orchestrator SHALL:
 
 1. Identify the dispatcher/router class and its routing mechanism.
 
-2. Enumerate EVERY transaction/action class referenced by the dispatcher or extending the base transaction class.
+2. Enumerate EVERY transaction/action class, by QUERY against the factbase:
+   the transitive closure below the base class, plus classes named only by a
+   string literal through reflection. A text search for `extends <Base>` is
+   not an enumeration.
 
 3. Pass this complete list to Module Analysis, Business Rule Extraction, Sequence Discovery, and Specification Generation.
 
@@ -195,14 +245,22 @@ The orchestrator MUST NOT substitute "I identified ~N classes" for an actual per
 
 ## Critical: Depth Gate
 
-Coverage and depth are separate gates. Both are mandatory.
+Coverage and depth are separate gates. Both are mandatory. Both are decided
+by a program. See shared/mechanical-verification.md.
 
 Before reporting completion, the orchestrator MUST verify:
 
 1. `ls docs/modules/transactions/*.md | wc -l` equals the line count of
    `docs/enumeration/transaction-classes.txt`.
 
-2. `docs/gap-analysis/depth-report.md` exists and reports Depth-Complete Rate of 100%.
+2. `tools/verify/run_depth_checks.py` exits 0 and its report shows a
+   Depth-Complete Rate of 100%. The orchestrator SHALL run the command. A
+   rate asserted without the command output is not a rate.
+
+3. `tools/verify/staleness.py` exits 0: no document describes source that has
+   since changed.
+
+4. Every reflexion divergence and absence has a recorded resolution.
 
 A unit whose document exists but is not depth-complete is NOT done.
 
@@ -216,7 +274,9 @@ When enumeration yields a large number of primary units (e.g., 400+ transaction 
 
 1. The orchestrator SHALL NOT attempt to document all classes in a single pass.
 
-2. Instead, divide into batches by package/module group.
+2. Divide into batches by PRIORITY, from `docs/enumeration/batches.txt`.
+   See shared/prioritization.md. Dividing by package name is alphabetical
+   order, not a plan.
 
 3. Complete the FULL pipeline (Module → Business Rules → Sequence → Spec) for each batch before moving to the next.
 
@@ -228,6 +288,11 @@ When enumeration yields a large number of primary units (e.g., 400+ transaction 
    Reducing depth to fit a batch is FORBIDDEN. Reduce the batch size instead.
 
 7. Recommended batch size when full depth is required: 5-10 transaction classes per pass.
+
+7a. Before the first batch, collapse copy-and-paste families with
+    archetype-clustering. A family of 40 near-identical units is one
+    full-depth document and 39 delta documents, not 40 full documents and
+    not one summary. See shared/archetypes.md.
 
 8. `docs/gap-analysis/progress.md` SHALL record, per batch:
 
@@ -258,6 +323,8 @@ Stop on critical failures.
 
 Generate
 
+facts/ (factbase, JSONL fact streams, bytecode verification)
+
 overview/
 
 architecture/
@@ -276,8 +343,19 @@ sequence/ (per-transaction sequences)
 
 specifications/ (per-transaction specifications)
 
-gap-analysis/ (including progress.md and depth-report.md)
+characterization/ (executable tests for the documented branches)
+
+model/ (unit-state.json, for incremental re-runs)
+
+gap-analysis/ (including progress.md, depth-report.md, staleness-report.md)
 
 Verify all required documents exist before reporting completion.
 
 Verify transaction class count matches generated document count.
+
+Run every gate command in shared/quality-checklist.md and report its exit
+status. Do not assert a gate.
+
+Report the result as "consistent with source; meaning not verified". The
+pipeline verifies that documents match the code they cite. It does not
+verify that the business meaning assigned to them is right.

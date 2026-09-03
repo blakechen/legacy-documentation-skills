@@ -1,0 +1,6 @@
+com.example.bank.trx.AcctInquiryTrx|2
+com.example.bank.trx.BaseInquiryTrx|1
+com.example.bank.trx.CardInquiryTrx|2
+com.example.bank.trx.LegacyFxTrx|1
+com.example.bank.trx.LoanInquiryTrx|2
+com.example.bank.trx.TransferTrx|1
