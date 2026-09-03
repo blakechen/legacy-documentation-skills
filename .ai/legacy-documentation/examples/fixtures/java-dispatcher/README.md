@@ -15,6 +15,8 @@ failures recorded in `shared/enumeration-first.md` and
 
 `expected/` holds the enumeration this repository's tools must reproduce.
 `tools/selftest.sh` regenerates the facts and diffs them against `expected/`.
+It also checks that the tools can REJECT: a plausible but wrong unit
+document, and a factbase with a class missing from it.
 A change to the extractor that alters these files is a regression until the
 expected files are updated deliberately.
 

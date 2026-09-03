@@ -14,7 +14,7 @@ Verify against compiled artefacts
 
 ### Gate Check
 
-`docs/facts/factbase.sqlite` MUST exist and contain types.
+`docs/facts/types.psv` MUST exist and be non-empty.
 
 `docs/facts/bytecode-verification.md` MUST exist.
 
@@ -63,7 +63,7 @@ Output files MUST exist on disk before proceeding:
 - `docs/enumeration/transaction-classes.txt`
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
-- `docs/enumeration/enumeration-evidence.jsonl`
+- `docs/enumeration/enumeration-evidence.psv`
 - `docs/enumeration/priority.txt`
 
 Each file MUST contain `ClassName|Path` entries (not just counts).

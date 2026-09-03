@@ -25,3 +25,6 @@ dist/
 docs/generated/
 
 *.log
+__pycache__/
+
+*.pyc

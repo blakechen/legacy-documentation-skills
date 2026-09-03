@@ -19,18 +19,18 @@ status, and the orchestrator SHALL run it rather than assert its outcome.
 
 | Gate | Command | Pass |
 |---|---|---|
-| Factbase exists | `build_factbase.py` | `docs/facts/factbase.sqlite` written |
-| Enumeration is derived, not guessed | `enumerate.py` | three master lists written from the factbase |
-| Enumeration is independently checked | `verify_bytecode.py` | exit 0 and `Status: VERIFIED`, or a recorded `UNAVAILABLE` |
-| Documents are depth-complete | `run_depth_checks.py` | exit 0, rate 100% |
-| Documents describe the current source | `staleness.py` | exit 0 |
-| The architecture model survives contact | `reflexion.py` | divergences and absences each explained |
+| Factbase exists | `build_factbase.sh` | `docs/facts/ancestor.psv` written |
+| Enumeration is derived, not guessed | `enumerate.sh` | three master lists written from the factbase |
+| Enumeration is independently checked | `verify_bytecode.sh` | exit 0 and `Status: VERIFIED`, or a recorded `UNAVAILABLE` |
+| Documents are depth-complete | `depth_checks.sh` | exit 0, rate 100% |
+| Documents describe the current source | `staleness.sh` | exit 0 |
+| The architecture model survives contact | `reflexion.sh` | divergences and absences each explained |
 
 ---
 
 ## The Four Depth Checks
 
-Run by `tools/verify/run_depth_checks.py`.
+Run by `tools/verify/depth_checks.sh`.
 
 ### structure
 

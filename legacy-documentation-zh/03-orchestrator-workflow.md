@@ -14,7 +14,7 @@ Skill：fact-extraction
 
 ### 關卡檢查
 
-`docs/facts/factbase.sqlite` 必須存在且含有型別。
+`docs/facts/types.psv` 必須存在且含有型別。
 
 `docs/facts/bytecode-verification.md` 必須存在。
 
@@ -63,7 +63,7 @@ Skill：artifact-enumeration
 - `docs/enumeration/transaction-classes.txt`
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
-- `docs/enumeration/enumeration-evidence.jsonl`
+- `docs/enumeration/enumeration-evidence.psv`
 - `docs/enumeration/priority.txt`
 
 每個檔案必須包含 `ClassName|Path` 條目（不能只有數量）。

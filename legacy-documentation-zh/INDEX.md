@@ -115,9 +115,9 @@
 |----------|----------|
 | [70-tools-README.md](70-tools-README.md) | `tools/README.md` |
 
-工具本身（Python 原始碼、fixture、`selftest.sh`）不翻譯：
+工具本身（shell 與 awk 程式、fixture、`selftest.sh`）不翻譯：
 它們是可執行的程式碼，翻譯會使其與實際行為脫節。
-程式碼中的註解與 docstring 維持英文。
+程式碼中的註解維持英文。
 
 ---
 
@@ -136,6 +136,6 @@
   為避免既有 13–19 全部重新編號，採用 `12a-` 前綴以維持排序。
   同理，`archetype-clustering` 與 `reflexion-check` 採用 `12b-`、`12c-`；
   `fact-extraction` 在清冊盤點之前執行，採用 `09-`。
-- **不翻譯的部分**：`tools/` 下的 Python 程式碼、
+- **不翻譯的部分**：`tools/` 下的 shell 與 awk 程式碼、
   `examples/fixtures/` 下的 fixture 原始碼與預期輸出。
   這些是可執行的產出物，只有 `tools/README.md` 有中文版。

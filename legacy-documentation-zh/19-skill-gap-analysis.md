@@ -53,9 +53,9 @@ outputs:
   - docs/gap-analysis/consistency-report.md
   - docs/gap-analysis/traceability-report.md
   - docs/gap-analysis/depth-report.md
-  - docs/gap-analysis/depth-report.json
+  - docs/gap-analysis/depth-findings.psv
   - docs/gap-analysis/staleness-report.md
-  - docs/model/unit-state.json
+  - docs/model/unit-state.psv
   - docs/gap-analysis/todo.md
 ---
 
@@ -68,7 +68,7 @@ outputs:
 套用 shared/mechanical-verification.md。
 
 機械檢查由「執行程式」完成，不是靠閱讀。
-`tools/verify/run_depth_checks.py` 判定全部四項，
+`tools/verify/depth_checks.sh` 判定全部四項，
 其原始碼端的事實取自 factbase。
 本 Skill 執行它，並回報它的結果。
 
@@ -256,11 +256,11 @@ specifications/
 
 套用 shared/incremental-update.md。
 
-    python3 tools/verify/staleness.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/verify/staleness.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
-        --state <repo>/docs/model/unit-state.json \
+        --state <repo>/docs/model/unit-state.psv \
         --out <repo>/docs/gap-analysis/staleness-report.md
 
 過期文件描述的是此後已經改動過的原始碼。
@@ -316,12 +316,12 @@ specifications/
 
 執行檢查，不要靠閱讀來做：
 
-    python3 tools/verify/run_depth_checks.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/verify/depth_checks.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
         --out <repo>/docs/gap-analysis/depth-report.md \
-        --json-out <repo>/docs/gap-analysis/depth-report.json
+        
 
 exit 0 表示每個單元都深度完備。exit 1 表示至少一個失敗。
 exit 3 表示列舉中有單元完全沒有文件。
@@ -590,7 +590,7 @@ docs/gap-analysis/progress.md
 
 ☐ 已驗證列舉對文件的數量
 
-☐ 深度已由執行 tools/verify/run_depth_checks.py 驗證
+☐ 深度已由執行 tools/verify/depth_checks.sh 驗證
 
 ☐ 深度完備率取自工具輸出，而非宣稱
 
@@ -598,7 +598,7 @@ docs/gap-analysis/progress.md
 
 ☐ 已在深度檢查之前執行過期檢查
 
-☐ 已通過的單元以 tools/verify/staleness.py --record 記錄
+☐ 已通過的單元以 tools/verify/staleness.sh --record 記錄
 
 ☐ Reflexion 的 divergence 與 absence 皆已解決（shared/reflexion-model.md）
 

@@ -170,8 +170,8 @@ A unit that is not DEPTH-COMPLETE is NOT counted as documented, regardless of wh
 
 Depth-Complete is decided by a program, not by reading.
 
-    python3 tools/verify/run_depth_checks.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/verify/depth_checks.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
         --out <repo>/docs/gap-analysis/depth-report.md

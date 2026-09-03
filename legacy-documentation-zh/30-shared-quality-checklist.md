@@ -24,15 +24,15 @@
 
 | 關卡 | 指令 | 負責 Skill |
 |---|---|---|
-| 已建立 factbase | `tools/factbase/build_factbase.py` | fact-extraction |
-| 原始碼掃描已獨立檢查 | `tools/factbase/verify_bytecode.py` | fact-extraction |
-| 列舉由 factbase 推導 | `tools/factbase/enumerate.py` | artifact-enumeration |
-| 單元已依價值排序 | `tools/factbase/prioritize.py` | artifact-enumeration |
-| 已收斂 clone 家族 | `tools/factbase/archetypes.py` | archetype-clustering |
-| 已推導領域變數 | `tools/factbase/domain_variables.py` | business-rule-extraction |
-| 架構模型已受檢驗 | `tools/reflexion/reflexion.py` | reflexion-check |
-| 文件達到深度完備 | `tools/verify/run_depth_checks.py` | gap-analysis |
-| 文件符合現行原始碼 | `tools/verify/staleness.py` | gap-analysis |
+| 已建立 factbase | `tools/factbase/build_factbase.sh` | fact-extraction |
+| 原始碼掃描已獨立檢查 | `tools/factbase/verify_bytecode.sh` | fact-extraction |
+| 列舉由 factbase 推導 | `tools/factbase/enumerate.sh` | artifact-enumeration |
+| 單元已依價值排序 | `tools/factbase/prioritize.sh` | artifact-enumeration |
+| 已收斂 clone 家族 | `tools/factbase/archetypes.sh` | archetype-clustering |
+| 已推導領域變數 | `tools/factbase/domain_variables.sh` | business-rule-extraction |
+| 架構模型已受檢驗 | `tools/reflexion/reflexion.sh` | reflexion-check |
+| 文件達到深度完備 | `tools/verify/depth_checks.sh` | gap-analysis |
+| 文件符合現行原始碼 | `tools/verify/staleness.sh` | gap-analysis |
 
 若某個 Skill 在沒有指令輸出的情況下回報關卡通過，即違反本檢查清單。
 

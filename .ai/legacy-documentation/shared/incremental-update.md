@@ -24,8 +24,7 @@ is a full re-run, which for a 458-unit system means it is never re-run.
 ### Evidence carries a version
 
 The factbase records, for every file, its sha256 and the commit the scan ran
-against. `docs/facts/manifest.json` and the factbase `meta` table carry the
-commit.
+against, in `docs/facts/hashes.psv` and `docs/facts/manifest.psv`.
 
 Every generated document SHALL record, in its metadata block
 
@@ -36,18 +35,18 @@ Every generated document SHALL record, in its metadata block
 
 After a batch reaches depth-complete, run
 
-    tools/verify/staleness.py ... --record
+    tools/verify/staleness.sh ... --record
 
 This writes, per unit, the sha256 of every source file the unit's document
 cites -- the unit's own file plus every file named in an excerpt citation.
 
-`docs/model/unit-state.json`
+`docs/model/unit-state.psv`
 
 ### Re-runs check before regenerating
 
 At the start of a later run
 
-    tools/verify/staleness.py ...
+    tools/verify/staleness.sh ...
 
 reports each unit as up to date, stale, or never recorded.
 
@@ -80,7 +79,7 @@ false claim about the current system. Both are failures.
 
 ## Interaction with depth checks
 
-`run_depth_checks.py` validates excerpts against the CURRENT source. A stale
+`depth_checks.sh` validates excerpts against the CURRENT source. A stale
 document therefore usually fails the excerpt check as well.
 
 The two tools answer different questions:

@@ -70,7 +70,9 @@ This Skill SHALL NOT
 
 # Inputs
 
-docs/facts/factbase.sqlite
+docs/facts/types.psv
+
+docs/facts/ancestor.psv
 
 docs/architecture/hypothesis-map.txt
 
@@ -104,8 +106,8 @@ from the code cannot disagree with the code.
 
 Run.
 
-    python3 tools/reflexion/reflexion.py \
-        --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/reflexion/reflexion.sh \
+        --facts <repo>/docs/facts \
         --map <repo>/docs/architecture/hypothesis-map.txt \
         --out <repo>/docs/architecture/reflexion-report.md
 

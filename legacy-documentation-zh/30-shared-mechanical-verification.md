@@ -19,18 +19,18 @@
 
 | 關卡 | 指令 | 通過條件 |
 |---|---|---|
-| Factbase 已建立 | `build_factbase.py` | 寫出 `docs/facts/factbase.sqlite` |
-| 列舉是推導而非猜測 | `enumerate.py` | 三份主清單由 factbase 產出 |
-| 列舉經獨立檢查 | `verify_bytecode.py` | exit 0 且 `Status: VERIFIED`，或已記錄的 `UNAVAILABLE` |
-| 文件達到深度完整 | `run_depth_checks.py` | exit 0，比率 100% |
-| 文件描述的是現行原始碼 | `staleness.py` | exit 0 |
-| 架構模型經得起對照 | `reflexion.py` | 每筆 divergence 與 absence 都已說明 |
+| Factbase 已建立 | `build_factbase.sh` | 寫出 `docs/facts/ancestor.psv` |
+| 列舉是推導而非猜測 | `enumerate.sh` | 三份主清單由 factbase 產出 |
+| 列舉經獨立檢查 | `verify_bytecode.sh` | exit 0 且 `Status: VERIFIED`，或已記錄的 `UNAVAILABLE` |
+| 文件達到深度完整 | `depth_checks.sh` | exit 0，比率 100% |
+| 文件描述的是現行原始碼 | `staleness.sh` | exit 0 |
+| 架構模型經得起對照 | `reflexion.sh` | 每筆 divergence 與 absence 都已說明 |
 
 ---
 
 ## 四項深度檢查
 
-由 `tools/verify/run_depth_checks.py` 執行。
+由 `tools/verify/depth_checks.sh` 執行。
 
 ### structure（結構）
 

@@ -33,13 +33,17 @@ shared:
   - quality-checklist
 
 outputs:
-  - docs/facts/files.jsonl
-  - docs/facts/types.jsonl
-  - docs/facts/methods.jsonl
-  - docs/facts/calls.jsonl
-  - docs/facts/literals.jsonl
-  - docs/facts/manifest.json
-  - docs/facts/factbase.sqlite
+  - docs/facts/files.psv
+  - docs/facts/types.psv
+  - docs/facts/methods.psv
+  - docs/facts/calls.psv
+  - docs/facts/literals.psv
+  - docs/facts/hashes.psv
+  - docs/facts/supertype.psv
+  - docs/facts/ancestor.psv
+  - docs/facts/calls-resolved.psv
+  - docs/facts/resolution.psv
+  - docs/facts/manifest.psv
   - docs/facts/bytecode-verification.md
 ---
 
@@ -97,19 +101,27 @@ docs/overview/technology-stack.md
 
 docs/facts/
 
-files.jsonl
+files.psv
 
-types.jsonl
+types.psv
 
-methods.jsonl
+methods.psv
 
-calls.jsonl
+calls.psv
 
-literals.jsonl
+literals.psv
 
-manifest.json
+hashes.psv
 
-factbase.sqlite
+supertype.psv
+
+ancestor.psv
+
+calls-resolved.psv
+
+resolution.psv
+
+manifest.psv
 
 bytecode-verification.md
 
@@ -133,20 +145,20 @@ bytecode-verification.md
 
 抽取。
 
-    python3 tools/factbase/extract_java.py \
+    sh tools/factbase/extract_java.sh \
         --repo <repo> --out <repo>/docs/facts --source-root <root>
 
 回報工具印出的各項計數。
 
-回報 `manifest.json` 中 `parse_errors` 的每一筆。
+回報 `manifest.psv` 中 `parse_errors` 的每一筆。
 剖析錯誤是事實庫中的破洞，應逐一指名，不得以摘要帶過。
 
 ## 步驟 3
 
 建立 factbase。
 
-    python3 tools/factbase/build_factbase.py \
-        --facts <repo>/docs/facts --db <repo>/docs/facts/factbase.sqlite
+    sh tools/factbase/build_factbase.sh \
+        --facts <repo>/docs/facts --facts <repo>/docs/facts
 
 回報 `resolution_stats`。
 
@@ -160,8 +172,8 @@ bytecode-verification.md
 
 以 bytecode 驗證。
 
-    python3 tools/factbase/verify_bytecode.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/verify_bytecode.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --out <repo>/docs/facts/bytecode-verification.md
 
 三種結果，三種都應原文回報：
@@ -191,7 +203,7 @@ bytecode-verification.md
 
 # 完成條件
 
-`docs/facts/factbase.sqlite` 存在。
+`docs/facts/types.psv` 存在。
 
 型別數量 > 0。
 

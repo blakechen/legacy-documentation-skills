@@ -4,7 +4,7 @@
 
 Fact extraction completed.
 
-`docs/facts/factbase.sqlite` exists.
+`docs/facts/types.psv` exists and is non-empty.
 
 Bytecode oracle status recorded and not `FAILED`.
 
@@ -42,7 +42,7 @@ Enumeration is NOT complete until:
 
 4. Each file contains `ClassName|Path`, and `ClassName|Path|TargetTable` for DB objects.
 
-5. `docs/enumeration/enumeration-evidence.jsonl` records, per entry, the
+5. `docs/enumeration/enumeration-evidence.psv` records, per entry, the
    inheritance depth and how it was discovered.
 
 6. The count is confirmed against the BYTECODE ORACLE, not against a second
@@ -156,5 +156,5 @@ always executes last.
 
 Must verify per-transaction document count matches enumeration count.
 
-Must run tools/verify/staleness.py, then tools/verify/run_depth_checks.py,
+Must run tools/verify/staleness.sh, then tools/verify/depth_checks.sh,
 and report their exit statuses. Assertion is not verification.

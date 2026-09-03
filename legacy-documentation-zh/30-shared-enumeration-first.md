@@ -52,7 +52,7 @@
 
 ## 列舉是查詢，不是搜尋
 
-主清單由 `tools/factbase/enumerate.py` 從 `fact-extraction` Skill
+主清單由 `tools/factbase/enumerate.sh` 從 `fact-extraction` Skill
 所建立的 factbase 產生。見 shared/fact-layer.md。
 
 Skill 不得以 grep `extends <Base>` 的方式建立列舉。
@@ -87,7 +87,7 @@ Factbase 儲存階層的遞移閉包，因此 A 會在深度 2 被找到。
 
 數量必須由「獨立來源」確認，而不是由第二次搜尋確認。
 
-    tools/factbase/verify_bytecode.py
+    tools/factbase/verify_bytecode.sh
 
 以 `javap` 讀取編譯後的 class 與 jar，
 比對每個類別的真實父型別與 factbase 的紀錄。

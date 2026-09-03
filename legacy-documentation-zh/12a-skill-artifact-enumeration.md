@@ -58,8 +58,8 @@ outputs:
   - docs/enumeration/transaction-classes.txt
   - docs/enumeration/db-object-classes.txt
   - docs/enumeration/servlet-classes.txt
-  - docs/enumeration/enumeration-evidence.jsonl
-  - docs/enumeration/enumeration-config.json
+  - docs/enumeration/enumeration-evidence.psv
+  - docs/enumeration/enumeration-config.psv
   - docs/enumeration/enumeration-report.md
   - docs/enumeration/priority.txt
   - docs/enumeration/batches.txt
@@ -379,7 +379,7 @@ gap-analysis
 
 設定基底類別。
 
-寫入 `docs/enumeration/enumeration-config.json`
+寫入 `docs/enumeration/enumeration-config.psv`
 
     {
       "transaction_base": ["StdTrxObject"],
@@ -399,12 +399,12 @@ gap-analysis
 
 列舉。
 
-    python3 tools/factbase/enumerate.py \
-        --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/enumerate.sh \
+        --facts <repo>/docs/facts \
         --out <repo>/docs/enumeration
 
 這會依既定的管線分隔格式寫出三份主清單，
-加上記錄每筆條目來源的 `enumeration-evidence.jsonl`，
+加上記錄每筆條目來源的 `enumeration-evidence.psv`，
 以及 `enumeration-report.md`。
 
 工具會處理、且本 Skill 應回報：
@@ -457,7 +457,7 @@ Oracle 是 bytecode，不是第二次搜尋。
 
 路徑驗證
 
-`enumerate.py` 只會寫出「型別來自已剖析檔案」的條目，
+`enumerate.sh` 只會寫出「型別來自已剖析檔案」的條目，
 因此每個路徑就結構而言必然可解析。
 
 獨立確認檔案數：
@@ -474,8 +474,8 @@ Oracle 是 bytecode，不是第二次搜尋。
 
 排定優先序。
 
-    python3 tools/factbase/prioritize.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/prioritize.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration \
         [--usage usage.csv --usage-map codes.csv] [--since 3.years]
 
@@ -495,7 +495,7 @@ Oracle 是 bytecode，不是第二次搜尋。
 
 列舉報告
 
-`enumerate.py` 會產生 `docs/enumeration/enumeration-report.md`。
+`enumerate.sh` 會產生 `docs/enumeration/enumeration-report.md`。
 
 以人工補上：
 

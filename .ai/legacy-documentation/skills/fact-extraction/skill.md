@@ -34,13 +34,17 @@ shared:
   - quality-checklist
 
 outputs:
-  - docs/facts/files.jsonl
-  - docs/facts/types.jsonl
-  - docs/facts/methods.jsonl
-  - docs/facts/calls.jsonl
-  - docs/facts/literals.jsonl
-  - docs/facts/manifest.json
-  - docs/facts/factbase.sqlite
+  - docs/facts/files.psv
+  - docs/facts/types.psv
+  - docs/facts/methods.psv
+  - docs/facts/calls.psv
+  - docs/facts/literals.psv
+  - docs/facts/hashes.psv
+  - docs/facts/supertype.psv
+  - docs/facts/ancestor.psv
+  - docs/facts/calls-resolved.psv
+  - docs/facts/resolution.psv
+  - docs/facts/manifest.psv
   - docs/facts/bytecode-verification.md
 ---
 
@@ -99,19 +103,27 @@ docs/overview/technology-stack.md
 
 docs/facts/
 
-files.jsonl
+files.psv
 
-types.jsonl
+types.psv
 
-methods.jsonl
+methods.psv
 
-calls.jsonl
+calls.psv
 
-literals.jsonl
+literals.psv
 
-manifest.json
+hashes.psv
 
-factbase.sqlite
+supertype.psv
+
+ancestor.psv
+
+calls-resolved.psv
+
+resolution.psv
+
+manifest.psv
 
 bytecode-verification.md
 
@@ -135,20 +147,20 @@ Record the roots used.
 
 Extract.
 
-    python3 tools/factbase/extract_java.py \
+    sh tools/factbase/extract_java.sh \
         --repo <repo> --out <repo>/docs/facts --source-root <root>
 
 Report the counts the tool prints.
 
-Report every entry in `manifest.json` under `parse_errors`. A parse error is
+Report every entry in `manifest.psv` under `parse_errors`. A parse error is
 a hole in the factbase and SHALL be named, not summarised.
 
 ## Step 3
 
 Build the factbase.
 
-    python3 tools/factbase/build_factbase.py \
-        --facts <repo>/docs/facts --db <repo>/docs/facts/factbase.sqlite
+    sh tools/factbase/build_factbase.sh \
+        --facts <repo>/docs/facts --facts <repo>/docs/facts
 
 Report `resolution_stats`.
 
@@ -163,8 +175,8 @@ forms through them.
 
 Verify against bytecode.
 
-    python3 tools/factbase/verify_bytecode.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/verify_bytecode.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --out <repo>/docs/facts/bytecode-verification.md
 
 Three outcomes, and all three SHALL be reported literally:
@@ -195,9 +207,9 @@ State
 
 # Completion Criteria
 
-`docs/facts/factbase.sqlite` exists.
+`docs/facts/types.psv` exists and is non-empty.
 
-Type count > 0.
+`docs/facts/ancestor.psv` exists.
 
 `docs/facts/bytecode-verification.md` exists and its status is recorded.
 

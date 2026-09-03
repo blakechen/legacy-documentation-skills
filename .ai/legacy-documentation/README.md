@@ -160,7 +160,7 @@ skills/templates/
 
 shared/
 
-tools/          deterministic extraction and verification (Python 3, no deps)
+tools/          deterministic extraction and verification (POSIX shell + awk)
 
 examples/
 
@@ -209,12 +209,12 @@ Six depth-complete documents beat 458 shallow ones.
 
 ## Requirements
 
-Python 3.8 or later, standard library only.
+A POSIX shell and `awk`. Nothing to install.
 
-`javap` and `javac`, when compiled artefacts are to be used as an
+`javap`, `javac` and `jar`, when compiled artefacts are to be used as an
 independent oracle. Their absence is recorded, not worked around.
 
-Nothing else.
+Nothing else. No interpreter, no dependencies, no build step, no network.
 
 ---
 

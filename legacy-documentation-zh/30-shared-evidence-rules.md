@@ -86,7 +86,7 @@ Factbase commit
     Factbase commit: <sha>
 
 且單元通過深度檢查後，應以
-`tools/verify/staleness.py --record` 記錄各單元的原始碼雜湊值。
+`tools/verify/staleness.sh --record` 記錄各單元的原始碼雜湊值。
 
 見 shared/incremental-update.md。
 沒有這個，就無法區分「有效的引用」與「已經腐爛的引用」。

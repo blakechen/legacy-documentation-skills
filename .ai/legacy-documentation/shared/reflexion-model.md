@@ -50,7 +50,7 @@ evaluated in file order; first match wins.
 
 ### 2. Compute
 
-`tools/reflexion/reflexion.py` maps every type onto a module and compares
+`tools/reflexion/reflexion.sh` maps every type onto a module and compares
 the expected edges with the edges the factbase actually contains.
 
 ### 3. Read the three results

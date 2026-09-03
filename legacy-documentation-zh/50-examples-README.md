@@ -11,7 +11,9 @@
     sh tools/selftest.sh
 
 會對 `fixtures/java-dispatcher` 執行整條工具鏈，
-並與 `fixtures/java-dispatcher/expected/` 比對。共 18 項檢查。
+並與 `fixtures/java-dispatcher/expected/` 比對。共 20 項檢查，
+其中兩項「必須失敗」：一份看似合理但錯誤的文件，
+以及一個少了某個類別的 factbase。
 
 工具變更若改動了那些檔案，在它們被刻意更新之前，都視為迴歸。
 

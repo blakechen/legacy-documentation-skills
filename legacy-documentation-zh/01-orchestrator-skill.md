@@ -177,7 +177,7 @@ Reflexion 檢查（以人的模型對照 factbase 檢驗）
 
 協調器應在階段 1 之前驗證：
 
-1. `docs/facts/factbase.sqlite` 存在，且型別數量大於零。
+1. `docs/facts/types.psv` 存在，且型別數量大於零。
 
 2. `docs/facts/bytecode-verification.md` 存在。
 
@@ -248,11 +248,11 @@ Reflexion 檢查（以人的模型對照 factbase 檢驗）
 1. `ls docs/modules/transactions/*.md | wc -l` 的結果等於
    `docs/enumeration/transaction-classes.txt` 的行數。
 
-2. `tools/verify/run_depth_checks.py` exit 0，
+2. `tools/verify/depth_checks.sh` exit 0，
    且其報告顯示深度完備率 100%。
    協調器應「執行」該指令。沒有指令輸出而宣稱的比率不是比率。
 
-3. `tools/verify/staleness.py` exit 0：
+3. `tools/verify/staleness.sh` exit 0：
    沒有任何文件描述的是此後已改動過的原始碼。
 
 4. 每一筆 reflexion 的 divergence 與 absence 都有記錄的解決說明。
@@ -316,7 +316,7 @@ Reflexion 檢查（以人的模型對照 factbase 檢驗）
 
 產生
 
-facts/（factbase、JSONL 事實串流、bytecode 驗證報告）
+facts/（factbase、事實串流、bytecode 驗證報告）
 
 overview/
 
@@ -338,7 +338,7 @@ specifications/（逐交易規格）
 
 characterization/（對照已記錄分支的可執行測試）
 
-model/（unit-state.json，供增量重跑使用）
+model/（unit-state.psv，供增量重跑使用）
 
 gap-analysis/（含 progress.md、depth-report.md、staleness-report.md）
 

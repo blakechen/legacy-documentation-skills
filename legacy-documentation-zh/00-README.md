@@ -160,7 +160,7 @@ skills/templates/
 
 shared/
 
-tools/          確定性的抽取與驗證工具（Python 3，無相依套件）
+tools/          確定性的抽取與驗證工具（POSIX shell + awk）
 
 examples/
 
@@ -208,12 +208,12 @@ Windsurf
 
 ## 環境需求
 
-Python 3.8 以上，僅標準函式庫。
+POSIX shell 與 `awk`。不需安裝任何東西。
 
-若要以編譯產物作為獨立 oracle，需要 `javap` 與 `javac`。
+若要以編譯產物作為獨立 oracle，需要 `javap`、`javac` 與 `jar`。
 它們不存在時會被記錄，而不是繞過。
 
-其他無。
+其他無。沒有直譯器、沒有相依套件、沒有建置步驟、不需要網路。
 
 ---
 

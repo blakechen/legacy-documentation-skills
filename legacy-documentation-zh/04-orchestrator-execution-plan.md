@@ -4,7 +4,7 @@
 
 事實抽取已完成。
 
-`docs/facts/factbase.sqlite` 存在。
+`docs/facts/types.psv` 存在。
 
 Bytecode oracle 狀態已記錄，且不是 `FAILED`。
 
@@ -44,7 +44,7 @@ Bytecode oracle 狀態已記錄，且不是 `FAILED`。
 
 4. 每個檔案都包含 `ClassName|Path`；資料庫物件為 `ClassName|Path|TargetTable`。
 
-5. `docs/enumeration/enumeration-evidence.jsonl` 逐筆記錄了
+5. `docs/enumeration/enumeration-evidence.psv` 逐筆記錄了
    繼承深度與發現方式。
 
 6. 數量已對照 **BYTECODE ORACLE** 確認，而不是對照第二次文字搜尋。
@@ -156,6 +156,6 @@ Characterization 測試產生
 
 必須驗證逐交易文件數量與列舉數量相符。
 
-必須執行 tools/verify/staleness.py，接著執行
-tools/verify/run_depth_checks.py，並回報兩者的結束狀態。
+必須執行 tools/verify/staleness.sh，接著執行
+tools/verify/depth_checks.sh，並回報兩者的結束狀態。
 宣稱不等於驗證。

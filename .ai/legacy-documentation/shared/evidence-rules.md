@@ -86,7 +86,7 @@ Every generated document SHALL carry, in its metadata block
     Factbase commit: <sha>
 
 and the per-unit source hashes SHALL be recorded by
-`tools/verify/staleness.py --record` after the unit passes its depth checks.
+`tools/verify/staleness.sh --record` after the unit passes its depth checks.
 
 See shared/incremental-update.md. Without this, a citation cannot be
 distinguished from a citation that has rotted.

@@ -52,7 +52,7 @@ Producing a single summary instead of per-item documents is FORBIDDEN.
 
 ## Enumeration Is a Query, Not a Search
 
-The master lists are produced by `tools/factbase/enumerate.py` from the
+The master lists are produced by `tools/factbase/enumerate.sh` from the
 factbase built by the `fact-extraction` Skill. See shared/fact-layer.md.
 
 A Skill SHALL NOT build an enumeration by grepping for `extends <Base>`.
@@ -87,7 +87,7 @@ or a dead registration.
 
 The count must be confirmed by an INDEPENDENT source, not by a second search.
 
-    tools/factbase/verify_bytecode.py
+    tools/factbase/verify_bytecode.sh
 
 reads compiled classes and jars with `javap` and compares the true supertype
 of every class with the factbase. The two share no code and read different

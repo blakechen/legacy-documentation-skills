@@ -65,7 +65,9 @@ This Skill SHALL NOT
 
 # Inputs
 
-docs/facts/factbase.sqlite
+docs/facts/types.psv
+
+docs/facts/ancestor.psv
 
 docs/enumeration/transaction-classes.txt
 
@@ -89,8 +91,8 @@ docs/enumeration/archetype-report.md
 
 Cluster.
 
-    python3 tools/factbase/archetypes.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/archetypes.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration
 
 Default threshold 0.75. Lower it only with a stated reason, and record the

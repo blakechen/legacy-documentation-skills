@@ -20,7 +20,7 @@ Every integration does the same three things.
 Nothing in this library is AI-tool-specific.
 
 An AI tool is supported when it can read a Markdown instruction file from the
-repository, write files to disk, and execute `python3`.
+repository, write files to disk, and execute a POSIX shell.
 
 The last requirement is not optional. See `shared/fact-layer.md`: the
 enumeration is queried from a parsed fact base, not searched for in text, and

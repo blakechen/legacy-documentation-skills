@@ -21,7 +21,7 @@ one that moves money, and it hides that fact behind a progress percentage.
 
 ## Signals
 
-`tools/factbase/prioritize.py` combines three signals that already exist in
+`tools/factbase/prioritize.sh` combines three signals that already exist in
 the repository.
 
 ### Reachability (weight 0.45)

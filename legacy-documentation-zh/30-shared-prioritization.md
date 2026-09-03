@@ -21,7 +21,7 @@
 
 ## 訊號
 
-`tools/factbase/prioritize.py` 結合三個「儲存庫中本來就存在」的訊號。
+`tools/factbase/prioritize.sh` 結合三個「儲存庫中本來就存在」的訊號。
 
 ### 可達性（權重 0.45）
 

@@ -48,7 +48,7 @@ Murphy、Notkin、Sullivan，《Software Reflexion Models》，FSE 1995。
 
 ### 2. 計算
 
-`tools/reflexion/reflexion.py` 把每個型別映射到模組上，
+`tools/reflexion/reflexion.sh` 把每個型別映射到模組上，
 比對「預期的邊」與「factbase 中實際存在的邊」。
 
 ### 3. 讀三種結果

@@ -21,7 +21,7 @@
 
 ## 方法
 
-`tools/factbase/archetypes.py` 把每個單元正規化成一串 token
+`tools/factbase/archetypes.sh` 把每個單元正規化成一串 token
 （識別字、常值與型別名稱收斂掉，被呼叫的方法名稱保留），
 取 5-gram shingle，再以 Jaccard 相似度分群。
 

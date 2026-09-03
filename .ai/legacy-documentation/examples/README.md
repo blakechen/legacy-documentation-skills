@@ -12,7 +12,9 @@ them.
     sh tools/selftest.sh
 
 runs the whole tool chain against `fixtures/java-dispatcher` and diffs the
-result against `fixtures/java-dispatcher/expected/`. 18 checks.
+result against `fixtures/java-dispatcher/expected/`. 20 checks, two of
+which must FAIL: a plausible but wrong document, and a class missing from
+the factbase.
 
 A change to a tool that alters those files is a regression until the expected
 files are updated deliberately.

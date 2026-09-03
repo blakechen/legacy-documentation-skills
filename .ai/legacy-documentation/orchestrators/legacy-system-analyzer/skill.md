@@ -180,7 +180,7 @@ establish. See shared/fact-layer.md.
 
 The orchestrator SHALL verify BEFORE Phase 1:
 
-1. `docs/facts/factbase.sqlite` exists and its type count is greater than zero.
+1. `docs/facts/types.psv` exists and its line count is greater than zero.
 
 2. `docs/facts/bytecode-verification.md` exists.
 
@@ -253,11 +253,11 @@ Before reporting completion, the orchestrator MUST verify:
 1. `ls docs/modules/transactions/*.md | wc -l` equals the line count of
    `docs/enumeration/transaction-classes.txt`.
 
-2. `tools/verify/run_depth_checks.py` exits 0 and its report shows a
+2. `tools/verify/depth_checks.sh` exits 0 and its report shows a
    Depth-Complete Rate of 100%. The orchestrator SHALL run the command. A
    rate asserted without the command output is not a rate.
 
-3. `tools/verify/staleness.py` exits 0: no document describes source that has
+3. `tools/verify/staleness.sh` exits 0: no document describes source that has
    since changed.
 
 4. Every reflexion divergence and absence has a recorded resolution.
@@ -323,7 +323,7 @@ Stop on critical failures.
 
 Generate
 
-facts/ (factbase, JSONL fact streams, bytecode verification)
+facts/ (factbase, fact streams, bytecode verification)
 
 overview/
 
@@ -345,7 +345,7 @@ specifications/ (per-transaction specifications)
 
 characterization/ (executable tests for the documented branches)
 
-model/ (unit-state.json, for incremental re-runs)
+model/ (unit-state.psv, for incremental re-runs)
 
 gap-analysis/ (including progress.md, depth-report.md, staleness-report.md)
 

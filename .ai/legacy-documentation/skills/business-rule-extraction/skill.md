@@ -390,8 +390,8 @@ Apply shared/iterative-depth.md.
 
 Derive the domain variables.
 
-    python3 tools/factbase/domain_variables.py \
-        --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/domain_variables.sh \
+        --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration \
         --out <repo>/docs/business-rules/domain-variables.txt
 

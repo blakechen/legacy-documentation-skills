@@ -53,9 +53,9 @@ outputs:
   - docs/gap-analysis/consistency-report.md
   - docs/gap-analysis/traceability-report.md
   - docs/gap-analysis/depth-report.md
-  - docs/gap-analysis/depth-report.json
+  - docs/gap-analysis/depth-findings.psv
   - docs/gap-analysis/staleness-report.md
-  - docs/model/unit-state.json
+  - docs/model/unit-state.psv
   - docs/gap-analysis/todo.md
 ---
 
@@ -68,7 +68,7 @@ This Skill performs quality assurance only.
 Apply shared/mechanical-verification.md.
 
 The mechanical checks are performed by running a program, not by reading.
-`tools/verify/run_depth_checks.py` decides all four, using the factbase for
+`tools/verify/depth_checks.sh` decides all four, using the factbase for
 the source-side facts. This Skill runs it and reports what it returns.
 
 Source code may be read only to explain a finding the tool has already
@@ -266,11 +266,11 @@ Staleness Review
 
 Apply shared/incremental-update.md.
 
-    python3 tools/verify/staleness.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/verify/staleness.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
-        --state <repo>/docs/model/unit-state.json \
+        --state <repo>/docs/model/unit-state.psv \
         --out <repo>/docs/gap-analysis/staleness-report.md
 
 A stale document describes source that has since changed. It is a false claim
@@ -293,12 +293,11 @@ Apply shared/logic-depth.md.
 
 Run the checks; do not perform them by reading:
 
-    python3 tools/verify/run_depth_checks.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/verify/depth_checks.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
-        --out <repo>/docs/gap-analysis/depth-report.md \
-        --json-out <repo>/docs/gap-analysis/depth-report.json
+        --out <repo>/docs/gap-analysis/depth-report.md
 
 Exit 0 means every unit is depth-complete. Exit 1 means at least one failed.
 Exit 3 means a unit in the enumeration has no document at all.
@@ -606,7 +605,7 @@ Coverage and depth are separate gates. Both must pass.
 
 ☐ Enumeration-to-document count verified
 
-☐ Depth verified by running tools/verify/run_depth_checks.py
+☐ Depth verified by running tools/verify/depth_checks.sh
 
 ☐ Depth-Complete Rate taken from the tool output, not asserted
 
@@ -614,7 +613,7 @@ Coverage and depth are separate gates. Both must pass.
 
 ☐ Staleness checked before depth
 
-☐ Verified units recorded with tools/verify/staleness.py --record
+☐ Verified units recorded with tools/verify/staleness.sh --record
 
 ☐ Reflexion divergences and absences resolved (shared/reflexion-model.md)
 

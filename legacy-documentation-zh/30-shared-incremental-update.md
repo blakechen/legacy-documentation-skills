@@ -22,8 +22,8 @@
 
 ### 證據攜帶版本
 
-Factbase 記錄每個檔案的 sha256，以及掃描時所在的 commit。
-`docs/facts/manifest.json` 與 factbase 的 `meta` 表都帶有該 commit。
+Factbase 記錄每個檔案的 sha256，以及掃描時所在的 commit，
+分別存於 `docs/facts/hashes.psv` 與 `docs/facts/manifest.psv`。
 
 每一份產生的文件都應在其中繼資料區塊記錄
 
@@ -34,18 +34,18 @@ Factbase 記錄每個檔案的 sha256，以及掃描時所在的 commit。
 
 一個批次達到深度完整之後，執行
 
-    tools/verify/staleness.py ... --record
+    tools/verify/staleness.sh ... --record
 
 這會逐單元寫下該單元文件所引用之每一個原始碼檔案的 sha256 ——
 包含單元本身的檔案，以及每一段引文所指名的檔案。
 
-`docs/model/unit-state.json`
+`docs/model/unit-state.psv`
 
 ### 重跑前先檢查
 
 後續執行的開頭
 
-    tools/verify/staleness.py ...
+    tools/verify/staleness.sh ...
 
 會把每個單元報告為：最新、過期、或從未記錄。
 
@@ -77,7 +77,7 @@ Factbase 記錄每個檔案的 sha256，以及掃描時所在的 commit。
 
 ## 與深度檢查的關係
 
-`run_depth_checks.py` 以「當前」原始碼驗證引文。
+`depth_checks.sh` 以「當前」原始碼驗證引文。
 因此過期文件通常也會在引文檢查上失敗。
 
 兩個工具回答不同的問題：

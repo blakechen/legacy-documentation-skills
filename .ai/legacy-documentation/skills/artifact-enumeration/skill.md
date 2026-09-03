@@ -59,8 +59,8 @@ outputs:
   - docs/enumeration/transaction-classes.txt
   - docs/enumeration/db-object-classes.txt
   - docs/enumeration/servlet-classes.txt
-  - docs/enumeration/enumeration-evidence.jsonl
-  - docs/enumeration/enumeration-config.json
+  - docs/enumeration/enumeration-evidence.psv
+  - docs/enumeration/enumeration-config.psv
   - docs/enumeration/enumeration-report.md
   - docs/enumeration/priority.txt
   - docs/enumeration/batches.txt
@@ -215,7 +215,7 @@ Guessing is prohibited.
 
 Enumeration is complete when
 
-docs/facts/factbase.sqlite exists and its bytecode oracle status is recorded
+docs/facts/types.psv exists and the bytecode oracle status is recorded
 
 and
 
@@ -383,7 +383,7 @@ before concluding that no base class exists.
 
 Configure the bases.
 
-Write `docs/enumeration/enumeration-config.json`
+Write `docs/enumeration/enumeration-config.psv`
 
     {
       "transaction_base": ["StdTrxObject"],
@@ -404,12 +404,12 @@ review it against Steps 1 and 2 and correct it before continuing.
 
 Enumerate.
 
-    python3 tools/factbase/enumerate.py \
-        --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/enumerate.sh \
+        --facts <repo>/docs/facts \
         --out <repo>/docs/enumeration
 
 This writes the three master lists in the documented pipe-separated format,
-plus `enumeration-evidence.jsonl` carrying the provenance of every entry, and
+plus `enumeration-evidence.psv` carrying the provenance of every entry, and
 `enumeration-report.md`.
 
 The tool resolves, and the Skill SHALL report:
@@ -462,7 +462,7 @@ SHALL NOT be reported as such.
 
 Path Validation
 
-`enumerate.py` writes only entries whose type came from a parsed file, so
+`enumerate.sh` writes only entries whose type came from a parsed file, so
 every path resolves by construction.
 
 Confirm the file count independently:
@@ -479,8 +479,8 @@ An unresolvable path is a defect in the factbase and SHALL be reported.
 
 Prioritise.
 
-    python3 tools/factbase/prioritize.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/prioritize.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration \
         [--usage usage.csv --usage-map codes.csv] [--since 3.years]
 
@@ -500,7 +500,7 @@ entry points this scan does not model.
 
 Enumeration Report
 
-`enumerate.py` generates `docs/enumeration/enumeration-report.md`.
+`enumerate.sh` generates `docs/enumeration/enumeration-report.md`.
 
 Add to it, by hand:
 

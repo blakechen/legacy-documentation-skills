@@ -25,7 +25,7 @@
 - 與上述來源之常值相比較的狀態、代碼或類型值
 
 推導出的清單位於 `docs/business-rules/domain-variables.txt`，
-由 `tools/factbase/domain_variables.py` 產生。
+由 `tools/factbase/domain_variables.sh` 產生。
 
 **業務規則** 是「讀取或寫入至少一個領域變數」的條件、計算或狀態轉換。
 

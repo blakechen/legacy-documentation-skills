@@ -13,7 +13,8 @@ and let the AI do only the second.
 
 Deterministic extraction from source, build output and version control.
 
-Produced by a program. No model involved.
+Produced by a program -- POSIX shell and awk, nothing to install.
+No model involved.
 
 Contents
 
@@ -22,9 +23,10 @@ Contents
 - call sites, string literals, imports, package structure
 - file content hashes and the commit the scan ran against
 
-Tool: `tools/factbase/extract_java.py` then `tools/factbase/build_factbase.py`.
+Tool: `tools/factbase/extract_java.sh` then `tools/factbase/build_factbase.sh`.
 
-Output: `docs/facts/*.jsonl` and `docs/facts/factbase.sqlite`.
+Output: `docs/facts/*.psv` -- plain pipe-separated text, one record per
+line. Greppable, diffable, and reviewable in a pull request.
 
 ### Layer 2 - Structure
 
@@ -38,8 +40,8 @@ Contents
 - change frequency
 - the reflexion mapping against a stated hypothesis
 
-Tools: `enumerate.py`, `prioritize.py`, `archetypes.py`,
-`domain_variables.py`, `reflexion.py`.
+Tools: `enumerate.sh`, `prioritize.sh`, `archetypes.sh`,
+`domain_variables.sh`, `reflexion.sh`.
 
 ### Layer 3 - Concepts
 
@@ -85,10 +87,13 @@ visible and reproducible. Where the two disagree, the parser wins.
 
 It does not understand the system.
 
-`extract_java.py` is a lexical scanner, not a compiler. It records what is
-written, resolves names through imports and package scope, and marks what it
-cannot resolve as `EXTERNAL:` or `UNKNOWN`. Its known limits are listed in
-the module docstring and SHALL be repeated in the enumeration report.
+`extract_java.awk` is a lexical scanner, not a compiler. It masks comments
+and literals, then walks the remaining text one character at a time keeping
+a frame stack, which makes nesting, anonymous classes and method bodies
+exact. It records what is written, resolves names through imports and
+package scope, and marks what it cannot resolve as `EXTERNAL:` or
+`UNKNOWN`. Its known limits are listed in `tools/README.md` and SHALL be
+repeated in the enumeration report.
 
 This is why Layer 1 has an oracle.
 
@@ -96,7 +101,7 @@ This is why Layer 1 has an oracle.
 
 ## The Oracle
 
-`tools/factbase/verify_bytecode.py` reads compiled classes and jars with
+`tools/factbase/verify_bytecode.sh` reads compiled classes and jars with
 `javap` and compares the true supertype of every class against the factbase.
 
 The lexical scanner and the oracle share no code and read different inputs.
@@ -118,7 +123,7 @@ The fact layer runs BEFORE architecture discovery consumes it and BEFORE
 any enumeration file is written.
 
 No Skill that produces documentation may run before
-`docs/facts/factbase.sqlite` exists.
+`docs/facts/types.psv` exists and is non-empty.
 
 ---
 
@@ -126,10 +131,10 @@ No Skill that produces documentation may run before
 
 Layer 1 is language-specific; Layers 2 and 3 are not.
 
-`extract_java.py` covers Java, and by construction most of Kotlin's and
+`extract_java.awk` covers Java, and by construction most of Kotlin's and
 Scala's declaration syntax is out of its scope. A new language needs a new
-Layer 1 extractor emitting the same JSONL records. Nothing above Layer 1
-changes.
+Layer 1 extractor emitting the same pipe-separated records. Nothing above
+Layer 1 changes.
 
 Where no extractor exists for a language, that fact SHALL be recorded and
 the affected findings SHALL carry confidence Low, not High.

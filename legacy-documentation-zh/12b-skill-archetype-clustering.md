@@ -65,7 +65,7 @@ outputs:
 
 # 輸入
 
-docs/facts/factbase.sqlite
+docs/facts/types.psv
 
 docs/enumeration/transaction-classes.txt
 
@@ -89,8 +89,8 @@ docs/enumeration/archetype-report.md
 
 分群。
 
-    python3 tools/factbase/archetypes.py \
-        --repo <repo> --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/factbase/archetypes.sh \
+        --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration
 
 預設門檻 0.75。只有在說明理由的前提下才可調低，並記錄所使用的值。

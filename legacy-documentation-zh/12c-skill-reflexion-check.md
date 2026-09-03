@@ -68,7 +68,7 @@ outputs:
 
 # 輸入
 
-docs/facts/factbase.sqlite
+docs/facts/types.psv
 
 docs/architecture/hypothesis-map.txt
 
@@ -101,8 +101,8 @@ docs/architecture/reflexion-report.md
 
 執行。
 
-    python3 tools/reflexion/reflexion.py \
-        --db <repo>/docs/facts/factbase.sqlite \
+    sh tools/reflexion/reflexion.sh \
+        --facts <repo>/docs/facts \
         --map <repo>/docs/architecture/hypothesis-map.txt \
         --out <repo>/docs/architecture/reflexion-report.md
 

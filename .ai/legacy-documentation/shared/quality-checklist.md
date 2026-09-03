@@ -24,15 +24,15 @@ shared/mechanical-verification.md.
 
 | Gate | Command | Owner |
 |---|---|---|
-| Factbase built | `tools/factbase/build_factbase.py` | fact-extraction |
-| Source scan independently checked | `tools/factbase/verify_bytecode.py` | fact-extraction |
-| Enumeration derived from the factbase | `tools/factbase/enumerate.py` | artifact-enumeration |
-| Units ordered by value | `tools/factbase/prioritize.py` | artifact-enumeration |
-| Clone families collapsed | `tools/factbase/archetypes.py` | archetype-clustering |
-| Domain variables derived | `tools/factbase/domain_variables.py` | business-rule-extraction |
-| Architecture model tested | `tools/reflexion/reflexion.py` | reflexion-check |
-| Documents depth-complete | `tools/verify/run_depth_checks.py` | gap-analysis |
-| Documents match current source | `tools/verify/staleness.py` | gap-analysis |
+| Factbase built | `tools/factbase/build_factbase.sh` | fact-extraction |
+| Source scan independently checked | `tools/factbase/verify_bytecode.sh` | fact-extraction |
+| Enumeration derived from the factbase | `tools/factbase/enumerate.sh` | artifact-enumeration |
+| Units ordered by value | `tools/factbase/prioritize.sh` | artifact-enumeration |
+| Clone families collapsed | `tools/factbase/archetypes.sh` | archetype-clustering |
+| Domain variables derived | `tools/factbase/domain_variables.sh` | business-rule-extraction |
+| Architecture model tested | `tools/reflexion/reflexion.sh` | reflexion-check |
+| Documents depth-complete | `tools/verify/depth_checks.sh` | gap-analysis |
+| Documents match current source | `tools/verify/staleness.sh` | gap-analysis |
 
 A Skill that reports a gate as passed without the command output is in
 violation of this checklist.

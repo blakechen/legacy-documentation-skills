@@ -21,7 +21,7 @@ the delta, and 458 near-identical documents hide both.
 
 ## Method
 
-`tools/factbase/archetypes.py` normalises each unit into a token stream --
+`tools/factbase/archetypes.sh` normalises each unit into a token stream --
 identifiers, literals and type names collapsed, invoked method names kept --
 takes 5-gram shingles, and clusters by Jaccard similarity.
 
