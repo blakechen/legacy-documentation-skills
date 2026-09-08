@@ -2,9 +2,8 @@
 name: module-analysis
 
 description: |
-  Analyse each logical module within the repository and generate
-  module-level documentation describing responsibilities, structure,
-  entry points, dependencies and public interfaces.
+  分析儲存庫中的每一個邏輯模組，並產生模組層級文件，
+  描述其職責、結構、進入點、相依關係與公開介面。
 
 version: 1.0.0
 
@@ -47,90 +46,90 @@ outputs:
   - docs/modules/transactions/
 ---
 
-# Objective
+# 目標
 
-Analyse every logical module independently.
+獨立分析每一個邏輯模組。
 
-The objective is to describe what each module contains,
-how it is organized,
-and how it interacts with other modules.
+目標是描述每個模組包含什麼、
+它是如何組織的，
+以及它如何與其他模組互動。
 
-Business meaning (WHY a rule exists) is outside the scope of this Skill.
+業務意義（某條規則「為何」存在）不在本 Skill 的範圍內。
 
-Program logic (HOW each method processes a request) is IN scope
-and is owned by this Skill.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify logical modules
-
-- identify module boundaries
-
-- identify module responsibilities
-
-- identify entry points
-
-- identify exported interfaces
-
-- identify internal components
-
-- identify important classes
-
-- identify package hierarchy
-
-- identify dependencies
-
-- identify shared components
-
-- identify configuration related to the module
-
-- document, for every primary unit, the step-by-step processing logic of every method
-
-- quote source excerpts evidencing each critical decision, calculation and SQL statement
-
-- map input fields through intermediate variables to database columns and message fields
-
-- restate each method's logic as language-neutral pseudocode
-
-This Skill SHALL NOT
-
-- assign business meaning or business justification to logic (see business-rule-extraction)
-
-- allocate BR-IDs
-
-- design or normalise the data model (see database-analysis)
-
-- generate specifications (see specification-generation)
+程式邏輯（每個方法「如何」處理一個請求）在範圍「之內」，
+並由本 Skill 負責。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Inventory
+本 Skill「應當」
 
-Technology Discovery
+- 辨識邏輯模組
 
-Architecture Discovery
+- 辨識模組邊界
 
-Source Code
+- 辨識模組職責
 
-Configuration Files
+- 辨識進入點
+
+- 辨識對外輸出的介面
+
+- 辨識內部元件
+
+- 辨識重要類別
+
+- 辨識套件階層
+
+- 辨識相依關係
+
+- 辨識共用元件
+
+- 辨識與該模組相關的組態
+
+- 為每一個主要單元記錄其每一個方法的逐步處理邏輯
+
+- 引用原始碼摘錄，佐證每一個關鍵決策、計算與 SQL 敘述
+
+- 把輸入欄位經由中間變數對應到資料庫欄位與訊息欄位
+
+- 以與語言無關的虛擬碼重述每個方法的邏輯
+
+本 Skill「不得」
+
+- 為邏輯指派業務意義或業務理由（見 business-rule-extraction）
+
+- 配發 BR-ID
+
+- 設計或正規化資料模型（見 database-analysis）
+
+- 產生規格（見 specification-generation）
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫清冊
+
+技術探索
+
+架構探索
+
+原始碼
+
+組態檔
+
+---
+
+# 交付物
 
 docs/modules/
 
 module-index.md
 
-One Markdown document for each module.
+每個模組一份 Markdown 文件。
 
-Example
+範例
 
 loan.md
 
@@ -146,19 +145,19 @@ common.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every statement must reference observable evidence.
+每一句陳述都必須參照可觀察的證據。
 
-Evidence may include
+證據可包括
 
-Directory
+目錄
 
-Package
+套件
 
-Namespace
+命名空間
 
-Configuration
+組態
 
 Annotation
 
@@ -166,31 +165,31 @@ Class
 
 Interface
 
-Dependency
+相依關係
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never infer module responsibilities beyond available evidence.
-
----
-
-# Completion Criteria
-
-Every logical module has
-
-- been identified
-
-- been documented
-
-- listed entry points
-
-- listed dependencies
-
-- listed public interfaces
+絕不在可得證據之外推測模組職責。
 
 ---
 
-# Required By
+# 完成判準
+
+每一個邏輯模組都
+
+- 已被辨識
+
+- 已被記錄
+
+- 已列出進入點
+
+- 已列出相依關係
+
+- 已列出公開介面
+
+---
+
+# 被下列 Skill 依賴
 
 database-analysis
 
@@ -204,9 +203,9 @@ specification-generation
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -219,82 +218,83 @@ Every output of this Skill SHALL comply with:
 - shared/iterative-depth.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/module.md
 - skills/templates/transaction.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Module Analysis
+# 模組分析
 
 ---
 
-## Goal
+## 目標
 
-Analyse every logical module in the repository.
+分析儲存庫中的每一個邏輯模組。
 
-Generate one document per module.
+每個模組產生一份文件。
 
-Additionally, if the system uses a dispatcher pattern, generate one document per transaction/action class.
+此外，若系統採用 dispatcher 模式，
+還要為每一個交易／動作類別產生一份文件。
 
-Describe module structure AND transaction class behavior.
-
----
-
-## CRITICAL: Transaction Class Enumeration
-
-Apply shared/enumeration-first.md.
-
-If Architecture Discovery identified a dispatcher pattern:
-
-1. Find EVERY class that extends the base transaction class.
-
-2. Find EVERY class referenced by the dispatcher or its factory/registry.
-
-3. Create a master list of ALL transaction classes with their file paths.
-
-4. Generate one document per transaction class.
-
-Apply shared/logic-depth.md.
-
-Use skills/templates/transaction.md as the REQUIRED structure for each
-transaction class document. Do not omit sections.
-
-Each transaction class document SHALL contain:
-
-- Class name, file path, and line range
-
-- A State Methods index listing EVERY public method
-
-- One `### Method:` subsection per indexed method, each containing
-  Processing Flow, Pseudocode, Key Source Excerpts, Field Mapping,
-  Branches and Conditions, Database Access, External Calls, Error Paths
-
-- An End-to-End Processing Flow narrative across the state methods
-
-- Related JSP pages
-
-- Related DB objects
-
-- Related properties/configuration
-
-This Skill OWNS the method-level logic narrative for the whole pipeline.
-
-Downstream Skills reference these documents. They do not re-derive them.
+描述模組結構「以及」交易類別的行為。
 
 ---
 
-## Step 1
+## 關鍵：交易類別列舉
 
-Identify Modules
+套用 shared/enumeration-first.md。
 
-Possible examples
+若架構探索辨識出 dispatcher 模式：
+
+1. 找出「每一個」繼承交易基底類別的類別。
+
+2. 找出「每一個」被 dispatcher 或其 factory／registry 參照的類別。
+
+3. 建立一份包含「所有」交易類別及其檔案路徑的主清單。
+
+4. 每個交易類別產生一份文件。
+
+套用 shared/logic-depth.md。
+
+以 skills/templates/transaction.md 作為每一份交易類別文件的
+「必要」結構。不得省略章節。
+
+每一份交易類別文件「應當」包含：
+
+- 類別名稱、檔案路徑與行號範圍
+
+- 一份列出「每一個」公開方法的 State Methods 索引
+
+- 索引中每個方法各一個 `### Method:` 小節，每節包含
+  Processing Flow、Pseudocode、Key Source Excerpts、Field Mapping、
+  Branches and Conditions、資料庫存取、外部呼叫、錯誤路徑
+
+- 一段跨越各狀態方法的端到端處理流程敘事
+
+- 相關的 JSP 頁面
+
+- 相關的 DB 物件
+
+- 相關的 properties／組態
+
+本 Skill「擁有」整條流水線中方法層級的邏輯敘事。
+
+下游 Skill 參照這些文件，而不重新推導它們。
+
+---
+
+## 步驟 1
+
+辨識模組
+
+可能的範例
 
 loan
 
@@ -326,41 +326,41 @@ security
 
 api
 
-Record
+記錄
 
-Module Name
+模組名稱
 
-Location
+位置
 
-Evidence
-
----
-
-## Step 2
-
-Determine Module Responsibility
-
-Describe
-
-Primary Responsibility
-
-Owned Features
-
-Major Packages
-
-Configuration Files
-
-Avoid assumptions.
-
-Only describe observable responsibilities.
+證據
 
 ---
 
-## Step 3
+## 步驟 2
 
-Identify Entry Points
+判定模組職責
 
-Examples
+描述
+
+主要職責
+
+所擁有的功能
+
+主要套件
+
+組態檔
+
+避免假設。
+
+只描述可觀察到的職責。
+
+---
+
+## 步驟 3
+
+辨識進入點
+
+範例
 
 REST Controller
 
@@ -368,9 +368,9 @@ SOAP Endpoint
 
 Message Listener
 
-Batch Job
+批次工作
 
-Scheduler
+排程器
 
 CLI
 
@@ -380,95 +380,95 @@ Filter
 
 Interceptor
 
-Record
+記錄
 
-Type
+類型
 
-Location
+位置
 
-Evidence
+證據
 
 ---
 
-## Step 4
+## 步驟 4
 
-Identify Public Interfaces
+辨識公開介面
 
-Examples
+範例
 
 REST API
 
-SOAP Interface
+SOAP 介面
 
 MQ Listener
 
-Published Events
+發布的事件
 
-Public Services
+公開服務
 
-Exported Packages
+對外輸出的套件
 
-Record
+記錄
 
-Interface
+介面
 
-Purpose
+用途
 
-Evidence
-
----
-
-## Step 5
-
-Identify Internal Structure
-
-Document
-
-Packages
-
-Sub-packages
-
-Major Classes
-
-Interfaces
-
-Configuration
-
-Resources
-
-Utilities
-
-Factories
-
-Builders
-
-Adapters
+證據
 
 ---
 
-## Step 6
+## 步驟 5
 
-Identify Dependencies
+辨識內部結構
 
-Document
+記錄
 
-Internal Dependencies
+套件
 
-External Dependencies
+子套件
 
-Shared Modules
+主要類別
 
-Infrastructure Dependencies
+介面
 
-Only document observable relationships.
+組態
+
+資源
+
+工具類別
+
+Factory
+
+Builder
+
+Adapter
 
 ---
 
-## Step 7
+## 步驟 6
 
-Identify Configuration
+辨識相依關係
 
-Locate
+記錄
+
+內部相依
+
+外部相依
+
+共用模組
+
+基礎設施相依
+
+只記錄可觀察到的關聯。
+
+---
+
+## 步驟 7
+
+辨識組態
+
+找出
 
 application.yml
 
@@ -476,57 +476,57 @@ properties
 
 XML
 
-Annotations
+Annotation
 
-Environment Variables
+環境變數
 
-Module-specific Settings
+模組專屬設定
 
-Record
+記錄
 
-Purpose
+用途
 
-Evidence
-
----
-
-## Step 8
-
-Generate Module Summary
-
-Include
-
-Purpose
-
-Responsibilities
-
-Entry Points
-
-Interfaces
-
-Dependencies
-
-Important Classes
-
-Configuration
-
-External Systems
-
-Evidence
+證據
 
 ---
 
-## Output Format
+## 步驟 8
 
-Generate
+產生模組摘要
+
+包含
+
+用途
+
+職責
+
+進入點
+
+介面
+
+相依關係
+
+重要類別
+
+組態
+
+外部系統
+
+證據
+
+---
+
+## 輸出格式
+
+產生
 
 docs/modules/module-index.md
 
-Generate one document per module.
+每個模組產生一份文件。
 
-Generate one document per transaction class under docs/modules/transactions/
+在 docs/modules/transactions/ 底下，每個交易類別產生一份文件
 
-Example
+範例
 
 loan.md
 
@@ -546,108 +546,115 @@ transactions/AbankSngMergeTrsf.md
 
 ---
 
-## Module Document Structure
+## 模組文件結構
 
-Use skills/templates/module.md as the required structure.
+以 skills/templates/module.md 作為必要結構。
 
-Every module document shall contain
+每一份模組文件都應包含
 
-# Overview
+# 概觀
 
-# Responsibility
+# 職責
 
-# Directory Structure
+# 目錄結構
 
-# Package Structure
+# 套件結構
 
-# Entry Points
+# 進入點
 
-# Public Interfaces
+# 公開介面
 
-# Internal Components
+# 內部元件
 
-# Important Classes
+# 重要類別
 
-# Transaction Class Index
+# 交易類別索引
 
-# Key Processing Flows
+# 主要處理流程
 
-# Dependencies
+# 相依關係
 
-# Configuration
+# 組態設定
 
-# External Systems
+# 外部系統
 
-# Evidence
-
----
-
-## Output Rules
-
-Document the observable processing logic of every method at the depth defined in
-shared/logic-depth.md.
-
-Quote source for every branch, calculation and SQL statement.
-Never paraphrase inside a code fence.
-
-Never infer undocumented behaviour.
-
-Never hallucinate methods, classes, tables or columns that do not exist.
-
-Never shorten a document to save space. Depth is the deliverable.
+# 證據
 
 ---
 
-## Quality Checklist
+## 輸出規則
 
-☐ Every module documented
+以 shared/logic-depth.md 所定義的深度，
+記錄每一個方法可觀察到的處理邏輯。
 
-☐ Responsibilities identified
+為每一個分支、計算與 SQL 敘述引用原始碼。
+絕不在程式碼區塊內改寫。
 
-☐ Entry points identified
+絕不推測未記錄的行為。
 
-☐ Public interfaces identified
+絕不虛構不存在的方法、類別、資料表或欄位。
 
-☐ Package structure documented
-
-☐ Dependencies documented
-
-☐ Configuration documented
-
-☐ Evidence included
-
-☐ No hallucinations
-
-☐ Per-transaction document count matches enumeration count
-
-☐ Every transaction document matches skills/templates/transaction.md
-
-☐ Every public method has a `### Method:` subsection
-
-☐ Every method subsection has Processing Flow, Pseudocode, at least one source excerpt with file:line, and Field Mapping
-
-☐ No business meaning assigned (BR-IDs referenced only, never invented)
+絕不為了省版面而縮短文件。深度就是交付物。
 
 ---
 
-## Lessons Learned
+## 品質檢查清單
 
-### Problem: Module index produced instead of per-transaction documents
+☐ 每個模組都已記錄
 
-The AI produced only `docs/modules/module-index.md` (1 file) rather than one file per transaction class (458 expected). This makes all downstream Skills (Business Rules, Sequence, Specification) impossible to execute correctly.
+☐ 已辨識職責
 
-**Fix**: This Skill's primary deliverable is NOT a single index file. It is:
-- `docs/modules/module-index.md` (summary)
-- PLUS `docs/modules/transactions/[ClassName].md` for EVERY class in `docs/enumeration/transaction-classes.txt`
+☐ 已辨識進入點
 
-Completion criteria: `ls docs/modules/transactions/*.md | wc -l` must equal the line count of `docs/enumeration/transaction-classes.txt`.
+☐ 已辨識公開介面
 
-### Problem: Scale handled by skipping instead of batching
+☐ 已記錄套件結構
 
-When facing 458 classes, the correct response is to process in batches (e.g., by package), NOT to produce a summary and declare done.
+☐ 已記錄相依關係
 
-**Fix**: If batch processing is needed, document progress in `docs/gap-analysis/progress.md` and continue in subsequent passes until all classes are covered.
+☐ 已記錄組態
+
+☐ 已附上證據
+
+☐ 沒有任何幻覺內容
+
+☐ 逐交易文件數量與列舉數量相符
+
+☐ 每一份交易文件都符合 skills/templates/transaction.md
+
+☐ 每一個公開方法都有 `### Method:` 小節
+
+☐ 每個方法小節都有 Processing Flow、Pseudocode、
+  至少一段帶 file:line 的原始碼摘錄，以及 Field Mapping
+
+☐ 未指派業務意義（BR-ID 只做參照，絕不自行創造）
 
 ---
 
-End.
+## 經驗教訓
+
+### 問題：產出了模組索引，卻沒有逐交易文件
+
+AI 只產出了 `docs/modules/module-index.md`（1 個檔案），
+而不是每個交易類別一個檔案（預期 458 個）。
+這使得所有下游 Skill（業務規則、循序、規格）都無法正確執行。
+
+**修正**：本 Skill 的主要交付物「不是」單一索引檔。它是：
+- `docs/modules/module-index.md`（摘要）
+- 「加上」為 `docs/enumeration/transaction-classes.txt` 中
+  「每一個」類別產生的 `docs/modules/transactions/[ClassName].md`
+
+完成判準：`ls docs/modules/transactions/*.md | wc -l` 必須等於
+`docs/enumeration/transaction-classes.txt` 的行數。
+
+### 問題：以略過而非分批來因應規模
+
+面對 458 個類別時，正確的做法是分批處理（例如依套件），
+而「不是」產出一份摘要就宣告完成。
+
+**修正**：若需要分批處理，就在 `docs/gap-analysis/progress.md`
+記錄進度，並在後續各趟持續進行，直到所有類別都被涵蓋。
+
+---
+
+結束。

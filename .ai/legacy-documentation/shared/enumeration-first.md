@@ -1,154 +1,154 @@
-# Enumeration-First Principle
+# 列舉優先原則
 
-## Objective
+## 目標
 
-Before generating any documentation, build a complete inventory list of the target artifacts.
-
----
-
-## Rule
-
-Every Skill that produces per-item documents SHALL
-
-1. First enumerate ALL items of the target type.
-
-2. Record each item with its location and evidence.
-
-3. Then iterate through EVERY item to generate its document.
-
-4. Never stop after sampling a few items.
+在產生任何文件之前，先建立目標產出物的完整清冊。
 
 ---
 
-## Examples
+## 規則
 
-### Transaction Classes
+每個會產生「逐項文件」的 Skill「應當」
 
-Enumerate every class that extends the transaction base class or is referenced by the dispatcher.
+1. 先列舉目標類型的「所有」項目。
 
-Generate one document per transaction class.
+2. 記錄每個項目的位置與證據。
 
-### Database Objects
+3. 然後走訪「每一個」項目以產生其文件。
 
-Enumerate every class that extends the DB object base class.
-
-Generate one table entry per DB object.
-
-### Servlets
-
-Enumerate every class that extends HttpServlet or is mapped in configuration.
+4. 絕不在抽樣幾個項目之後就停止。
 
 ---
 
-## Anti-Pattern
+## 範例
 
-Scanning a few representative files and generalizing is FORBIDDEN.
+### 交易類別
 
-Stopping after the first 3-5 findings is FORBIDDEN.
+列舉每一個繼承交易基底類別，或被 dispatcher 參照的類別。
 
-Producing a single summary instead of per-item documents is FORBIDDEN.
+每個交易類別產生一份文件。
 
----
+### 資料庫物件
 
-## Enumeration Is a Query, Not a Search
+列舉每一個繼承 DB 物件基底類別的類別。
 
-The master lists are produced by `tools/factbase/enumerate.sh` from the
-factbase built by the `fact-extraction` Skill. See shared/fact-layer.md.
+每個 DB 物件產生一筆資料表條目。
 
-A Skill SHALL NOT build an enumeration by grepping for `extends <Base>`.
+### Servlet
 
-Three things that text search cannot do, and that the enumeration requires:
-
-### Transitive inheritance
-
-`A extends B`, `B extends StdTrxObject`. A search for `extends StdTrxObject`
-returns B and misses A. The factbase stores the transitive closure of the
-hierarchy, so A is found at depth 2. The enumeration report records the depth
-of every entry; any entry with depth > 1 is one a text search would have
-missed.
-
-### External base classes
-
-When the base class ships in a jar there is no source to read. The closure
-still forms: the unresolved supertype becomes an `EXTERNAL:<SimpleName>`
-node, and every class below it is still enumerated.
-
-### Reflection registration
-
-`Class.forName(prefix + code)` names no class in the source text. The
-enumeration matches string literals against the type table and records which
-entries were found this way, and which literals named no known class at all.
-A literal that names nothing is a finding: a class outside the scanned roots,
-or a dead registration.
+列舉每一個繼承 HttpServlet 或在組態中被對應的類別。
 
 ---
 
-## Verification
+## 反模式
 
-The count must be confirmed by an INDEPENDENT source, not by a second search.
+掃描少數代表性檔案後就一般化，是「被禁止」的。
 
-    tools/factbase/verify_bytecode.sh
+在前 3 到 5 個發現之後就停止，是「被禁止」的。
 
-reads compiled classes and jars with `javap` and compares the true supertype
-of every class with the factbase. The two share no code and read different
-inputs.
-
-Running a similar search with a different regular expression is not
-independent verification. It is the same method making the same mistake
-twice.
-
-If no compiled artefact exists, the oracle records `UNAVAILABLE` and the
-enumeration report SHALL state that the result rests on lexical extraction
-alone. The word "verified" SHALL NOT be used for that run. That is Tier B.
-
-If the enumeration could not be queried at all -- no commands can be run in
-this environment -- the run is Tier C. The enumeration was produced by
-reading, and the report SHALL carry the disclosure in
-shared/verification-tiers.md naming the three things reading cannot check:
-transitive inheritance, out-of-tree base classes, and reflection
-registration. On the library's own fixture, a plain text search finds 3 of
-the 6 transaction classes.
+以單一摘要取代逐項文件，是「被禁止」的。
 
 ---
 
-## Mandatory Output Artifact
+## 列舉是一次查詢，不是一次搜尋
 
-The enumeration MUST produce a persistent file (not just in-memory knowledge):
+主清單是由 `tools/shell/factbase/enumerate.sh` 從 `fact-extraction` Skill
+所建立的 factbase 產生。見 shared/fact-layer.md。
+
+Skill「不得」以 grep `extends <Base>` 的方式建立列舉。
+
+文字搜尋做不到、但列舉必須做到的三件事：
+
+### 遞移繼承
+
+`A extends B`、`B extends StdTrxObject`。搜尋 `extends StdTrxObject`
+只會回傳 B，而漏掉 A。factbase 儲存了階層的遞移閉包，
+因此 A 會在深度 2 被找到。列舉報告會記錄每一筆條目的深度；
+任何深度 > 1 的條目，都是文字搜尋會漏掉的條目。
+
+### 外部基底類別
+
+當基底類別隨 jar 一起出貨時，沒有原始碼可讀。閉包仍然成立：
+未解析的父型別會成為一個 `EXTERNAL:<SimpleName>` 節點，
+而其下的每一個類別依然會被列舉。
+
+### 反射註冊
+
+`Class.forName(prefix + code)` 在原始碼文字中並未指名任何類別。
+列舉會把字串常值與型別表比對，並記錄哪些條目是以此方式找到的，
+以及哪些常值根本沒有指到任何已知類別。
+指不到任何東西的常值本身就是一項發現：
+可能是掃描根目錄之外的類別，也可能是失效的註冊。
+
+---
+
+## 驗證
+
+數量必須由「獨立」來源確認，而不是由第二次搜尋確認。
+
+    tools/shell/factbase/verify_bytecode.sh
+
+會以 `javap` 讀取編譯後的 class 與 jar，並將每個類別的真實父型別與 factbase 比對。
+兩者不共用任何程式碼，且讀取的輸入來源不同。
+
+用不同的正規表示式再跑一次類似的搜尋，並不是獨立驗證。
+那是同一種方法把同一個錯誤犯了兩次。
+
+若不存在任何編譯產出物，判準會記錄 `UNAVAILABLE`，
+而列舉報告「應當」聲明該結果僅立基於詞法抽取。
+該次執行「不得」使用「verified（已驗證）」一詞。那屬於層級 B。
+
+若列舉根本無法以查詢方式取得 —— 在此環境中無法執行任何指令 ——
+該次執行屬於層級 C。列舉是靠閱讀產生的，
+而報告「應當」附上 shared/verification-tiers.md 中的揭露聲明，
+指明閱讀無法檢查的三件事：遞移繼承、樹外基底類別，以及反射註冊。
+在本函式庫自己的 fixture 上，單純的文字搜尋只找得到 6 個交易類別中的 3 個。
+
+---
+
+## 強制輸出產出物
+
+列舉「必須」產生持久化的檔案（而不只是記憶中的知識）：
 
 - `docs/enumeration/transaction-classes.txt`
 - `docs/enumeration/db-object-classes.txt`
 - `docs/enumeration/servlet-classes.txt`
 
-Format:
+格式：
 
 - `transaction-classes.txt` — `ClassName|relative/path/to/File.java`
 - `servlet-classes.txt` — `ClassName|relative/path/to/File.java`
 - `db-object-classes.txt` — `ClassName|relative/path/to/File.java|TargetTable`
 
-Write `UNKNOWN` as the target table when it cannot be determined. Never omit the field.
+當目標資料表無法判定時，寫 `UNKNOWN`。絕不省略該欄位。
 
-The `artifact-enumeration` Skill owns these files.
+這些檔案由 `artifact-enumeration` Skill 擁有。
 
-This file is the **gate** for all downstream Skills. No downstream Skill may begin until the enumeration file exists and contains a non-zero count.
+本檔案是所有下游 Skill 的**關卡**。在列舉檔存在且行數不為零之前，
+任何下游 Skill 都不得開始。
 
 ---
 
-## Lessons Learned
+## 經驗教訓
 
-### Problem: Enumeration recognized but not persisted
+### 問題：辨識出了列舉，卻沒有持久化
 
-In practice, the AI may identify counts (e.g., "~467 transaction classes") during analysis but fail to persist a machine-readable master list. Downstream Skills then have no authoritative source to iterate.
+實務上，AI 可能在分析過程中得出數量（例如「約 467 個交易類別」），
+卻沒有把可被機器讀取的主清單持久化。下游 Skill 於是沒有權威來源可供走訪。
 
-**Fix**: The enumeration step MUST write a file to disk. Validation = file exists AND line count > 0.
+**修正**：列舉步驟「必須」把檔案寫到磁碟。驗證條件＝檔案存在「且」行數 > 0。
 
-### Problem: Count approximation instead of exact list
+### 問題：以概略計數取代確切清單
 
-Using `grep -c` or similar to get a count is NOT enumeration. Enumeration requires the actual list of class names and paths.
+用 `grep -c` 之類的方式取得一個數字，「不是」列舉。
+列舉需要的是實際的類別名稱與路徑清單。
 
-**Fix**: Always output `ClassName|Path` pairs, not just a count.
+**修正**：永遠輸出 `ClassName|Path` 配對，而不只是一個數字。
 
-### Problem: Single-pass assumption
+### 問題：單趟完成的假設
 
-For large repositories (400+ artifacts), a single AI context window may not be able to enumerate and document all items in one pass.
+對大型程式碼庫（400 個以上的產出物）而言，單一 AI 上下文視窗可能無法在一趟之內
+完成所有項目的列舉與文件撰寫。
 
-**Fix**: Enumeration and documentation are separate steps. Enumeration completes first. Documentation may be batched across multiple passes, referencing the enumeration file.
+**修正**：列舉與文件撰寫是分開的步驟。列舉先完成。
+文件撰寫可以分批跨多趟進行，並以列舉檔為依據。

@@ -2,10 +2,10 @@
 name: artifact-enumeration
 
 description: |
-  Enumerate every primary unit in the repository and persist the master
-  lists to disk. This Skill produces the authoritative enumeration files
-  that gate all Phase 2 Skills. It counts and locates artifacts only and
-  never describes what they do.
+  列舉儲存庫中的每一個主要單元，並把主清單持久化到磁碟。
+  本 Skill 產出的列舉檔具有權威性，並作為所有 Phase 2 Skill 的關卡。
+  它只計數與定位產出物，
+  絕不描述它們做了什麼。
 
 version: 1.0.0
 
@@ -68,73 +68,73 @@ outputs:
   - docs/enumeration/priority-report.md
 ---
 
-# Objective
+# 目標
 
-Build the complete master list of every primary unit in the repository.
+建立儲存庫中每一個主要單元的完整主清單。
 
-This Skill is the gate between Phase 1 and Phase 2.
+本 Skill 是 Phase 1 與 Phase 2 之間的關卡。
 
-Apply shared/enumeration-first.md.
+套用 shared/enumeration-first.md。
 
-Apply shared/fact-layer.md.
+套用 shared/fact-layer.md。
 
-Apply shared/prioritization.md.
+套用 shared/prioritization.md。
 
-Apply shared/custom-framework-recognition.md.
+套用 shared/custom-framework-recognition.md。
 
-The lists are QUERIED from the factbase produced by `fact-extraction`. They
-are not produced by searching source text. See shared/enumeration-first.md,
-"Enumeration Is a Query, Not a Search".
+這些清單是從 `fact-extraction` 所產生的 factbase「查詢」而來的，
+不是靠搜尋原始碼文字產生的。見 shared/enumeration-first.md
+「列舉是一次查詢，不是一次搜尋」。
 
-This Skill records identity and location only.
+本 Skill 只記錄身分與位置。
 
-Behaviour, logic and business meaning are outside the scope of this Skill.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify the dispatcher or router class
-
-- identify the transaction base class
-
-- identify the DB object base class
-
-- enumerate EVERY transaction/action class
-
-- enumerate EVERY DB object subclass
-
-- enumerate EVERY servlet
-
-- record the file path of every enumerated class
-
-- record the target table of every DB object where declared
-
-- persist every list to disk as a machine-readable file
-
-- verify each list against an independent scan
-
-- report the verified count of each list
-
-This Skill SHALL NOT
-
-- describe what a class does
-
-- extract business rules
-
-- analyse method logic
-
-- generate per-unit documents
-
-- substitute an approximate count for a list
-
-- stop after a representative sample
+行為、邏輯與業務意義不在本 Skill 的範圍內。
 
 ---
 
-# Inputs
+# 職責
+
+本 Skill「應當」
+
+- 指出 dispatcher 或 router 類別
+
+- 指出交易基底類別
+
+- 指出 DB 物件基底類別
+
+- 列舉「每一個」交易／動作類別
+
+- 列舉「每一個」DB 物件子類別
+
+- 列舉「每一個」servlet
+
+- 記錄每一個被列舉類別的檔案路徑
+
+- 記錄每一個 DB 物件（若有宣告）的目標資料表
+
+- 把每一份清單以機器可讀的檔案持久化到磁碟
+
+- 對照獨立掃描驗證每一份清單
+
+- 回報每一份清單經驗證的數量
+
+本 Skill「不得」
+
+- 描述某個類別做了什麼
+
+- 抽取業務規則
+
+- 分析方法邏輯
+
+- 產生逐單元文件
+
+- 以概略數量取代清單
+
+- 在代表性樣本之後就停止
+
+---
+
+# 輸入
 
 docs/overview/repository-inventory.md
 
@@ -148,13 +148,13 @@ docs/architecture/architecture.md
 
 docs/architecture/component-diagram.md
 
-Source Code
+原始碼
 
-Deployment Descriptors
+部署描述檔
 
 ---
 
-# Deliverables
+# 交付物
 
 docs/enumeration/
 
@@ -168,15 +168,15 @@ enumeration-report.md
 
 ---
 
-# File Format
+# 檔案格式
 
-One entry per line.
+一行一筆條目。
 
-Pipe separated.
+以管線符號分隔。
 
-No header row.
+無標題列。
 
-No blank lines.
+無空行。
 
 transaction-classes.txt
 
@@ -190,63 +190,63 @@ db-object-classes.txt
 
 `ClassName|relative/path/to/File.java|TargetTable`
 
-The third field is present only for db-object-classes.txt.
+第三個欄位僅出現在 db-object-classes.txt。
 
-Write `UNKNOWN` when the target table cannot be determined from the source.
+當無法從原始碼判定目標資料表時，寫 `UNKNOWN`。
 
-Never omit the field.
-
----
-
-# Evidence Rule
-
-Every entry must reference a real file.
-
-Every path must resolve from the repository root.
-
-A class that cannot be located is not enumerated.
-
-Unknown is acceptable.
-
-Guessing is prohibited.
+絕不省略該欄位。
 
 ---
 
-# Completion Criteria
+# 證據規則
 
-Enumeration is complete when
+每一筆條目都必須參照真實存在的檔案。
 
-docs/facts/types.psv exists and the bytecode oracle status is recorded
+每一個路徑都必須能從儲存庫根目錄解析。
 
-and
+無法定位的類別不列入列舉。
 
-docs/enumeration/transaction-classes.txt exists and line count > 0
+Unknown 是可以接受的。
 
-and
-
-docs/enumeration/db-object-classes.txt exists and line count > 0
-
-and
-
-docs/enumeration/servlet-classes.txt exists and line count > 0
-
-and
-
-every line matches the declared file format
-
-and
-
-every recorded path resolves to an existing file
-
-and
-
-each line count has been verified against an independent scan.
-
-If any condition fails, Phase 2 is BLOCKED.
+臆測則是被禁止的。
 
 ---
 
-# Dependencies
+# 完成判準
+
+當下列條件成立時，列舉即為完成
+
+docs/facts/types.psv 存在，且 bytecode 判準狀態已記錄
+
+且
+
+docs/enumeration/transaction-classes.txt 存在且行數 > 0
+
+且
+
+docs/enumeration/db-object-classes.txt 存在且行數 > 0
+
+且
+
+docs/enumeration/servlet-classes.txt 存在且行數 > 0
+
+且
+
+每一行都符合宣告的檔案格式
+
+且
+
+每一個記錄的路徑都能解析到存在的檔案
+
+且
+
+每一份清單的行數都已對照獨立掃描驗證。
+
+若任一條件不成立，Phase 2 即被「阻斷」。
+
+---
+
+# 相依
 
 inventory
 
@@ -256,7 +256,7 @@ architecture-discovery
 
 ---
 
-# Required By
+# 被下列 Skill 依賴
 
 module-analysis
 
@@ -274,9 +274,9 @@ gap-analysis
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -286,105 +286,105 @@ Every output of this Skill SHALL comply with:
 - shared/output-schema.md
 - shared/quality-checklist.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Artifact Enumeration Skill
+# 產出物列舉 Skill
 
 ---
 
-## Goal
+## 目標
 
-Produce the authoritative master lists of every primary unit.
+產出每一個主要單元的權威主清單。
 
-Do not document behaviour.
+不要記錄行為。
 
-Do not sample.
+不要抽樣。
 
-Enumerate exhaustively.
+窮盡地列舉。
 
-Persist to disk.
-
----
-
-## Step 1
-
-Identify the Dispatcher
-
-Locate the class that routes incoming requests to transaction classes.
-
-Search for
-
-a servlet that reads a transaction code parameter
-
-a routing table
-
-a switch or map keyed by transaction code
-
-a factory that instantiates transaction classes by name
-
-a configuration file that maps codes to classes
-
-Record
-
-Dispatcher Class
-
-File Path
-
-Routing Mechanism
-
-Routing Key (parameter name, header, URL segment)
-
-If no dispatcher exists, record `Dispatcher: NONE` and continue.
+持久化到磁碟。
 
 ---
 
-## Step 2
+## 步驟 1
 
-Identify the Base Classes
+指出 Dispatcher
 
-Locate the transaction base class.
+找出把進站請求路由到交易類別的那個類別。
 
-Search for
+搜尋
 
-the supertype of the classes the dispatcher instantiates
+讀取交易代碼參數的 servlet
 
-an abstract class with a single execute-style entry method
+路由表
 
-an interface implemented by every action class
+以交易代碼為鍵的 switch 或 map
 
-Locate the DB object base class.
+依名稱實例化交易類別的 factory
 
-Search for
+把代碼對應到類別的組態檔
 
-an abstract class exposing table name and field definitions
+記錄
 
-a base DAO or record type
+Dispatcher 類別
 
-a persistence superclass
+檔案路徑
 
-Record
+路由機制
 
-Transaction Base Class + File Path
+路由鍵（參數名稱、標頭、URL 片段）
 
-DB Object Base Class + File Path
-
-Detection Evidence
-
-If a custom framework is present, apply shared/custom-framework-recognition.md
-before concluding that no base class exists.
+若不存在 dispatcher，記錄 `Dispatcher: NONE` 後繼續。
 
 ---
 
-## Step 3
+## 步驟 2
 
-Configure the bases.
+指出基底類別
 
-Write `docs/enumeration/enumeration-config.psv`
+找出交易基底類別。
+
+搜尋
+
+dispatcher 所實例化之類別的父型別
+
+帶有單一 execute 式進入方法的抽象類別
+
+每個動作類別都實作的介面
+
+找出 DB 物件基底類別。
+
+搜尋
+
+公開資料表名稱與欄位定義的抽象類別
+
+基底 DAO 或記錄型別
+
+持久化父類別
+
+記錄
+
+交易基底類別 + 檔案路徑
+
+DB 物件基底類別 + 檔案路徑
+
+偵測證據
+
+若存在自製框架，在斷定「沒有基底類別」之前，
+先套用 shared/custom-framework-recognition.md。
+
+---
+
+## 步驟 3
+
+設定基底類別。
+
+寫出 `docs/enumeration/enumeration-config.psv`
 
     {
       "transaction_base": ["StdTrxObject"],
@@ -392,153 +392,152 @@ Write `docs/enumeration/enumeration-config.psv`
       "servlet_base":     ["javax.servlet.http.HttpServlet"]
     }
 
-A simple name is enough; a base class that lives in a jar is matched as an
-`EXTERNAL:` node.
+只給簡單名稱即可；位於 jar 中的基底類別會以
+`EXTERNAL:` 節點的形式比對。
 
-If the bases are not yet known, run Step 4 with no config. The tool proposes
-one from the hierarchy and writes it. A proposal is not a conclusion:
-review it against Steps 1 and 2 and correct it before continuing.
+若基底類別尚未確定，就在沒有設定檔的情況下執行步驟 4。
+工具會從階層中提出一個建議並寫出。建議不是結論：
+請對照步驟 1 與步驟 2 檢視並修正之後再繼續。
 
 ---
 
-## Step 4
+## 步驟 4
 
-Enumerate.
+列舉。
 
-    sh tools/factbase/enumerate.sh \
+    sh tools/shell/factbase/enumerate.sh \
         --facts <repo>/docs/facts \
         --out <repo>/docs/enumeration
 
-This writes the three master lists in the documented pipe-separated format,
-plus `enumeration-evidence.psv` carrying the provenance of every entry, and
-`enumeration-report.md`.
+這會以文件所述的管線分隔格式寫出三份主清單，
+外加承載每一筆條目來源的 `enumeration-evidence.psv`，
+以及 `enumeration-report.md`。
 
-The tool resolves, and the Skill SHALL report:
+工具會解析出下列各項，而本 Skill「應當」回報：
 
-- transitive subclasses, at any depth below the base
-- subclasses of a base class that is not in the source tree
-- classes named only by a string literal, through reflection
-- string literals that look like unit names but match no known class
-
----
-
-## Step 5
-
-Read the discovery breakdown.
-
-`enumeration-report.md` records the inheritance depth of every entry.
-
-Every entry with depth > 1 is an entry a `grep "extends <Base>"` would have
-missed. State how many there are. If the number is zero in a system with a
-custom framework, be suspicious of the configured base rather than pleased.
-
-Every dangling class reference SHALL be resolved: a class outside the scanned
-roots, or a dead registration. Record which.
+- 遞移子類別，位於基底類別之下的任何深度
+- 不在原始碼樹中的基底類別的子類別
+- 僅由字串常值經反射指名的類別
+- 看起來像單元名稱、卻對應不到任何已知類別的字串常值
 
 ---
 
-## Step 6
+## 步驟 5
 
-Independent Verification
+閱讀發現方式的分佈。
 
-The oracle is the bytecode, not a second search.
+`enumeration-report.md` 記錄了每一筆條目的繼承深度。
 
-`docs/facts/bytecode-verification.md` is produced by the `fact-extraction`
-Skill. Read its status.
+每一筆深度 > 1 的條目，都是 `grep "extends <Base>"` 會漏掉的條目。
+請說明有多少筆。若在一個帶有自製框架的系統中這個數字是零，
+該懷疑的是所設定的基底類別，而不是感到滿意。
 
-`VERIFIED` - proceed.
-
-`FAILED` - Phase 2 is BLOCKED. Classes exist in the compiled artefact that
-the scan did not find. Resolve before continuing.
-
-`UNAVAILABLE` - proceed, and record in `enumeration-report.md` that the
-enumeration rests on lexical extraction alone. Do not call it verified.
-This is Tier B.
-
-If this Skill's tools could not be run at all, the enumeration was produced
-by reading. That is Tier C, and `enumeration-report.md` SHALL carry the
-disclosure in shared/verification-tiers.md verbatim: the enumeration has NOT
-been checked for transitive inheritance, out-of-tree base classes, or
-reflection registration, and this run cannot say which of them it missed.
-
-Re-scanning the source with a different expression is NOT verification and
-SHALL NOT be reported as such.
+每一個懸空類別參照都「應當」獲得處置：
+是掃描根目錄之外的類別，還是一個失效的註冊。請記錄是哪一種。
 
 ---
 
-## Step 7
+## 步驟 6
 
-Path Validation
+獨立驗證
 
-`enumerate.sh` writes only entries whose type came from a parsed file, so
-every path resolves by construction.
+判準是 bytecode，而不是第二次搜尋。
 
-Confirm the file count independently:
+`docs/facts/bytecode-verification.md` 由 `fact-extraction` Skill 產生。
+閱讀它的狀態。
+
+`VERIFIED` —— 繼續。
+
+`FAILED` —— Phase 2 被「阻斷」。編譯產出物中存在掃描沒找到的類別。
+解決之後才能繼續。
+
+`UNAVAILABLE` —— 繼續，並在 `enumeration-report.md` 中記錄
+該列舉僅立基於詞法抽取。不要稱它為已驗證。
+這屬於層級 B。
+
+若本 Skill 的工具根本無法執行，該列舉就是靠閱讀產生的。
+那屬於層級 C，且 `enumeration-report.md`「應當」逐字帶上
+shared/verification-tiers.md 中的揭露聲明：該列舉「未」針對
+遞移繼承、樹外基底類別或反射註冊做過檢查，
+且本次執行無法說出它漏掉了其中哪些。
+
+以不同的表示式重新掃描原始碼「不是」驗證，
+且「不得」以驗證之名回報。
+
+---
+
+## 步驟 7
+
+路徑驗證
+
+`enumerate.sh` 只寫出型別來自已解析檔案的條目，
+因此每一個路徑依其構造方式都能解析。
+
+獨立確認檔案數量：
 
     wc -l docs/enumeration/*.txt
 
-and confirm that every path in every list exists.
+並確認每一份清單中的每一個路徑都存在。
 
-An unresolvable path is a defect in the factbase and SHALL be reported.
+無法解析的路徑是 factbase 的缺陷，且「應當」回報。
 
 ---
 
-## Step 8
+## 步驟 8
 
-Prioritise.
+排定優先序。
 
-    sh tools/factbase/prioritize.sh \
+    sh tools/shell/factbase/prioritize.sh \
         --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration \
         [--usage usage.csv --usage-map codes.csv] [--since 3.years]
 
-Produces `priority.txt`, `batches.txt` and `priority-report.md`.
+會產生 `priority.txt`、`batches.txt` 與 `priority-report.md`。
 
-Ask the site for the runtime usage file. It is the strongest of the three
-signals and the only one the repository cannot supply. If it is not
-available, record that the ranking rests on reachability and churn alone.
+向現場索取執行期使用量檔案。它是三種訊號中最強的一個，
+也是唯一儲存庫無法提供的。若取得不到，
+就記錄該排序僅立基於可達性與變更頻率。
 
-Report every unreachable unit by name. Unreachable is a candidate for dead
-code, not a verdict: schedulers, message listeners and operator scripts are
-entry points this scan does not model.
-
----
-
-## Step 9
-
-Enumeration Report
-
-`enumerate.sh` generates `docs/enumeration/enumeration-report.md`.
-
-Add to it, by hand:
-
-- which bases were configured and which were auto-detected, and why the
-  auto-detected ones were accepted
-- the resolution of every dangling class reference
-- the oracle status, quoted
-- whether a runtime usage file was supplied
+逐一指名回報每一個不可達的單元。不可達是死碼的候選，不是判決：
+排程器、訊息監聽器與維運腳本都是這次掃描沒有建模的進入點。
 
 ---
 
-# Output Rules
+## 步驟 9
 
-Never describe what a class does.
+列舉報告
 
-Never analyse a method.
+`enumerate.sh` 會產生 `docs/enumeration/enumeration-report.md`。
 
-Never extract a rule.
+請以人工補上：
 
-Never generate a per-unit document.
-
-Never report a count without the corresponding list.
-
-Enumeration only.
+- 哪些基底類別是設定的、哪些是自動偵測的，
+  以及為什麼接受那些自動偵測的結果
+- 每一個懸空類別參照的處置結果
+- 判準狀態，逐字引用
+- 是否提供了執行期使用量檔案
 
 ---
 
-# Required Outputs
+# 輸出規則
 
-Generate
+絕不描述某個類別做了什麼。
+
+絕不分析方法。
+
+絕不抽取規則。
+
+絕不產生逐單元文件。
+
+絕不在沒有對應清單的情況下回報數量。
+
+只做列舉。
+
+---
+
+# 必要輸出
+
+產生
 
 docs/enumeration/transaction-classes.txt
 
@@ -550,68 +549,67 @@ docs/enumeration/enumeration-report.md
 
 ---
 
-# Failure Reporting
+# 失敗回報
 
-If zero transaction classes are found
+若找到零個交易類別
 
-STOP the pipeline.
+停止流水線。
 
-Report
+回報
 
-- the searches performed
-- the base class candidates evaluated
-- the dispatcher candidates evaluated
-- why each was rejected
+- 執行過的搜尋
+- 評估過的基底類別候選
+- 評估過的 dispatcher 候選
+- 每一個候選被排除的原因
 
-Zero transaction classes is a critical failure, not an empty result.
-
----
-
-# Quality Checklist
-
-☐ Dispatcher identified or explicitly recorded as NONE
-
-☐ Transaction base class identified
-
-☐ DB object base class identified
-
-☐ transaction-classes.txt exists with line count > 0
-
-☐ db-object-classes.txt exists with line count > 0
-
-☐ servlet-classes.txt exists with line count > 0
-
-☐ Every line matches the declared pipe-separated format
-
-☐ Every recorded path resolves to an existing file
-
-☐ Every count verified against the bytecode oracle, or the oracle's
-  absence recorded
-
-☐ Inheritance depth of every entry recorded
-
-☐ Entries found only through the transitive closure counted and reported
-
-☐ Entries found only through reflection counted and reported
-
-☐ Every dangling class reference resolved
-
-☐ priority.txt, batches.txt and priority-report.md generated
-
-☐ Unreachable units listed by name
-
-☐ Runtime usage file requested, and its absence recorded if not supplied
-
-☐ Enumeration report generated
-
-☐ No approximate counts
-
-☐ No sampling
-
-☐ No enumeration produced by text search alone
-
-☐ No behaviour described
+零個交易類別是關鍵失敗，不是一個空結果。
 
 ---
 
-End.
+# 品質檢查清單
+
+☐ 已指出 dispatcher，或已明確記錄為 NONE
+
+☐ 已指出交易基底類別
+
+☐ 已指出 DB 物件基底類別
+
+☐ transaction-classes.txt 存在且行數 > 0
+
+☐ db-object-classes.txt 存在且行數 > 0
+
+☐ servlet-classes.txt 存在且行數 > 0
+
+☐ 每一行都符合宣告的管線分隔格式
+
+☐ 每一個記錄的路徑都能解析到存在的檔案
+
+☐ 每一項數量都已對照 bytecode 判準驗證，或已記錄判準的缺席
+
+☐ 已記錄每一筆條目的繼承深度
+
+☐ 僅透過遞移閉包找到的條目已計數並回報
+
+☐ 僅透過反射找到的條目已計數並回報
+
+☐ 每一個懸空類別參照都已獲得處置
+
+☐ 已產生 priority.txt、batches.txt 與 priority-report.md
+
+☐ 已逐一指名列出不可達的單元
+
+☐ 已索取執行期使用量檔案；若未提供，已記錄其缺席
+
+☐ 已產生列舉報告
+
+☐ 沒有概略數量
+
+☐ 沒有抽樣
+
+☐ 沒有僅靠文字搜尋產生的列舉
+
+☐ 未描述任何行為
+
+---
+
+結束。

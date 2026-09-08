@@ -1,89 +1,85 @@
-# Prioritization
+# 優先排序
 
-## Objective
+## 目標
 
-Decide the order in which units are documented.
+決定各單元被撰寫文件的順序。
 
-Coverage is unchanged: every enumerated unit gets a document. This decides
-only what gets documented first, and therefore what gets documented at all
-when the work is stopped early.
-
----
-
-## The Problem
-
-Batching by package name is alphabetical order wearing a plan's clothes.
-
-It spends the same effort on a unit nothing has called since 2011 as on the
-one that moves money, and it hides that fact behind a progress percentage.
+覆蓋範圍不變：每一個被列舉的單元都會有文件。這裡決定的只是
+「什麼先被記錄」，因而也決定了工作提早中止時「什麼終究有被記錄」。
 
 ---
 
-## Signals
+## 問題所在
 
-`tools/factbase/prioritize.sh` combines three signals that already exist in
-the repository.
+依套件名稱分批，只是披著計畫外衣的字母排序。
 
-### Reachability (weight 0.45)
-
-Can an entry point actually reach this unit?
-
-Computed over the call graph, including
-
-- resolved calls and constructor calls
-- reflection edges, where a string literal names a known type
-- inheritance, because a reachable subclass makes its in-tree ancestors
-  reachable
-
-An unreachable unit is a candidate for dead code. It is a candidate, not a
-verdict: schedulers, message listeners, JCL and operator scripts are entry
-points this scan does not model. Confirm before treating anything as dead.
-
-### Change frequency (weight 0.25)
-
-`git log --name-only` over the unit's file.
-
-Code that changes is code that is understood badly and needed often. Both
-make documentation worth more.
-
-### Runtime usage (weight 0.30)
-
-Optional, supplied by the site: a CSV of unit name and call count, drawn from
-production logs, and a mapping file from routing code to class name where
-the two differ.
-
-This is the strongest signal and the only one the repository cannot supply.
-When it is absent the weight contributes zero and the report says so.
+它會把「自 2011 年以來沒有任何東西呼叫過的單元」
+與「負責搬動金錢的單元」耗上同樣的心力，
+並用一個進度百分比把這個事實蓋掉。
 
 ---
 
-## Rule
+## 訊號
 
-The orchestrator SHALL consume `docs/enumeration/priority.txt` and
-`docs/enumeration/batches.txt` rather than dividing work by package.
+`tools/shell/factbase/prioritize.sh` 結合了儲存庫中原本就存在的三種訊號。
 
-Batch size stays small: 5 to 10 units per pass when full depth is required.
-A batch is complete only when every unit in it is depth-complete. Reducing
-depth to fit a batch is FORBIDDEN. Reduce the batch size instead.
+### 可達性（權重 0.45）
+
+某個進入點真的到得了這個單元嗎？
+
+在呼叫圖上計算，包含
+
+- 已解析的呼叫與建構子呼叫
+- 反射邊，亦即字串常值指名了某個已知型別的情況
+- 繼承，因為一個可達的子類別會使其樹內祖先也可達
+
+不可達的單元是死碼的「候選」。是候選，不是判決：
+排程器、訊息監聽器、JCL 與維運腳本都是這次掃描沒有建模的進入點。
+在把任何東西當成死碼之前，請先確認。
+
+### 變更頻率（權重 0.25）
+
+對該單元的檔案執行 `git log --name-only`。
+
+會變動的程式碼，通常是被理解得很差、卻又經常被需要的程式碼。
+兩者都讓文件更有價值。
+
+### 執行期使用量（權重 0.30）
+
+選用，由現場提供：一份包含單元名稱與呼叫次數的 CSV，取自正式環境日誌；
+若路由代碼與類別名稱不同，另需一份對應檔。
+
+這是最強的訊號，也是唯一儲存庫無法自行提供的訊號。
+它缺席時，該權重貢獻為零，且報告會如實說明。
 
 ---
 
-## Reporting
+## 規則
 
-`docs/enumeration/priority-report.md` SHALL be read before the first batch
-and SHALL record
+orchestrator「應當」取用 `docs/enumeration/priority.txt` 與
+`docs/enumeration/batches.txt`，而不是依套件切分工作。
 
-- the weights used
-- whether runtime usage was supplied
-- every unreachable unit, listed by name
-- the reflection edges that were used to establish reachability
+批次要維持小規模：需要全深度時，每趟 5 到 10 個單元。
+只有當批次中每一個單元都達到深度完備時，該批次才算完成。
+為了塞進一個批次而降低深度是「被禁止」的。請改為縮小批次。
 
 ---
 
-## What this does not license
+## 報告
 
-It does not license skipping the tail.
+`docs/enumeration/priority-report.md`「應當」在第一批開始前先被閱讀，
+且「應當」記錄
 
-An unreachable unit still gets a document. It gets one last, and its document
-may state that no entry point reaching it was found, with the evidence for
-that claim.
+- 所使用的權重
+- 是否提供了執行期使用量
+- 每一個不可達的單元，逐一列名
+- 用來建立可達性的反射邊
+
+---
+
+## 這不等於允許什麼
+
+它不允許略過尾端。
+
+不可達的單元依然要有文件。它只是排在最後，
+而它的文件可以聲明找不到任何能到達它的進入點，並附上該宣稱的證據。

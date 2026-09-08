@@ -1,109 +1,109 @@
-# Specification
+# 規格
 
 ---
 
-## Purpose
+## 目的
 
 ---
 
-## Scope
+## 範圍
 
 ---
 
-## Functional Description
+## 功能描述
 
-Describe what the system does for its users, function area by function area.
+逐一針對每個功能領域，描述系統為使用者做了什麼。
 
-For each function area state
+每個功能領域都要說明
 
-the actor
+行為者
 
-the trigger
+觸發條件
 
-the inputs the user supplies
+使用者提供的輸入
 
-the decisions the system makes, with the condition that drives each
+系統所做的決策，以及驅動每一項決策的條件
 
-the data the system records
+系統所記錄的資料
 
-the result the user sees
+使用者看到的結果
 
-Reference the business rules (BR-IDs) enforced in each area.
+參照各領域所施行的業務規則（BR-ID）。
 
-One paragraph per function area is insufficient if the area has more than one
-decision point. Write one numbered flow per user-visible operation.
-
----
-
-## Technical Description
-
-Describe how the system is built and how a request is processed end to end.
-
-Include
-
-the dispatch and routing mechanism
-
-the request lifecycle from entry point to response
-
-the per-transaction processing model
-
-transaction and commit boundaries
-
-the data access mechanism
-
-the external integration mechanism
-
-the error and session handling model
-
-Reference the per-transaction specifications under `transactions/` for method-level
-processing flows, pseudocode and field mappings.
+若某個領域有一個以上的決策點，一個段落是不夠的。
+每一項使用者可見的操作都要寫一段編號流程。
 
 ---
 
-## Modules
+## 技術描述
+
+描述系統是怎麼建構的，以及一個請求是如何被端到端處理的。
+
+包含
+
+分派與路由機制
+
+從進入點到回應的請求生命週期
+
+逐交易的處理模型
+
+交易與 commit 邊界
+
+資料存取機制
+
+外部整合機制
+
+錯誤與 session 處理模型
+
+方法層級的處理流程、虛擬碼與欄位對應，
+參照 `transactions/` 底下的逐交易規格。
 
 ---
 
-## Business Rules
+## 模組
 
 ---
 
-## Interfaces
+## 業務規則
 
 ---
 
-## Database
+## 介面
 
 ---
 
-## Sequences
+## 資料庫
 
 ---
 
-## Security
+## 循序圖
 
 ---
 
-## Performance
+## 安全
 
 ---
 
-## Assumptions
+## 效能
 
 ---
 
-## Limitations
+## 假設
 
 ---
 
-## Transaction Specifications Index
-
-| Transaction | Entry | Purpose | Specification |
-|-------------|-------|---------|---------------|
-
-Every transaction listed here has a depth-complete specification under
-`transactions/`. See `shared/logic-depth.md`.
+## 限制
 
 ---
 
-## References
+## 交易規格索引
+
+| 交易 | 進入點 | 用途 | 規格 |
+|------|--------|------|------|
+
+此處列出的每一筆交易，在 `transactions/` 底下都有一份深度完備的規格。
+見 `shared/logic-depth.md`。
+
+---
+
+## 參考資料

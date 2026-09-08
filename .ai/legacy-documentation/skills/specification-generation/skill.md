@@ -2,10 +2,9 @@
 name: specification-generation
 
 description: |
-  Generate complete software specifications from the documentation
-  produced by previous Skills. This Skill consolidates architectural,
-  technical and business knowledge into implementation-independent
-  specifications.
+  以先前各 Skill 所產出的文件為基礎，產生完整的軟體規格。
+  本 Skill 把架構、技術與業務知識整合成
+  與實作方式無關的規格。
 
 version: 1.0.0
 
@@ -60,78 +59,77 @@ outputs:
   - docs/specifications/limitations.md
 ---
 
-# Objective
+# 目標
 
-Generate implementation-independent specifications.
+產生與實作方式無關的規格。
 
-Specifications shall be based only on verified documentation.
+規格只能立基於已驗證的文件。
 
-This Skill does not perform primary source analysis.
+本 Skill 不進行第一手的原始碼分析。
 
-Source code may be read only to verify a statement already present in upstream
-documentation.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- consolidate documentation
-
-- generate functional specification
-
-- generate technical specification
-
-- generate module specifications
-
-- generate API specification
-
-- generate database specification
-
-- generate glossary
-
-- generate assumptions
-
-- generate limitations
-
-- identify unresolved questions
-
-This Skill SHALL NOT
-
-- perform primary source analysis (module-analysis owns method-level logic)
-
-- reduce the depth of upstream module documentation
-
-- discover new business rules
-
-- infer undocumented behavior
-
-- modify previous documentation
+只有在需要驗證上游文件中「已存在的陳述」時，才可閱讀原始碼。
 
 ---
 
-# Inputs
+# 職責
 
-Inventory
+本 Skill「應當」
 
-Technology Discovery
+- 整合文件
 
-Architecture Discovery
+- 產生功能規格
 
-Module Analysis
+- 產生技術規格
 
-Database Analysis
+- 產生模組規格
 
-Interface Analysis
+- 產生 API 規格
 
-Business Rule Extraction
+- 產生資料庫規格
 
-Sequence Discovery
+- 產生術語表
+
+- 產生假設清單
+
+- 產生限制清單
+
+- 指出未解決的問題
+
+本 Skill「不得」
+
+- 進行第一手原始碼分析（方法層級邏輯由 module-analysis 負責）
+
+- 降低上游模組文件的深度
+
+- 發掘新的業務規則
+
+- 推測未記錄的行為
+
+- 修改先前的文件
 
 ---
 
-# Deliverables
+# 輸入
+
+清冊盤點
+
+技術探索
+
+架構探索
+
+模組分析
+
+資料庫分析
+
+介面分析
+
+業務規則抽取
+
+循序探索
+
+---
+
+# 交付物
 
 docs/specifications/
 
@@ -155,47 +153,47 @@ limitations.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every section shall reference previously generated documentation.
+每一個章節都應參照先前產生的文件。
 
-Never introduce new facts.
+絕不引入新的事實。
 
-If information is unavailable,
+若資訊無法取得，
 
-write
+寫
 
 Unknown
 
-Do not guess.
+不要臆測。
 
 ---
 
-# Completion Criteria
+# 完成判準
 
-Functional Specification complete.
+功能規格已完成。
 
-Technical Specification complete.
+技術規格已完成。
 
-API Specification complete.
+API 規格已完成。
 
-Database Specification complete.
+資料庫規格已完成。
 
-Module Specifications complete.
+模組規格已完成。
 
-All references valid.
+所有參照皆有效。
 
 ---
 
-# Required By
+# 被下列 Skill 依賴
 
 gap-analysis
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -207,93 +205,92 @@ Every output of this Skill SHALL comply with:
 - shared/enumeration-first.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/specification.md
 - skills/templates/transaction.md
 - skills/templates/glossary.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Specification Generation
+# 規格產生
 
 ---
 
-# Goal
+# 目標
 
-Generate software specifications using previously generated documentation.
+以先前產生的文件為基礎產生軟體規格。
 
-Source code may be read only to verify a statement already present in upstream
-documentation. Depth comes from docs/modules/transactions/, not from re-reading source.
+只有在需要驗證上游文件中「已存在的陳述」時，才可閱讀原始碼。
+深度來自 docs/modules/transactions/，而不是來自重新閱讀原始碼。
 
-Do not infer undocumented behavior.
+不要推測未記錄的行為。
 
 ---
 
-# CRITICAL: Per-Transaction Specifications
+# 關鍵：逐交易規格
 
-Apply shared/enumeration-first.md.
+套用 shared/enumeration-first.md。
 
-Apply shared/logic-depth.md.
+套用 shared/logic-depth.md。
 
-Use skills/templates/transaction.md as the required structure.
+以 skills/templates/transaction.md 作為必要結構。
 
-1. Obtain the complete transaction class list from Module Analysis.
+1. 從模組分析取得完整的交易類別清單。
 
-2. For EVERY transaction class, generate a specification under docs/specifications/transactions/.
+2. 對「每一個」交易類別，在 docs/specifications/transactions/ 底下產生一份規格。
 
-3. Each transaction specification SHALL contain:
+3. 每一份交易規格「應當」包含：
 
-   - Purpose, entry URL and routing parameters
+   - 用途、進入 URL 與路由參數
 
-   - A State Methods index
+   - 一份 State Methods 索引
 
-   - One `### Method:` subsection per method, carrying forward from
-     docs/modules/transactions/[ClassName].md:
+   - 每個方法一個 `### Method:` 小節，從
+     docs/modules/transactions/[ClassName].md 沿用下列內容：
 
-     * Processing Flow (verbatim or clarified, never shortened)
+     * Processing Flow（逐字沿用或加以澄清，絕不縮短）
 
-     * Pseudocode (verbatim)
+     * Pseudocode（逐字沿用）
 
-     * Field Mapping (verbatim)
+     * Field Mapping（逐字沿用）
 
      * Branches and Conditions
 
-   - In place of Key Source Excerpts, a reference line:
+   - 以一行參照取代 Key Source Excerpts：
 
      `Source evidence: ../../modules/transactions/[ClassName].md#method-[name]`
 
-   - Input fields and validation rules
+   - 輸入欄位與驗證規則
 
-   - Database tables accessed, with operations and columns
+   - 存取到的資料庫資料表，含操作與欄位
 
-   - External system calls
+   - 外部系統呼叫
 
-   - Business rules enforced (reference BR-IDs)
+   - 所施行的業務規則（參照 BR-ID）
 
-   - Output pages/redirects
+   - 輸出頁面／轉導
 
-   - Error handling
+   - 錯誤處理
 
-   - Security requirements
+   - 安全需求
 
-   - Related sequences (reference)
+   - 相關循序圖（參照）
 
-4. Do NOT produce only a system-level summary. Per-transaction specs are MANDATORY.
+4. 「不要」只產出系統層級摘要。逐交易規格是「強制」的。
 
-5. A specification whose method subsections are shorter than the corresponding
-   module document sections is INCOMPLETE.
+5. 若某份規格的方法小節比對應的模組文件章節更短，即為「不完整」。
 
 ---
 
-# Input Documents
+# 輸入文件
 
-Read
+閱讀
 
 overview/
 
@@ -309,137 +306,137 @@ business-rules/
 
 sequence/
 
-Only use verified documentation.
+只使用已驗證的文件。
 
 ---
 
-# Step 1
+# 步驟 1
 
-Generate System Specification
+產生系統規格
 
-Include
+包含
 
-Purpose
+目的
 
-Scope
+範圍
 
-Architecture Summary
+架構摘要
 
-Technology Summary
+技術摘要
 
-Major Modules
+主要模組
 
-External Systems
+外部系統
 
-Constraints
+限制條件
 
-Known Limitations
+已知限制
 
-References
-
----
-
-# Step 2
-
-Generate Functional Specification
-
-Apply shared/logic-depth.md.
-
-Use skills/templates/specification.md as the required structure.
-
-Describe
-
-System Responsibilities
-
-Functional Areas
-
-Actors
-
-Business Capabilities
-
-Business Rules
-
-System Inputs
-
-System Outputs
-
-Dependencies
-
-Referenced Sequences
-
-Referenced APIs
-
-Referenced Database Objects
+參考資料
 
 ---
 
-# Step 3
+# 步驟 2
 
-Generate Technical Specification
+產生功能規格
 
-Apply shared/logic-depth.md.
+套用 shared/logic-depth.md。
 
-Use skills/templates/specification.md as the required structure.
+以 skills/templates/specification.md 作為必要結構。
 
-Describe
+描述
 
-Architecture
+系統職責
 
-Layers
+功能領域
 
-Components
+行為者
 
-Packages
+業務能力
 
-Technology Stack
+業務規則
 
-Runtime
+系統輸入
 
-Deployment Assumptions
+系統輸出
 
-Database Technologies
+相依關係
 
-Messaging Technologies
+引用到的循序圖
 
-Security Technologies
+引用到的 API
 
----
-
-# Step 4
-
-Generate Module Specifications
-
-Generate one document for every module.
-
-Each module shall include
-
-Purpose
-
-Responsibilities
-
-Dependencies
-
-Entry Points
-
-Interfaces
-
-Configuration
-
-Database Objects
-
-Related Business Rules
-
-Related Sequences
-
-Referenced APIs
+引用到的資料庫物件
 
 ---
 
-# Step 5
+# 步驟 3
 
-Generate API Specification
+產生技術規格
 
-Summarize
+套用 shared/logic-depth.md。
+
+以 skills/templates/specification.md 作為必要結構。
+
+描述
+
+架構
+
+分層
+
+元件
+
+套件
+
+技術堆疊
+
+執行環境
+
+部署假設
+
+資料庫技術
+
+訊息傳遞技術
+
+安全技術
+
+---
+
+# 步驟 4
+
+產生模組規格
+
+每個模組產生一份文件。
+
+每個模組都應包含
+
+用途
+
+職責
+
+相依關係
+
+進入點
+
+介面
+
+組態
+
+資料庫物件
+
+相關業務規則
+
+相關循序圖
+
+引用到的 API
+
+---
+
+# 步驟 5
+
+產生 API 規格
+
+彙整
 
 REST
 
@@ -451,120 +448,120 @@ Kafka
 
 gRPC
 
-File Interfaces
+檔案介面
 
-Authentication
+認證
 
-Error Handling
+錯誤處理
 
-Retry
+重試
 
-External Systems
-
----
-
-# Step 6
-
-Generate Database Specification
-
-Summarize
-
-Database Technologies
-
-Schemas
-
-Tables
-
-Views
-
-Sequences
-
-Repositories
-
-Entities
-
-Transactions
-
-Persistence Technologies
-
-ER Diagram Reference
+外部系統
 
 ---
 
-# Step 7
+# 步驟 6
 
-Generate Glossary
+產生資料庫規格
 
-Collect
+彙整
 
-Business Terms
+資料庫技術
 
-Technical Terms
+Schema
 
-Abbreviations
+資料表
 
-System Names
+檢視表
 
-Module Names
+序號產生器
 
-External Systems
+Repository
 
-Do not invent terminology.
+實體
 
----
+交易
 
-# Step 8
+持久化技術
 
-Generate Assumptions
-
-List
-
-Explicit assumptions only.
-
-Never infer.
+ER 圖參照
 
 ---
 
-# Step 9
+# 步驟 7
 
-Generate Limitations
+產生術語表
 
-Examples
+蒐集
 
-Unknown Modules
+業務術語
 
-Incomplete Evidence
+技術術語
 
-Missing Documentation
+縮寫
 
-Unavailable Configuration
+系統名稱
 
-Unresolved References
+模組名稱
 
----
+外部系統
 
-# Output Rules
-
-Every statement must reference previously generated documentation.
-
-Never perform primary source analysis. Read source only to verify an existing statement.
-
-Never summarise away the processing flow, pseudocode or field mapping present in
-docs/modules/transactions/. Carry it forward.
-
-Never introduce new business rules.
-
-Never invent requirements.
-
-Never rewrite evidence.
-
-Never remove uncertainty.
+不要自創術語。
 
 ---
 
-# Required Outputs
+# 步驟 8
 
-Generate
+產生假設清單
+
+列出
+
+僅限明確的假設。
+
+絕不推測。
+
+---
+
+# 步驟 9
+
+產生限制清單
+
+範例
+
+未知模組
+
+證據不完整
+
+文件缺失
+
+組態無法取得
+
+未解決的參照
+
+---
+
+# 輸出規則
+
+每一句陳述都必須參照先前產生的文件。
+
+絕不進行第一手原始碼分析。只為了驗證既有陳述才閱讀原始碼。
+
+絕不把 docs/modules/transactions/ 中既有的處理流程、虛擬碼或欄位對應
+摘要掉。要沿用它們。
+
+絕不引入新的業務規則。
+
+絕不憑空造出需求。
+
+絕不改寫證據。
+
+絕不移除不確定性。
+
+---
+
+# 必要輸出
+
+產生
 
 docs/specifications/system-specification.md
 
@@ -584,34 +581,34 @@ docs/specifications/limitations.md
 
 docs/specifications/module-specifications/
 
-docs/specifications/transactions/ (one file per transaction class)
+docs/specifications/transactions/（每個交易類別一個檔案）
 
 ---
 
-# Quality Checklist
+# 品質檢查清單
 
-☐ Functional specification completed
+☐ 功能規格已完成
 
-☐ Technical specification completed
+☐ 技術規格已完成
 
-☐ Module specifications completed
+☐ 模組規格已完成
 
-☐ API specification completed
+☐ API 規格已完成
 
-☐ Database specification completed
+☐ 資料庫規格已完成
 
-☐ Glossary completed
+☐ 術語表已完成
 
-☐ Assumptions documented
+☐ 已記錄假設
 
-☐ Limitations documented
+☐ 已記錄限制
 
-☐ Every statement traceable
+☐ 每一句陳述都可追溯
 
-☐ No new knowledge introduced
+☐ 未引入新的知識
 
-☐ No hallucinations
+☐ 沒有任何幻覺內容
 
 ---
 
-End.
+結束。

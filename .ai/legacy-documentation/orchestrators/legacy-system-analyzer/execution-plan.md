@@ -1,165 +1,167 @@
-# Execution Plan
+# 執行計畫
 
-## Prerequisites
+## 前置條件
 
-Fact extraction completed.
+事實抽取已完成。
 
-`docs/facts/types.psv` exists and is non-empty.
+`docs/facts/types.psv` 存在且非空。
 
-Bytecode oracle status recorded and not `FAILED`.
+bytecode 判準狀態已記錄，且不是 `FAILED`。
 
-`docs/verification-tier.txt` written, naming tier A or B.
+`docs/verification-tier.txt` 已寫出，並載明層級 A 或 B。
 
-Where commands cannot be run at all, the tier is C, declared by hand, and
-shared/verification-tiers.md governs what the run may claim.
+若根本無法執行指令，層級即為 C，由人手動宣告，
+並由 shared/verification-tiers.md 規範該次執行可以宣稱什麼。
 
-Inventory completed.
+清冊盤點已完成。
 
-Technology completed.
+技術探索已完成。
 
-Architecture completed.
+架構探索已完成。
 
-Custom Framework detected (if applicable).
-
----
-
-## Artifact Enumeration (MANDATORY before Phase 2)
-
-After Architecture Discovery, the `artifact-enumeration` Skill runs.
-
-Enumerate ALL transaction/action classes.
-
-Enumerate ALL DB object subclasses.
-
-Enumerate ALL servlets.
-
-This step MUST complete before any Phase 2 Skill begins.
-
-### Gate Criteria (added from lessons learned)
-
-Enumeration is NOT complete until:
-
-1. A persistent file exists at `docs/enumeration/transaction-classes.txt` with one entry per class.
-
-2. A persistent file exists at `docs/enumeration/db-object-classes.txt` with one entry per DB object.
-
-3. A persistent file exists at `docs/enumeration/servlet-classes.txt` with one entry per servlet.
-
-4. Each file contains `ClassName|Path`, and `ClassName|Path|TargetTable` for DB objects.
-
-5. `docs/enumeration/enumeration-evidence.psv` records, per entry, the
-   inheritance depth and how it was discovered.
-
-6. The count is confirmed against the BYTECODE ORACLE, not against a second
-   text search. See shared/enumeration-first.md. Where no compiled artefact
-   exists, the report says so and the run is not described as verified.
-
-7. `docs/enumeration/priority.txt` exists, so that batching is by value
-   rather than by package name.
-
-If the gate is not met, downstream Skills MUST NOT proceed.
+自製框架已偵測（若適用）。
 
 ---
 
-## Batching Rules (added from lessons learned)
+## 產出物列舉（Phase 2 之前強制完成）
 
-For repositories where enumeration yields > 50 primary units:
+在架構探索之後，執行 `artifact-enumeration` Skill。
 
-0. Archetype clustering runs first. A copy-and-paste family is one full-depth
-   document plus delta documents, not N full documents.
-   See shared/archetypes.md.
+列舉「所有」交易／動作類別。
 
-1. The orchestrator SHALL divide work into batches by PRIORITY, from
-   `docs/enumeration/batches.txt`. See shared/prioritization.md.
+列舉「所有」DB 物件子類別。
 
-2. Each batch SHALL complete ALL downstream Skills (Module Analysis → Business Rules → Sequence → Specification) for its scope before moving to the next batch.
+列舉「所有」servlet。
 
-3. Progress SHALL be tracked in `docs/gap-analysis/progress.md` with format: `Batch N: [package] [X/Y classes] [status]`.
+本步驟「必須」在任何 Phase 2 Skill 開始之前完成。
 
-4. The orchestrator SHALL NOT produce a single system-level document as a substitute for per-unit documents.
+### 關卡判準（源自經驗教訓）
 
-5. If the AI context window is insufficient for a full batch, the batch SHALL be subdivided further.
+在下列條件成立之前，列舉「不算」完成：
 
----
+1. `docs/enumeration/transaction-classes.txt` 存在一個持久化檔案，每個類別一筆條目。
 
-## Parallel Execution
+2. `docs/enumeration/db-object-classes.txt` 存在一個持久化檔案，每個 DB 物件一筆條目。
 
-Nothing executes before Fact Extraction.
+3. `docs/enumeration/servlet-classes.txt` 存在一個持久化檔案，每個 servlet 一筆條目。
 
-Allowed
+4. 每個檔案都包含 `ClassName|Path`；DB 物件則為 `ClassName|Path|TargetTable`。
 
-Module Analysis
+5. `docs/enumeration/enumeration-evidence.psv` 逐筆記錄
+   繼承深度以及該條目是如何被發現的。
 
-Database Analysis
+6. 數量是對照「BYTECODE 判準」確認的，而不是對照第二次文字搜尋。
+   見 shared/enumeration-first.md。若不存在任何編譯產出物，
+   報告要如實說明，且該次執行不得被描述為已驗證。
 
-Interface Analysis
+7. `docs/enumeration/priority.txt` 存在，使分批依價值進行，
+   而不是依套件名稱。
 
-may execute independently after
-
-Architecture Discovery AND Artifact Enumeration AND Archetype Clustering.
-
-Reflexion Check may run in parallel with Phase 2, but its divergences and
-absences MUST be resolved before Specification Generation.
+若關卡未達成，下游 Skill「不得」繼續。
 
 ---
 
-Business Rule Extraction
+## 分批規則（源自經驗教訓）
 
-must wait until
+對於列舉結果超過 50 個主要單元的儲存庫：
 
-Module
+0. 先執行原型分群。一個複製貼上家族等於 1 份全深度文件加上若干差異文件，
+   而不是 N 份完整文件。
+   見 shared/archetypes.md。
 
-Database
+1. orchestrator「應當」依「優先序」把工作分批，取自
+   `docs/enumeration/batches.txt`。見 shared/prioritization.md。
 
-Interface
+2. 每一批「應當」先為其範圍完成「所有」下游 Skill
+   （模組分析 → 業務規則 → 循序 → 規格），再進入下一批。
 
-complete.
+3. 進度「應當」記錄於 `docs/gap-analysis/progress.md`，
+   格式為：`Batch N: [package] [X/Y classes] [status]`。
 
-Must iterate EVERY transaction class.
+4. orchestrator「不得」以單一系統層級文件取代逐單元文件。
 
----
-
-Sequence Discovery
-
-must wait until
-
-Business Rules complete.
-
-Must generate one sequence per major transaction.
+5. 若 AI 上下文視窗不足以容納一整批，該批「應當」再往下細分。
 
 ---
 
-Per-Transaction Specification Generation
+## 平行執行
 
-must wait until
+在事實抽取之前，什麼都不執行。
 
-all documentation Skills complete.
+允許
 
-Must generate one spec per transaction class.
+模組分析
 
----
+資料庫分析
 
-System Specification Generation
+介面分析
 
-must wait until
+可在下列條件之後各自獨立執行
 
-Per-Transaction Specifications complete.
+架構探索「且」產出物列舉「且」原型分群。
 
----
-
-Characterization Test Generation
-
-must wait until
-
-Per-Transaction Specifications complete.
+反思檢查可與 Phase 2 平行執行，
+但其分歧與缺席「必須」在規格產生之前解決。
 
 ---
 
-Gap Analysis
+業務規則抽取
 
-always executes last.
+必須等到
 
-Must verify per-transaction document count matches enumeration count.
+模組
 
-Must run tools/verify/staleness.sh, then tools/verify/depth_checks.sh,
-and report their exit statuses. Assertion is not verification.
+資料庫
+
+介面
+
+完成之後。
+
+必須走訪「每一個」交易類別。
+
+---
+
+循序探索
+
+必須等到
+
+業務規則完成之後。
+
+必須為每個主要交易產生一份循序圖。
+
+---
+
+逐交易規格產生
+
+必須等到
+
+所有文件產生 Skill 完成之後。
+
+必須為每個交易類別產生一份規格。
+
+---
+
+系統規格產生
+
+必須等到
+
+逐交易規格完成之後。
+
+---
+
+特徵化測試產生
+
+必須等到
+
+逐交易規格完成之後。
+
+---
+
+落差分析
+
+永遠最後執行。
+
+必須驗證逐交易文件數量與列舉數量相符。
+
+必須執行 tools/shell/verify/staleness.sh，接著執行 tools/shell/verify/depth_checks.sh，
+並回報它們的結束狀態碼。「宣稱」不等於「驗證」。

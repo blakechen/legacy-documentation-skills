@@ -1,10 +1,10 @@
-# COBOL Example
+# COBOL 範例
 
-## Scenario
+## 情境
 
-Mainframe batch processing.
+主機批次處理。
 
-## Technology
+## 技術
 
 - COBOL
 - JCL
@@ -12,20 +12,20 @@ Mainframe batch processing.
 - DB2
 - CICS
 
-## Expected Outputs
+## 預期輸出
 
-Inventory
+清冊盤點
 
-Technology
+技術
 
-Architecture
+架構
 
-Modules
+模組
 
-Database
+資料庫
 
-Business Rules
+業務規則
 
-Sequences
+循序圖
 
-Specifications
+規格

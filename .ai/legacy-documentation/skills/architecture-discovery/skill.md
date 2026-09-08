@@ -2,10 +2,9 @@
 name: architecture-discovery
 
 description: |
-  Discover the software architecture by analysing the structural
-  organization of the repository. This Skill identifies architectural
-  layers, components, dependencies and system boundaries without
-  interpreting business logic.
+  透過分析儲存庫的結構組織來發掘軟體架構。
+  本 Skill 辨識架構分層、元件、相依關係與系統邊界，
+  但不詮釋業務邏輯。
 
 version: 1.0.0
 
@@ -47,75 +46,75 @@ outputs:
   - docs/architecture/layer-analysis.md
 ---
 
-# Objective
+# 目標
 
-Identify the structural architecture of the software.
+辨識軟體的結構架構。
 
-The objective is to describe how the software is organized.
+目標是描述這套軟體是如何組織的。
 
-This Skill does not analyse business behaviour.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify architectural layers
-
-- identify application boundaries
-
-- identify modules
-
-- identify components
-
-- identify packages
-
-- identify namespaces
-
-- identify dependencies
-
-- identify shared libraries
-
-- identify reusable components
-
-- identify external systems
-
-- identify deployment boundaries
-
-- identify architectural patterns
-
-This Skill SHALL NOT
-
-- analyse business rules
-
-- analyse transaction flow
-
-- analyse SQL logic
-
-- generate specifications
-
-- infer user workflow
-
-- evaluate implementation quality
+本 Skill 不分析業務行為。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Inventory
+本 Skill「應當」
 
-Technology Stack
+- 辨識架構分層
 
-Source Code
+- 辨識應用邊界
 
-Configuration Files
+- 辨識模組
 
-Build Definitions
+- 辨識元件
+
+- 辨識套件
+
+- 辨識命名空間
+
+- 辨識相依關係
+
+- 辨識共用函式庫
+
+- 辨識可重用元件
+
+- 辨識外部系統
+
+- 辨識部署邊界
+
+- 辨識架構模式
+
+本 Skill「不得」
+
+- 分析業務規則
+
+- 分析交易流程
+
+- 分析 SQL 邏輯
+
+- 產生規格
+
+- 推測使用者工作流程
+
+- 評價實作品質
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫清冊
+
+技術堆疊
+
+原始碼
+
+組態檔
+
+建置定義
+
+---
+
+# 交付物
 
 docs/architecture/
 
@@ -131,51 +130,51 @@ layer-analysis.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every component shall reference evidence.
+每個元件都應參照證據。
 
-Examples
+範例
 
-Package
+套件
 
-Namespace
+命名空間
 
-Directory
+目錄
 
-Configuration
+組態
 
 Annotation
 
-Dependency
+相依關係
 
 Import
 
-Build File
+建置檔
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never infer missing architecture.
-
----
-
-# Completion Criteria
-
-Architecture is complete when
-
-all layers are identified
-
-major components are documented
-
-external systems are listed
-
-dependency graph is generated
-
-architecture diagrams are generated
+絕不推測缺少的架構。
 
 ---
 
-# Required By
+# 完成判準
+
+當下列條件成立時，架構即為完成
+
+所有分層皆已辨識
+
+主要元件皆已記錄
+
+外部系統皆已列出
+
+已產生相依圖
+
+已產生架構圖
+
+---
+
+# 被下列 Skill 依賴
 
 artifact-enumeration
 
@@ -191,9 +190,9 @@ specification-generation
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -206,38 +205,38 @@ Every output of this Skill SHALL comply with:
 - shared/mermaid-guidelines.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/architecture.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Architecture Discovery
+# 架構探索
 
 ---
 
-## Goal
+## 目標
 
-Discover the structural architecture of the repository.
+發掘儲存庫的結構架構。
 
-Focus on software organization.
+聚焦於軟體的組織方式。
 
-Do not analyse business behaviour.
+不要分析業務行為。
 
 ---
 
-## Step 1
+## 步驟 1
 
-Identify Architectural Pattern
+辨識架構模式
 
-Examples
+範例
 
-Layered Architecture
+分層架構
 
 Hexagonal
 
@@ -247,67 +246,68 @@ Onion
 
 MVC
 
-Microservice
+微服務
 
-Modular Monolith
+模組化單體
 
 SOA
 
-Event Driven
+事件驅動
 
-Client Server
+主從式
 
-Custom Dispatcher (Front Controller with transaction routing)
+自製 Dispatcher（帶交易路由的 Front Controller）
 
-Custom Framework (proprietary base classes and conventions)
+自製框架（專有基底類別與慣例）
 
-Record
+記錄
 
-Pattern
+模式
 
-Evidence
+證據
 
-Confidence
-
----
-
-## Step 1.1
-
-Identify Custom Framework (CRITICAL)
-
-Apply shared/custom-framework-recognition.md.
-
-Search for:
-
-- A central Servlet that dispatches to transaction classes based on request parameters.
-
-- A base transaction class that all business logic extends.
-
-- A base DB object class that all data access extends.
-
-- A custom configuration loader.
-
-If found, record:
-
-- Dispatcher class and routing parameter(s)
-
-- Base transaction class name
-
-- Base DB object class name
-
-- Configuration loader and path
-
-- Factory/registry class (e.g., TrxFactory)
-
-This step is CRITICAL. If a custom framework is detected, ALL downstream Skills must use this information to enumerate artifacts.
+信心度
 
 ---
 
-## Step 2
+## 步驟 1.1
 
-Identify Layers
+辨識自製框架（關鍵）
 
-Examples
+套用 shared/custom-framework-recognition.md。
+
+搜尋：
+
+- 依請求參數把工作分派給交易類別的中央 Servlet。
+
+- 所有業務邏輯都繼承的交易基底類別。
+
+- 所有資料存取都繼承的 DB 物件基底類別。
+
+- 自製的組態載入器。
+
+若找到，記錄：
+
+- Dispatcher 類別與路由參數
+
+- 交易基底類別名稱
+
+- DB 物件基底類別名稱
+
+- 組態載入器與路徑
+
+- Factory／registry 類別（例如 TrxFactory）
+
+本步驟是「關鍵」。一旦偵測到自製框架，
+「所有」下游 Skill 都必須用這項資訊來列舉產出物。
+
+---
+
+## 步驟 2
+
+辨識分層
+
+範例
 
 Presentation
 
@@ -339,21 +339,21 @@ Security
 
 Shared
 
-For every layer record
+每一層記錄
 
-Purpose
+用途
 
-Location
+位置
 
-Evidence
+證據
 
 ---
 
-## Step 3
+## 步驟 3
 
-Identify Components
+辨識元件
 
-Examples
+範例
 
 Loan Service
 
@@ -371,75 +371,75 @@ Scheduler
 
 Batch Processor
 
-Record
+記錄
 
-Component Name
+元件名稱
 
-Responsibility
+職責
 
-Location
+位置
 
-Evidence
-
----
-
-## Step 4
-
-Identify Package Structure
-
-Document
-
-Top Level Packages
-
-Namespaces
-
-Module Ownership
-
-Shared Packages
-
-Utility Packages
-
-Record
-
-Hierarchy
-
-Purpose
-
-Evidence
+證據
 
 ---
 
-## Step 5
+## 步驟 4
 
-Identify Dependencies
+辨識套件結構
 
-Document
+記錄
 
-Module Dependencies
+頂層套件
 
-Library Dependencies
+命名空間
 
-Shared Components
+模組歸屬
 
-Infrastructure Dependencies
+共用套件
 
-Avoid circular dependency assumptions.
+工具套件
 
-Only report observable relationships.
+記錄
+
+階層
+
+用途
+
+證據
 
 ---
 
-## Step 6
+## 步驟 5
 
-Identify External Systems
+辨識相依關係
 
-Examples
+記錄
 
-Database
+模組相依
 
-REST Services
+函式庫相依
 
-SOAP Services
+共用元件
+
+基礎設施相依
+
+避免對循環相依做出假設。
+
+只回報可觀察到的關聯。
+
+---
+
+## 步驟 6
+
+辨識外部系統
+
+範例
+
+資料庫
+
+REST 服務
+
+SOAP 服務
 
 IBM MQ
 
@@ -453,116 +453,116 @@ FTP
 
 SFTP
 
-Mainframe
+主機（Mainframe）
 
-Cloud Services
+雲端服務
 
-Record
+記錄
 
-System
+系統
 
-Connection Type
+連線型態
 
-Evidence
-
----
-
-## Step 7
-
-Generate Layer Analysis
-
-Describe
-
-Responsibilities
-
-Dependency Direction
-
-Layer Isolation
-
-Potential Violations
-
-Evidence
+證據
 
 ---
 
-## Step 8
+## 步驟 7
 
-Generate Context Diagram
+產生分層分析
 
-Use Mermaid.
+描述
 
-Include
+職責
 
-System
+相依方向
 
-Users
+分層隔離
 
-External Systems
+潛在違規
 
-Databases
-
-Messaging Systems
-
-Only include verified relationships.
+證據
 
 ---
 
-## Step 9
+## 步驟 8
 
-Generate Component Diagram
+產生 Context Diagram
 
-Use Mermaid.
+使用 Mermaid。
 
-Include
+包含
 
-Components
+系統
 
-Dependencies
+使用者
 
-Interfaces
+外部系統
 
-External Systems
+資料庫
 
-Do not invent missing components.
+訊息系統
 
----
-
-## Step 10
-
-Generate Dependency Graph
-
-Document
-
-Module Dependencies
-
-Package Dependencies
-
-Shared Libraries
-
-External Dependencies
-
-Only include verified references.
+只納入已驗證的關聯。
 
 ---
 
-## Output Rules
+## 步驟 9
 
-Never describe business rules.
+產生 Component Diagram
 
-Never describe user workflow.
+使用 Mermaid。
 
-Never explain transaction flow here. Per-method processing flow is owned by
-module-analysis (see shared/logic-depth.md).
+包含
 
-Never infer missing components.
+元件
 
-Never invent architectural decisions.
+相依關係
+
+介面
+
+外部系統
+
+不要憑空造出缺少的元件。
 
 ---
 
-## Required Outputs
+## 步驟 10
 
-Generate
+產生相依圖
+
+記錄
+
+模組相依
+
+套件相依
+
+共用函式庫
+
+外部相依
+
+只納入已驗證的參照。
+
+---
+
+## 輸出規則
+
+絕不描述業務規則。
+
+絕不描述使用者工作流程。
+
+絕不在此解釋交易流程。逐方法的處理流程由
+module-analysis 負責（見 shared/logic-depth.md）。
+
+絕不推測缺少的元件。
+
+絕不憑空造出架構決策。
+
+---
+
+## 必要輸出
+
+產生
 
 docs/architecture/architecture.md
 
@@ -576,52 +576,52 @@ docs/architecture/layer-analysis.md
 
 ---
 
-## Mermaid Rules
+## Mermaid 規則
 
 Component Diagram
 
-- Components only
+- 只有元件
 
-- Dependency arrows
+- 相依箭頭
 
 Context Diagram
 
-- System
+- 系統
 
-- External Systems
+- 外部系統
 
-- Databases
+- 資料庫
 
-- Messaging
+- 訊息傳遞
 
-No sequence diagrams.
+不要循序圖。
 
-No ER diagrams.
-
----
-
-## Quality Checklist
-
-☐ Architectural pattern identified
-
-☐ Layers documented
-
-☐ Components documented
-
-☐ Package structure documented
-
-☐ External systems documented
-
-☐ Dependency graph completed
-
-☐ Mermaid diagrams valid
-
-☐ Evidence included
-
-☐ No hallucinations
-
-☐ No business rules
+不要 ER 圖。
 
 ---
 
-End.
+## 品質檢查清單
+
+☐ 已辨識架構模式
+
+☐ 已記錄分層
+
+☐ 已記錄元件
+
+☐ 已記錄套件結構
+
+☐ 已記錄外部系統
+
+☐ 已完成相依圖
+
+☐ Mermaid 圖表語法正確
+
+☐ 已附上證據
+
+☐ 沒有任何幻覺內容
+
+☐ 沒有業務規則
+
+---
+
+結束。

@@ -1,40 +1,40 @@
-# Sequence
+# 循序
 
 ---
 
-## Overview
+## 概觀
 
 ---
 
-## Trigger
+## 觸發條件
 
 ---
 
-## Preconditions
+## 前置條件
 
 ---
 
-## Participants
+## 參與者
 
 ---
 
-## Main Flow
+## 主要流程
 
 ---
 
-## Alternative Flow
+## 替代流程
 
 ---
 
-## Exception Flow
+## 例外流程
 
 ---
 
-## Database Access
+## 資料庫存取
 
 ---
 
-## External Systems
+## 外部系統
 
 ---
 
@@ -46,4 +46,4 @@ sequenceDiagram
 
 ---
 
-## Evidence
+## 證據

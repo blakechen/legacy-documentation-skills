@@ -2,9 +2,9 @@
 name: sequence-discovery
 
 description: |
-  Generate interaction sequences between components by using the
-  outputs of previous documentation Skills. Produce deterministic
-  Mermaid sequence diagrams describing verified runtime interactions.
+  運用先前各文件產生 Skill 的輸出，產生元件之間的互動循序。
+  產出具決定性的 Mermaid 循序圖，
+  描述已驗證的執行期互動。
 
 version: 1.0.0
 
@@ -48,71 +48,71 @@ outputs:
   - docs/sequence/transactions/
 ---
 
-# Objective
+# 目標
 
-Generate interaction sequences.
+產生互動循序。
 
-Describe how components communicate.
+描述各元件如何通訊。
 
-Sequence diagrams must be based on verified evidence.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify request flow
-
-- identify response flow
-
-- identify component interactions
-
-- identify database interactions
-
-- identify external system interactions
-
-- identify MQ interactions
-
-- identify scheduler flow
-
-- identify batch execution flow
-
-- identify exception flow
-
-- generate Mermaid sequence diagrams
-
-This Skill SHALL NOT
-
-- invent execution paths
-
-- infer business intent
-
-- generate functional specifications
-
-- modify business rules
-
-- create new architecture
+循序圖必須立基於已驗證的證據。
 
 ---
 
-# Inputs
+# 職責
 
-Architecture Discovery
+本 Skill「應當」
 
-Module Analysis
+- 辨識請求流程
 
-Database Analysis
+- 辨識回應流程
 
-Interface Analysis
+- 辨識元件互動
 
-Business Rule Extraction
+- 辨識資料庫互動
 
-Existing Source Code (verification only)
+- 辨識外部系統互動
+
+- 辨識 MQ 互動
+
+- 辨識排程流程
+
+- 辨識批次執行流程
+
+- 辨識例外流程
+
+- 產生 Mermaid 循序圖
+
+本 Skill「不得」
+
+- 憑空造出執行路徑
+
+- 推測業務意圖
+
+- 產生功能規格
+
+- 修改業務規則
+
+- 創造新的架構
 
 ---
 
-# Deliverables
+# 輸入
+
+架構探索
+
+模組分析
+
+資料庫分析
+
+介面分析
+
+業務規則抽取
+
+既有原始碼（僅供驗證用）
+
+---
+
+# 交付物
 
 docs/sequence/
 
@@ -128,47 +128,47 @@ exception-sequences.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every interaction must reference evidence.
+每一項互動都必須參照證據。
 
-Evidence includes
+證據包括
 
-Method Invocation
+方法呼叫
 
-REST Mapping
+REST 對應
 
 MQ Listener
 
-SQL Call
+SQL 呼叫
 
-Repository Call
+Repository 呼叫
 
-Configuration
+組態
 
-Scheduler Definition
+排程定義
 
-Message Producer
+訊息生產端
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never invent missing interactions.
-
----
-
-# Completion Criteria
-
-Every major interaction documented.
-
-Every sequence validated.
-
-Mermaid diagrams generated.
-
-Evidence recorded.
+絕不憑空造出缺少的互動。
 
 ---
 
-# Required By
+# 完成判準
+
+每一項主要互動都已記錄。
+
+每一個循序都已驗證。
+
+已產生 Mermaid 圖表。
+
+已記錄證據。
+
+---
+
+# 被下列 Skill 依賴
 
 specification-generation
 
@@ -176,9 +176,9 @@ gap-analysis
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -191,54 +191,56 @@ Every output of this Skill SHALL comply with:
 - shared/mermaid-guidelines.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/sequence.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Sequence Discovery
+# 循序探索
 
 ---
 
-# Goal
+# 目標
 
-Generate sequence diagrams describing runtime interactions.
+產生描述執行期互動的循序圖。
 
-Use outputs from previous Skills as the primary source.
+以先前各 Skill 的輸出為主要來源。
 
-Consult source code when verification is required.
-
----
-
-# CRITICAL: Per-Transaction Sequences
-
-Apply shared/enumeration-first.md.
-
-1. Obtain the complete transaction class list from Module Analysis.
-
-2. For EVERY major transaction class, generate at least one sequence diagram.
-
-3. Each diagram shall show the complete flow: User → JSP → Dispatcher → Transaction Class → DB/External → Response.
-
-4. Include all state transitions within the transaction (e.g., prompt → checkuser → confirm → result).
-
-5. Output one sequence file per transaction class under docs/sequence/transactions/.
+需要驗證時再查閱原始碼。
 
 ---
 
-# Sequence Discovery Process
+# 關鍵：逐交易的循序圖
 
-## Step 1
+套用 shared/enumeration-first.md。
 
-Identify Interaction Entry Points
+1. 從模組分析取得完整的交易類別清單。
 
-Possible sources
+2. 為「每一個」主要交易類別產生至少一張循序圖。
+
+3. 每張圖都應顯示完整流程：
+   使用者 → JSP → Dispatcher → 交易類別 → DB／外部系統 → 回應。
+
+4. 納入該交易內部的所有狀態轉換
+   （例如 prompt → checkuser → confirm → result）。
+
+5. 在 docs/sequence/transactions/ 底下，每個交易類別輸出一個循序檔。
+
+---
+
+# 循序探索流程
+
+## 步驟 1
+
+辨識互動進入點
+
+可能來源
 
 REST Endpoint
 
@@ -246,33 +248,33 @@ SOAP Endpoint
 
 MQ Listener
 
-Batch Job
+批次工作
 
-Scheduler
+排程器
 
 CLI
 
 Servlet
 
-Record
+記錄
 
-Entry Point
+進入點
 
-Evidence
+證據
 
 ---
 
-## Step 2
+## 步驟 2
 
-Identify Participants
+辨識參與者
 
-Possible participants
+可能的參與者
 
-User
+使用者
 
-Browser
+瀏覽器
 
-External System
+外部系統
 
 API Gateway
 
@@ -286,27 +288,27 @@ Repository
 
 DAO
 
-Database
+資料庫
 
 MQ
 
-Batch
+批次
 
-Scheduler
+排程器
 
-Notification
+通知
 
-Third-party Service
+第三方服務
 
 ---
 
-## Step 3
+## 步驟 3
 
-Identify Invocation Chain
+辨識呼叫鏈
 
-Follow verified calls only.
+只追蹤已驗證的呼叫。
 
-Examples
+範例
 
 Controller
 
@@ -317,9 +319,9 @@ Service
 Repository
 
 →
-Database
+資料庫
 
-or
+或
 
 REST
 
@@ -330,37 +332,37 @@ Controller
 MQ
 
 →
-External System
+外部系統
 
-Never infer missing calls.
+絕不推測缺少的呼叫。
 
 ---
 
-## Step 4
+## 步驟 4
 
-Identify Database Interaction
+辨識資料庫互動
 
-Document
+記錄
 
-Read
+讀取
 
-Insert
+新增
 
-Update
+更新
 
-Delete
+刪除
 
 Stored Procedure
 
-Transaction Boundary (if explicitly identifiable)
+交易邊界（若可明確辨識）
 
 ---
 
-## Step 5
+## 步驟 5
 
-Identify External Interaction
+辨識外部互動
 
-Document
+記錄
 
 REST Client
 
@@ -380,21 +382,21 @@ LDAP
 
 SMTP
 
-Record
+記錄
 
-Protocol
+協定
 
-Direction
+方向
 
-Evidence
+證據
 
 ---
 
-## Step 6
+## 步驟 6
 
-Identify Exception Flow
+辨識例外流程
 
-Locate
+找出
 
 try
 
@@ -402,7 +404,7 @@ catch
 
 throws
 
-error mapping
+錯誤對應
 
 fallback
 
@@ -410,27 +412,27 @@ retry
 
 dead letter queue
 
-Document
+記錄
 
-Trigger
+觸發條件
 
-Handler
+處理者
 
-Outcome
+結果
 
-Evidence
+證據
 
 ---
 
-## Step 7
+## 步驟 7
 
-Generate Mermaid Sequence Diagram
+產生 Mermaid 循序圖
 
-Use
+使用
 
 sequenceDiagram
 
-Include
+包含
 
 Actor
 
@@ -438,49 +440,49 @@ Participant
 
 Activation
 
-Request
+請求
 
-Response
+回應
 
-Database
+資料庫
 
-External Systems
+外部系統
 
-Messages
+訊息
 
-Only include verified interactions.
-
----
-
-## Step 8
-
-Generate Sequence Summary
-
-Each sequence shall contain
-
-Overview
-
-Trigger
-
-Participants
-
-Preconditions
-
-Interaction Steps
-
-Database Access
-
-External Calls
-
-Exceptions
-
-Evidence
+只納入已驗證的互動。
 
 ---
 
-# Output Structure
+## 步驟 8
 
-Generate
+產生循序摘要
+
+每個循序都應包含
+
+概觀
+
+觸發條件
+
+參與者
+
+前置條件
+
+互動步驟
+
+資料庫存取
+
+外部呼叫
+
+例外
+
+證據
+
+---
+
+# 輸出結構
+
+產生
 
 docs/sequence/
 
@@ -496,58 +498,58 @@ exception-sequences.md
 
 ---
 
-# Mermaid Rules
+# Mermaid 規則
 
-Every sequence shall
+每個循序都應
 
-start with an actor
+以一個 actor 開始
 
-end with a response or completion
+以一個回應或完成結束
 
-show activation where appropriate
+在適當之處顯示 activation
 
-avoid inferred messages
+避免推測出來的訊息
 
-avoid omitted participants when evidence exists
-
----
-
-# Output Rules
-
-Never infer hidden execution paths.
-
-Never invent business workflows.
-
-Never assume asynchronous behaviour.
-
-Never merge unrelated sequences.
-
-Only document evidence-based interactions.
+在有證據時，不要省略參與者
 
 ---
 
-# Quality Checklist
+# 輸出規則
 
-☐ Entry point identified
+絕不推測隱藏的執行路徑。
 
-☐ Participants identified
+絕不憑空造出業務工作流程。
 
-☐ Invocation chain documented
+絕不假設非同步行為。
 
-☐ Database interaction documented
+絕不把不相關的循序合併。
 
-☐ External interaction documented
-
-☐ Exception flow documented
-
-☐ Mermaid valid
-
-☐ Evidence included
-
-☐ No hallucinations
-
-☐ No inferred workflow
+只記錄有證據支撐的互動。
 
 ---
 
-End.
+# 品質檢查清單
+
+☐ 已辨識進入點
+
+☐ 已辨識參與者
+
+☐ 已記錄呼叫鏈
+
+☐ 已記錄資料庫互動
+
+☐ 已記錄外部互動
+
+☐ 已記錄例外流程
+
+☐ Mermaid 語法正確
+
+☐ 已附上證據
+
+☐ 沒有任何幻覺內容
+
+☐ 沒有推測出來的工作流程
+
+---
+
+結束。

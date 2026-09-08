@@ -1,16 +1,16 @@
-# Business Rule
+# 業務規則
 
 ---
 
-## Rule ID
+## 規則 ID
 
 ---
 
-## Name
+## 名稱
 
 ---
 
-## Category
+## 分類
 
 Validation
 
@@ -26,41 +26,41 @@ Integration
 
 ---
 
-## Description
+## 說明
 
 ---
 
-## Condition
+## 條件
 
 ---
 
-## Action
+## 動作
 
 ---
 
-## Exception
+## 例外
 
 ---
 
-## Related Modules
+## 相關模組
 
 ---
 
-## Related Database Objects
+## 相關資料庫物件
 
 ---
 
-## Related APIs
+## 相關 API
 
 ---
 
-## Related Sequence
+## 相關循序圖
 
 ---
 
-## Evidence
+## 證據
 
-Source File
+原始碼檔案
 
 Class
 
@@ -68,11 +68,11 @@ Method
 
 SQL
 
-Configuration
+組態
 
 ---
 
-## Confidence
+## 信心度
 
 High
 

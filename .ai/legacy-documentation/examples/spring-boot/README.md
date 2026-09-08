@@ -1,10 +1,10 @@
-# Spring Boot Example
+# Spring Boot 範例
 
-## Scenario
+## 情境
 
-Typical enterprise Spring Boot application.
+典型的企業級 Spring Boot 應用程式。
 
-## Technology
+## 技術
 
 - Java 21
 - Spring Boot
@@ -15,29 +15,29 @@ Typical enterprise Spring Boot application.
 - PostgreSQL
 - Maven
 
-## Expected Skills
+## 預期執行的 Skill
 
-Inventory
+清冊盤點
 
-Technology Discovery
+技術探索
 
-Architecture Discovery
+架構探索
 
-Module Analysis
+模組分析
 
-Database Analysis
+資料庫分析
 
-Interface Analysis
+介面分析
 
-Business Rule Extraction
+業務規則抽取
 
-Sequence Discovery
+循序探索
 
-Specification Generation
+規格產生
 
-Gap Analysis
+落差分析
 
-## Expected Output
+## 預期輸出
 
 overview/
 

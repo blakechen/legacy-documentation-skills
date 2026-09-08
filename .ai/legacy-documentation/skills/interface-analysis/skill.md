@@ -2,9 +2,9 @@
 name: interface-analysis
 
 description: |
-  Analyse all external and internal system integration interfaces.
-  Discover communication protocols, message formats, API endpoints,
-  messaging systems and integration boundaries.
+  分析所有對外與對內的系統整合介面。
+  發掘通訊協定、訊息格式、API 端點、
+  訊息系統與整合邊界。
 
 version: 1.0.0
 
@@ -52,91 +52,91 @@ outputs:
   - docs/integration/external-systems.md
 ---
 
-# Objective
+# 目標
 
-Document every integration interface.
+記錄每一個整合介面。
 
-Focus only on communication between systems.
+只聚焦於系統之間的通訊。
 
-Business processing is outside the scope.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify REST endpoints
-
-- identify SOAP services
-
-- identify MQ consumers
-
-- identify MQ producers
-
-- identify JMS listeners
-
-- identify Kafka producers
-
-- identify Kafka consumers
-
-- identify FTP integrations
-
-- identify SFTP integrations
-
-- identify File Exchange
-
-- identify gRPC services
-
-- identify GraphQL endpoints
-
-- identify Scheduled Integration Jobs
-
-- identify External Systems
-
-- identify Request Messages
-
-- identify Response Messages
-
-- identify Message Formats
-
-- identify Authentication Methods
-
-This Skill SHALL NOT
-
-- analyse business rules
-
-- explain business meaning
-
-- analyse SQL logic
-
-- generate specifications
-
-- infer message semantics
+業務處理不在範圍內。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Inventory
+本 Skill「應當」
 
-Technology Discovery
+- 辨識 REST 端點
 
-Architecture Discovery
+- 辨識 SOAP 服務
 
-Module Analysis
+- 辨識 MQ 消費端
 
-Database Analysis
+- 辨識 MQ 生產端
 
-Source Code
+- 辨識 JMS listener
 
-Configuration Files
+- 辨識 Kafka 生產端
 
-Integration Definitions
+- 辨識 Kafka 消費端
+
+- 辨識 FTP 整合
+
+- 辨識 SFTP 整合
+
+- 辨識檔案交換
+
+- 辨識 gRPC 服務
+
+- 辨識 GraphQL 端點
+
+- 辨識排程整合工作
+
+- 辨識外部系統
+
+- 辨識請求訊息
+
+- 辨識回應訊息
+
+- 辨識訊息格式
+
+- 辨識認證方式
+
+本 Skill「不得」
+
+- 分析業務規則
+
+- 解釋業務意義
+
+- 分析 SQL 邏輯
+
+- 產生規格
+
+- 推測訊息語意
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫清冊
+
+技術探索
+
+架構探索
+
+模組分析
+
+資料庫分析
+
+原始碼
+
+組態檔
+
+整合定義
+
+---
+
+# 交付物
 
 docs/integration/
 
@@ -154,11 +154,11 @@ external-systems.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every interface must reference observable evidence.
+每一個介面都必須參照可觀察的證據。
 
-Evidence may include
+證據可包括
 
 Controller
 
@@ -170,13 +170,13 @@ OpenAPI
 
 Swagger
 
-MQ Configuration
+MQ 組態
 
 Listener
 
 Producer
 
-Scheduler
+排程器
 
 XML
 
@@ -184,27 +184,27 @@ Properties
 
 YAML
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never invent interfaces.
-
----
-
-# Completion Criteria
-
-Every integration technology documented.
-
-Every external system identified.
-
-Every endpoint documented.
-
-Every messaging interface documented.
-
-Every file integration documented.
+絕不憑空造出介面。
 
 ---
 
-# Required By
+# 完成判準
+
+每一項整合技術都已記錄。
+
+每一個外部系統都已辨識。
+
+每一個端點都已記錄。
+
+每一個訊息介面都已記錄。
+
+每一項檔案整合都已記錄。
+
+---
+
+# 被下列 Skill 依賴
 
 sequence-discovery
 
@@ -212,9 +212,9 @@ specification-generation
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -225,36 +225,36 @@ Every output of this Skill SHALL comply with:
 - shared/quality-checklist.md
 - shared/mermaid-guidelines.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/api.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Interface Analysis
+# 介面分析
 
 ---
 
-## Goal
+## 目標
 
-Analyse every integration interface.
+分析每一個整合介面。
 
-Focus on technical communication only.
+只聚焦於技術層面的通訊。
 
-Do not explain business behaviour.
+不要解釋業務行為。
 
 ---
 
-## Step 1
+## 步驟 1
 
-Identify REST APIs
+辨識 REST API
 
-Locate
+找出
 
 @RestController
 
@@ -274,31 +274,31 @@ OpenAPI
 
 Swagger
 
-Servlet-based URL patterns (e.g., /servlet/ClassName?param=value)
+以 Servlet 為基礎的 URL 樣式（例如 /servlet/ClassName?param=value）
 
-Record
+記錄
 
-Endpoint
+端點
 
-Method
+方法
 
-Path
+路徑
 
 Consumes
 
 Produces
 
-Authentication
+認證
 
-Evidence
+證據
 
 ---
 
-## Step 2
+## 步驟 2
 
-Identify SOAP Services
+辨識 SOAP 服務
 
-Locate
+找出
 
 @WebService
 
@@ -312,23 +312,23 @@ CXF
 
 Axis
 
-Record
+記錄
 
-Service
+服務
 
-Operation
+操作
 
-Endpoint
+端點
 
-Evidence
+證據
 
 ---
 
-## Step 3
+## 步驟 3
 
-Identify Message Queue
+辨識訊息佇列
 
-Locate
+找出
 
 IBM MQ
 
@@ -344,67 +344,67 @@ Azure Service Bus
 
 AWS SQS
 
-Record
+記錄
 
 Queue
 
 Topic
 
-Producer
+生產端
 
-Consumer
+消費端
 
 Listener
 
-Configuration
+組態
 
-Evidence
+證據
 
 ---
 
-## Step 4
+## 步驟 4
 
-Identify File Transfer
+辨識檔案傳輸
 
-Locate
+找出
 
 FTP
 
 SFTP
 
-File Polling
+檔案輪詢
 
-Directory Watch
+目錄監看
 
-Shared Folder
+共享資料夾
 
-Batch Import
+批次匯入
 
-Batch Export
+批次匯出
 
-Record
+記錄
 
-Direction
+方向
 
-File Pattern
+檔案樣式
 
-Location
+位置
 
-Evidence
+證據
 
 ---
 
-## Step 5
+## 步驟 5
 
-Identify External Systems
+辨識外部系統
 
-Locate
+找出
 
 REST Client
 
 SOAP Client
 
-MQ Connection
+MQ 連線
 
 Database Link
 
@@ -412,27 +412,27 @@ LDAP
 
 SMTP
 
-Payment Gateway
+金流閘道
 
-Identity Provider
+身分提供者
 
-Cloud Services
+雲端服務
 
-Record
+記錄
 
-System
+系統
 
-Protocol
+協定
 
-Evidence
+證據
 
 ---
 
-## Step 6
+## 步驟 6
 
-Identify Authentication
+辨識認證
 
-Examples
+範例
 
 Basic Auth
 
@@ -450,19 +450,19 @@ Kerberos
 
 SAML
 
-Record
+記錄
 
-Authentication Type
+認證類型
 
-Evidence
+證據
 
 ---
 
-## Step 7
+## 步驟 7
 
-Identify Message Formats
+辨識訊息格式
 
-Locate
+找出
 
 JSON
 
@@ -470,7 +470,7 @@ XML
 
 CSV
 
-Fixed Length
+固定長度
 
 EDI
 
@@ -478,23 +478,23 @@ Protocol Buffers
 
 Avro
 
-Record
+記錄
 
-Format
+格式
 
-Producer
+生產端
 
-Consumer
+消費端
 
-Evidence
+證據
 
 ---
 
-## Step 8
+## 步驟 8
 
-Identify Retry Strategy
+辨識重試策略
 
-Locate
+找出
 
 Retry
 
@@ -508,19 +508,19 @@ Circuit Breaker
 
 Fallback
 
-Record
+記錄
 
-Mechanism
+機制
 
-Evidence
+證據
 
 ---
 
-## Step 9
+## 步驟 9
 
-Generate Integration Summary
+產生整合摘要
 
-Include
+包含
 
 REST
 
@@ -540,33 +540,33 @@ gRPC
 
 GraphQL
 
-External Systems
+外部系統
 
-Authentication
+認證
 
-Message Formats
+訊息格式
 
-Evidence
-
----
-
-## Output Rules
-
-Never explain business rules.
-
-Never infer message meaning.
-
-Never describe transaction flow.
-
-Never generate sequence diagrams.
-
-Never infer undocumented protocols.
+證據
 
 ---
 
-## Required Outputs
+## 輸出規則
 
-Generate
+絕不解釋業務規則。
+
+絕不推測訊息含義。
+
+絕不描述交易流程。
+
+絕不產生循序圖。
+
+絕不推測未記錄的協定。
+
+---
+
+## 必要輸出
+
+產生
 
 docs/integration/interface-overview.md
 
@@ -582,32 +582,32 @@ docs/integration/external-systems.md
 
 ---
 
-## Quality Checklist
+## 品質檢查清單
 
-☐ REST documented
+☐ 已記錄 REST
 
-☐ SOAP documented
+☐ 已記錄 SOAP
 
-☐ MQ documented
+☐ 已記錄 MQ
 
-☐ Kafka documented
+☐ 已記錄 Kafka
 
-☐ JMS documented
+☐ 已記錄 JMS
 
-☐ File Transfer documented
+☐ 已記錄檔案傳輸
 
-☐ External Systems documented
+☐ 已記錄外部系統
 
-☐ Authentication documented
+☐ 已記錄認證
 
-☐ Message Formats documented
+☐ 已記錄訊息格式
 
-☐ Retry Strategy documented
+☐ 已記錄重試策略
 
-☐ Evidence included
+☐ 已附上證據
 
-☐ No hallucinations
+☐ 沒有任何幻覺內容
 
 ---
 
-End.
+結束。

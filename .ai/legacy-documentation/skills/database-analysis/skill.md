@@ -2,9 +2,8 @@
 name: database-analysis
 
 description: |
-  Analyse the persistence layer of the repository and document
-  database objects, entity mappings, repositories, SQL usage and
-  persistence technologies.
+  分析儲存庫的持久化層，並記錄資料庫物件、實體對應、
+  repository、SQL 使用情形與持久化技術。
 
 version: 1.0.0
 
@@ -50,83 +49,83 @@ outputs:
   - docs/database/er-diagram.md
 ---
 
-# Objective
+# 目標
 
-Document the persistence layer.
+記錄持久化層。
 
-Focus only on data persistence.
+只聚焦於資料持久化。
 
-Business meaning is outside the scope.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify database technologies
-
-- identify schemas
-
-- identify tables
-
-- identify views
-
-- identify sequences
-
-- identify indexes
-
-- identify entity classes
-
-- identify repository classes
-
-- identify DAO classes
-
-- identify SQL statements
-
-- identify stored procedures
-
-- identify ORM mappings
-
-- identify transaction annotations
-
-- identify database configuration
-
-This Skill SHALL NOT
-
-- infer business rules
-
-- explain SQL intent
-
-- describe workflows
-
-- generate specifications
-
-- analyse validation logic (owned by module-analysis, see shared/logic-depth.md)
+業務意義不在範圍內。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Inventory
+本 Skill「應當」
 
-Technology Discovery
+- 辨識資料庫技術
 
-Architecture Discovery
+- 辨識 schema
 
-Module Analysis
+- 辨識資料表
 
-Source Code
+- 辨識檢視表
 
-SQL Files
+- 辨識序號產生器（sequence）
 
-Database Scripts
+- 辨識索引
 
-Configuration Files
+- 辨識實體類別
+
+- 辨識 repository 類別
+
+- 辨識 DAO 類別
+
+- 辨識 SQL 敘述
+
+- 辨識 stored procedure
+
+- 辨識 ORM 對應
+
+- 辨識交易 annotation
+
+- 辨識資料庫組態
+
+本 Skill「不得」
+
+- 推測業務規則
+
+- 解釋 SQL 的意圖
+
+- 描述工作流程
+
+- 產生規格
+
+- 分析驗證邏輯（由 module-analysis 負責，見 shared/logic-depth.md）
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫清冊
+
+技術探索
+
+架構探索
+
+模組分析
+
+原始碼
+
+SQL 檔
+
+資料庫腳本
+
+組態檔
+
+---
+
+# 交付物
 
 docs/database/
 
@@ -142,11 +141,11 @@ er-diagram.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every database object must have evidence.
+每一個資料庫物件都必須有證據。
 
-Evidence includes
+證據包括
 
 DDL
 
@@ -158,31 +157,31 @@ Repository
 
 DAO
 
-XML Mapping
+XML 對應檔
 
-Configuration
+組態
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never invent relationships.
-
----
-
-# Completion Criteria
-
-Every persistence technology documented.
-
-Every table indexed.
-
-Every entity documented.
-
-Every repository documented.
-
-ER diagram generated.
+絕不憑空造出關聯。
 
 ---
 
-# Required By
+# 完成判準
+
+每一項持久化技術都已記錄。
+
+每一張資料表都已建立索引。
+
+每一個實體都已記錄。
+
+每一個 repository 都已記錄。
+
+已產生 ER 圖。
+
+---
+
+# 被下列 Skill 依賴
 
 business-rule-extraction
 
@@ -192,9 +191,9 @@ specification-generation
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -207,34 +206,34 @@ Every output of this Skill SHALL comply with:
 - shared/mermaid-guidelines.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/database.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Database Analysis
+# 資料庫分析
 
 ---
 
-## Goal
+## 目標
 
-Analyse the persistence layer.
+分析持久化層。
 
-Do not analyse business logic.
+不要分析業務邏輯。
 
 ---
 
-## Step 1
+## 步驟 1
 
-Identify Database Technologies
+辨識資料庫技術
 
-Examples
+範例
 
 DB2
 
@@ -252,101 +251,101 @@ MongoDB
 
 Redis
 
-Record
+記錄
 
-Technology
+技術
 
-Version if known
+版本（若已知）
 
-Evidence
+證據
 
 ---
 
-## Step 2
+## 步驟 2
 
-Identify Schemas
+辨識 Schema
 
-Locate
+找出
 
 Schema
 
 Catalog
 
-Database Name
+資料庫名稱
 
-Owner
+擁有者
 
-Record
-
-Schema
-
-Purpose
-
-Evidence
-
----
-
-## Step 3
-
-Identify Tables
-
-For every table
-
-Record
-
-Table Name
+記錄
 
 Schema
 
-Primary Key
+用途
 
-Foreign Keys
-
-Indexes
-
-Referenced By
-
-Mapped Entity
-
-Evidence
+證據
 
 ---
 
-## Step 4
+## 步驟 3
 
-Identify Views
+辨識資料表
 
-Record
+對每一張資料表
 
-View Name
+記錄
 
-Purpose
+資料表名稱
 
-Referenced By
+Schema
 
-Evidence
+主鍵
+
+外鍵
+
+索引
+
+被誰參照
+
+對應的實體
+
+證據
 
 ---
 
-## Step 5
+## 步驟 4
 
-Identify Sequences
+辨識檢視表
 
-Record
+記錄
+
+檢視表名稱
+
+用途
+
+被誰參照
+
+證據
+
+---
+
+## 步驟 5
+
+辨識序號產生器
+
+記錄
 
 Sequence
 
-Consumers
+使用者
 
-Evidence
+證據
 
 ---
 
-## Step 6
+## 步驟 6
 
-Identify Entity Mapping
+辨識實體對應
 
-Locate
+找出
 
 @Entity
 
@@ -362,51 +361,51 @@ Locate
 
 @ManyToMany
 
-XML Mapping
+XML 對應檔
 
 MyBatis Mapper
 
-Custom DB Object Pattern (CRITICAL):
+自製 DB 物件模式（關鍵）：
 
-If the system uses a base class with programmatic field definitions:
+若系統使用帶有程式化欄位定義的基底類別：
 
-- Find the base DB object class (e.g., SecuredDBObject, DBObject).
+- 找出 DB 物件基底類別（例如 SecuredDBObject、DBObject）。
 
-- Enumerate EVERY subclass.
+- 列舉「每一個」子類別。
 
-- For each subclass, extract:
+- 對每一個子類別，取出：
 
-  - Table name from setTargetTable()
+  - 來自 setTargetTable() 的資料表名稱
 
-  - Fields from addField() calls (name, type, length, nullable, description)
+  - 來自 addField() 呼叫的欄位（名稱、型別、長度、是否可為空、說明）
 
-  - Primary key from addKey()
+  - 來自 addKey() 的主鍵
 
-  - Description from setDescription()
+  - 來自 setDescription() 的說明
 
-- This is equivalent to DDL extraction.
+- 這等同於一次 DDL 抽取。
 
-Apply shared/enumeration-first.md for DB object classes.
+對 DB 物件類別套用 shared/enumeration-first.md。
 
-Record
+記錄
 
-Entity
+實體
 
-Mapped Table
+對應的資料表
 
-Fields with types
+欄位與型別
 
-Relationships
+關聯
 
-Evidence
+證據
 
 ---
 
-## Step 7
+## 步驟 7
 
-Identify Repository Layer
+辨識 Repository 層
 
-Locate
+找出
 
 Repository
 
@@ -418,23 +417,23 @@ JdbcTemplate
 
 NamedParameterJdbcTemplate
 
-Record
+記錄
 
 Repository
 
-Entity
+實體
 
-Database Access Pattern
+資料庫存取樣式
 
-Evidence
+證據
 
 ---
 
-## Step 8
+## 步驟 8
 
-Identify SQL
+辨識 SQL
 
-Locate
+找出
 
 SELECT
 
@@ -456,25 +455,25 @@ Native Query
 
 Named Query
 
-Record
+記錄
 
-Location
+位置
 
-Operation
+操作
 
-Tables
+資料表
 
-Evidence
+證據
 
-Do not explain business purpose.
+不要解釋業務目的。
 
 ---
 
-## Step 9
+## 步驟 9
 
-Identify Transactions
+辨識交易
 
-Locate
+找出
 
 @Transactional
 
@@ -484,47 +483,47 @@ JTA
 
 EJB Transaction
 
-Record
+記錄
 
-Transaction Type
+交易類型
 
-Location
+位置
 
-Evidence
-
----
-
-## Step 10
-
-Generate ER Diagram
-
-Generate Mermaid ER Diagram.
-
-Only include verified entities.
-
-Do not infer cardinality.
-
-Unknown cardinality is acceptable.
+證據
 
 ---
 
-## Output Rules
+## 步驟 10
 
-Never infer business meaning.
+產生 ER 圖
 
-Never explain business rules.
+產生 Mermaid ER Diagram。
 
-Never explain transaction workflow.
+只納入已驗證的實體。
 
-Never infer hidden table relationships.
+不要推測基數。
 
-Never generate sequence diagrams.
+未知的基數是可以接受的。
 
 ---
 
-## Required Outputs
+## 輸出規則
 
-Generate
+絕不推測業務意義。
+
+絕不解釋業務規則。
+
+絕不解釋交易工作流程。
+
+絕不推測隱含的資料表關聯。
+
+絕不產生循序圖。
+
+---
+
+## 必要輸出
+
+產生
 
 docs/database/database-overview.md
 
@@ -538,32 +537,32 @@ docs/database/er-diagram.md
 
 ---
 
-## Quality Checklist
+## 品質檢查清單
 
-☐ Database identified
+☐ 已辨識資料庫
 
-☐ Schemas documented
+☐ 已記錄 schema
 
-☐ Tables documented
+☐ 已記錄資料表
 
-☐ Views documented
+☐ 已記錄檢視表
 
-☐ Sequences documented
+☐ 已記錄序號產生器
 
-☐ Repository layer documented
+☐ 已記錄 repository 層
 
-☐ ORM documented
+☐ 已記錄 ORM
 
-☐ SQL documented
+☐ 已記錄 SQL
 
-☐ Transactions documented
+☐ 已記錄交易
 
-☐ Mermaid ER Diagram valid
+☐ Mermaid ER 圖語法正確
 
-☐ Evidence included
+☐ 已附上證據
 
-☐ No hallucinations
+☐ 沒有任何幻覺內容
 
 ---
 
-End.
+結束。

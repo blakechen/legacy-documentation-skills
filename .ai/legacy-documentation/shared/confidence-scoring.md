@@ -1,93 +1,92 @@
-# Confidence Scoring
+# 信心度評分
 
-## Objective
+## 目標
 
-Express confidence consistently across all Skills.
+在所有 Skill 之間以一致的方式表達信心度。
 
 ---
 
-## High
+## High（高）
 
-Direct evidence exists.
+存在直接證據。
 
-Examples
+範例
 
-Method implementation
+方法實作
 
 SQL
 
 Annotation
 
-Configuration
+組態設定
 
-Repository Definition
-
----
-
-## Medium
-
-Evidence exists from multiple related artifacts.
-
-Minor interpretation required.
-
-Must cite all supporting evidence.
+Repository 定義
 
 ---
 
-## Low
+## Medium（中）
 
-Evidence incomplete.
+證據來自多個相關產出物。
 
-Possible interpretation only.
+需要少量詮釋。
 
-Document uncertainty clearly.
-
----
-
-## Unknown
-
-No evidence available.
-
-Do not estimate.
+必須引用所有佐證證據。
 
 ---
 
-## Derivation
+## Low（低）
 
-Confidence is DERIVED from the kind of evidence, not chosen.
+證據不完整。
 
-Self-assessed confidence from a language model is not calibrated, and a
-four-level scale invites the middle two levels to absorb everything
-uncertain.
+僅為可能的詮釋。
 
-| Evidence | Confidence |
+必須清楚記錄不確定性。
+
+---
+
+## Unknown（未知）
+
+沒有可用證據。
+
+不要估算。
+
+---
+
+## 推導方式
+
+信心度是由「證據的種類」**推導**而來，而不是自行選定。
+
+語言模型自評的信心度並未經過校準，
+而四級量表會誘使中間兩級吸收掉一切不確定的東西。
+
+| 證據 | 信心度 |
 |---|---|
-| A fact in the factbase: declared type, method, supertype, literal, cited line range | High |
-| A fact confirmed by the bytecode oracle | High |
-| A relationship resolved across files by the factbase (resolved call, closure edge) | High |
-| An inference from two or more cited facts, stated with both citations | Medium |
-| A conclusion resting on naming similarity, convention, or a single ambiguous artefact | Low |
-| No citable artefact | Unknown |
+| factbase 中的事實：宣告型別、方法、父型別、常值、引用之行號範圍 | High |
+| 經 bytecode 判準確認的事實 | High |
+| 由 factbase 跨檔案解析出的關聯（已解析呼叫、閉包邊） | High |
+| 由兩個以上被引用之事實所得的推論，並同時附上兩者引用 | Medium |
+| 建立在命名相似、慣例，或單一含糊產出物上的結論 | Low |
+| 沒有可引用的產出物 | Unknown |
 
-Where the factbase records `ambiguous`, `external` or `UNKNOWN` for the fact
-in question, the finding that rests on it SHALL NOT be High.
+若 factbase 對相關事實記錄的是 `ambiguous`、`external` 或 `UNKNOWN`，
+則建立其上的發現「不得」為 High。
 
-Where no Layer 1 extractor exists for the language, no finding about that
-language's code is High.
+若某語言沒有對應的 Layer 1 抽取器，
+則關於該語言程式碼的任何發現都不得為 High。
 
-In Tier C no finding may be High at all. High is derived from a fact in the
-factbase or a fact confirmed by the oracle, and in Tier C neither exists.
-The ceiling is Medium. See shared/verification-tiers.md.
+在層級 C 之下，任何發現都不得為 High。High 是由 factbase 中的事實
+或經判準確認的事實推導而來，而層級 C 兩者皆無。
+上限為 Medium。見 shared/verification-tiers.md。
 
 ---
 
-## Rules
+## 規則
 
-Never increase confidence without evidence.
+絕不在沒有證據的情況下提高信心度。
 
-Never hide uncertainty.
+絕不隱藏不確定性。
 
-Confidence applies to findings, not opinions.
+信心度適用於發現，不適用於意見。
 
-State the derivation, not just the level: a bare "Confidence: Medium" is not
-a confidence assessment.
+要說明推導過程，而不只是等級：光寫「Confidence: Medium」
+不構成一次信心度評估。

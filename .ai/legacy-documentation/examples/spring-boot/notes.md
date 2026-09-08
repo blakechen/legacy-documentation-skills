@@ -1,10 +1,10 @@
-# Validation Notes
+# 驗證備註
 
-Expected Architecture
+預期架構
 
-Layered Architecture
+分層架構
 
-Expected Modules
+預期模組
 
 customer
 
@@ -16,19 +16,19 @@ security
 
 common
 
-Expected Database
+預期資料庫
 
 PostgreSQL
 
 JPA
 
-Expected Integration
+預期整合
 
 REST
 
 JWT
 
-Expected Sequence
+預期循序
 
 REST
 
@@ -44,12 +44,12 @@ Repository
 
 ↓
 
-Database
+資料庫
 
-Expected Specification
+預期規格
 
-Functional Specification
+功能規格
 
-Technical Specification
+技術規格
 
-API Specification
+API 規格

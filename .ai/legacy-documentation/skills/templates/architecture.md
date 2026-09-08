@@ -1,34 +1,34 @@
-# Architecture
+# 架構
 
 ---
 
-## Overview
+## 概觀
 
 ---
 
-## Architecture Pattern
+## 架構模式
 
 ---
 
-## Layers
+## 分層
 
-| Layer | Responsibility |
-
----
-
-## Components
-
-| Component | Responsibility |
+| 分層 | 職責 |
 
 ---
 
-## External Systems
+## 元件
 
-| System | Purpose |
+| 元件 | 職責 |
 
 ---
 
-## Dependencies
+## 外部系統
+
+| 系統 | 用途 |
+
+---
+
+## 相依關係
 
 ---
 
@@ -48,13 +48,13 @@ flowchart TD
 
 ---
 
-## Evidence
+## 證據
 
 ```
-Package
+套件
 
-Configuration
+組態
 
-Build File
+建置檔
 
 ```

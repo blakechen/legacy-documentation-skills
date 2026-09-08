@@ -1,140 +1,143 @@
-# Fact Layer Principle
+# 事實層原則
 
-## Objective
+## 目標
 
-Separate what can be established mechanically from what requires judgement,
-and let the AI do only the second.
-
----
-
-## The Three Layers
-
-### Layer 1 - Facts
-
-Deterministic extraction from source, build output and version control.
-
-Produced by a program -- POSIX shell and awk, nothing to install.
-No model involved.
-
-Contents
-
-- declared types, their supertypes, their files and line ranges
-- declared methods, their modifiers, their spans, their decision counts
-- call sites, string literals, imports, package structure
-- file content hashes and the commit the scan ran against
-
-Tool: `tools/factbase/extract_java.sh` then `tools/factbase/build_factbase.sh`.
-
-Output: `docs/facts/*.psv` -- plain pipe-separated text, one record per
-line. Greppable, diffable, and reviewable in a pull request.
-
-### Layer 2 - Structure
-
-Derived from Layer 1 by a program. Still no model.
-
-Contents
-
-- the transitive closure of the type hierarchy
-- the call graph and reachability from entry points
-- clone clusters
-- change frequency
-- the reflexion mapping against a stated hypothesis
-
-Tools: `enumerate.sh`, `prioritize.sh`, `archetypes.sh`,
-`domain_variables.sh`, `reflexion.sh`.
-
-### Layer 3 - Concepts
-
-The only layer the AI owns.
-
-Contents
-
-- what a unit is for, in business terms
-- the meaning of a cryptic name
-- the business rule behind a condition
-- the narrative of a processing flow
-
-Every Layer 3 statement SHALL cite a Layer 1 fact: a path with a line range,
-a table name from the enumeration, a domain variable from the derived list.
+把「可由機械確立的事」與「需要判斷的事」分開，並且只讓 AI 做後者。
 
 ---
 
-## Rule
+## 三個層次
 
-A Skill SHALL NOT establish by reading what a tool can establish by parsing.
+### Layer 1 — 事實
 
-Specifically, a Skill SHALL NOT
+從原始碼、建置產出與版本控制中做決定性抽取。
 
-- count artefacts by reading files
-- decide a class hierarchy by grepping for `extends`
-- assert that a method has N branches without the factbase
-- assert a table name without the enumeration entry that carries it
+由程式產生 —— POSIX shell 與 awk，無須安裝任何東西。
+不涉及任何模型。
 
----
+內容
 
-## Why
+- 宣告的型別、其父型別、其檔案與行號範圍
+- 宣告的方法、其修飾詞、其涵蓋範圍、其決策點數量
+- 呼叫點、字串常值、import、套件結構
+- 檔案內容雜湊值，以及此次掃描所對應的 commit
 
-A language model reading source code produces plausible facts. Plausible is
-not the same as correct, and the failure is silent: nothing in the output
-distinguishes a class it read from a class it expected to exist.
+工具：先 `tools/shell/factbase/extract_java.sh`，再 `tools/shell/factbase/build_factbase.sh`。
 
-A parser produces a smaller set of facts and is wrong in ways that are
-visible and reproducible. Where the two disagree, the parser wins.
+本文件提到的每一個工具都有兩份：`tools/shell/` 底下是給 POSIX `sh` 與 `awk` 用的，
+`tools/powershell/` 底下是給 PowerShell 7 用的。兩者產出的位元組完全相同，
+因此一台沒有 `awk` 的 Windows 機器可以跑同一條流水線，並提交同一份 factbase。
+此處的指令一律以 shell 形式書寫；`tools/README.md` 給出兩者的對應關係，
+而那對應關係就只是 `--facts <dir>` 對上 `-Facts <dir>`，如此而已。
 
----
+輸出：`docs/facts/*.psv` —— 純文字、以管線符號分隔，一行一筆記錄。
+可 grep、可 diff，也可在 pull request 中審閱。
 
-## What the fact layer does NOT do
+### Layer 2 — 結構
 
-It does not understand the system.
+由程式從 Layer 1 推導而來。同樣不涉及模型。
 
-`extract_java.awk` is a lexical scanner, not a compiler. It masks comments
-and literals, then walks the remaining text one character at a time keeping
-a frame stack, which makes nesting, anonymous classes and method bodies
-exact. It records what is written, resolves names through imports and
-package scope, and marks what it cannot resolve as `EXTERNAL:` or
-`UNKNOWN`. Its known limits are listed in `tools/README.md` and SHALL be
-repeated in the enumeration report.
+內容
 
-This is why Layer 1 has an oracle.
+- 型別階層的遞移閉包
+- 呼叫圖，以及從進入點出發的可達性
+- clone 群集
+- 變更頻率
+- 對照既定假說的反思映射
 
----
+工具：`enumerate.sh`、`prioritize.sh`、`archetypes.sh`、
+`domain_variables.sh`、`reflexion.sh`。
 
-## The Oracle
+### Layer 3 — 概念
 
-`tools/factbase/verify_bytecode.sh` reads compiled classes and jars with
-`javap` and compares the true supertype of every class against the factbase.
+唯一由 AI 負責的一層。
 
-The lexical scanner and the oracle share no code and read different inputs.
-Agreement between them is evidence.
+內容
 
-Re-running a similar search with a different regular expression is not
-evidence. It is the same method making the same mistake twice.
+- 以業務語彙說明某個單元是做什麼用的
+- 一個晦澀名稱的含義
+- 某個條件背後的業務規則
+- 一段處理流程的敘事
 
-When no compiled artefact exists, the oracle records
-`Status: UNAVAILABLE` and the enumeration report SHALL say that the
-enumeration rests on lexical extraction alone. It SHALL NOT be described as
-verified.
-
----
-
-## Order
-
-The fact layer runs BEFORE architecture discovery consumes it and BEFORE
-any enumeration file is written.
-
-No Skill that produces documentation may run before
-`docs/facts/types.psv` exists and is non-empty.
+每一句 Layer 3 的陳述「應當」引用一項 Layer 1 事實：
+帶行號範圍的路徑、列舉中的資料表名稱，或推導清單中的領域變數。
 
 ---
 
-## Languages
+## 規則
 
-Layer 1 is language-specific; Layers 2 and 3 are not.
+凡是工具能靠解析確立的事，Skill「不得」靠閱讀來確立。
 
-`extract_java.awk` covers Java, and by construction most of Kotlin's and
-Scala's declaration syntax is out of its scope. A new language needs a new
-Layer 1 extractor emitting the same pipe-separated records. Nothing above
-Layer 1 changes.
+具體而言，Skill「不得」
 
-Where no extractor exists for a language, that fact SHALL be recorded and
-the affected findings SHALL carry confidence Low, not High.
+- 靠讀檔案來計算產出物數量
+- 靠 grep `extends` 來判定類別階層
+- 在沒有 factbase 的情況下斷言某個方法有 N 個分支
+- 在沒有承載該資訊的列舉條目下斷言資料表名稱
+
+---
+
+## 為什麼
+
+語言模型閱讀原始碼會產出「看似合理」的事實。看似合理不等於正確，
+而且這種失敗是無聲的：輸出中沒有任何東西能分辨
+它「讀到的類別」與它「以為存在的類別」。
+
+解析器產出的事實較少，而且它出錯的方式是可見且可重現的。
+當兩者不一致時，以解析器為準。
+
+---
+
+## 事實層「不」做的事
+
+它不理解這個系統。
+
+抽取器是詞法掃描器，不是編譯器。它會遮蔽註解與常值，
+再逐字元走訪剩餘文字並維護一個框架堆疊，
+因此對巢狀結構、匿名類別與方法主體的判定是精確的。
+它記錄寫下來的東西，透過 import 與套件範圍解析名稱，
+並把無法解析的標記為 `EXTERNAL:` 或 `UNKNOWN`。
+它已知的限制列於 `tools/shell/README.md`，且「應當」在列舉報告中重述。
+
+這正是 Layer 1 需要一個判準的原因。
+
+---
+
+## 判準（The Oracle）
+
+`tools/shell/factbase/verify_bytecode.sh` 以 `javap` 讀取編譯後的 class 與 jar，
+並將每個類別的真實父型別與 factbase 比對。
+
+詞法掃描器與判準不共用任何程式碼，讀取的輸入也不同。
+兩者一致，本身就是證據。
+
+用不同的正規表示式再跑一次類似的搜尋，不算證據。
+那是同一種方法把同一個錯誤犯了兩次。
+
+當不存在任何編譯產出物時，判準會記錄
+`Status: UNAVAILABLE`，而列舉報告「應當」說明
+該列舉僅立基於詞法抽取，並「不得」被描述為已驗證。
+
+---
+
+## 順序
+
+事實層必須在架構探索取用它「之前」執行，
+也必須在寫出任何列舉檔「之前」執行。
+
+在 `docs/facts/types.psv` 存在且非空之前，
+任何產生文件的 Skill 都不得執行。
+
+---
+
+## 語言
+
+Layer 1 與語言相關；Layer 2 與 Layer 3 則否。
+
+`extract_java.awk` 涵蓋 Java，而依其構造方式，
+Kotlin 與 Scala 的大部分宣告語法都不在它的範圍內。
+新增一種語言需要一個新的 Layer 1 抽取器，發出相同的管線分隔記錄格式。
+Layer 1 之上的一切都不需要改動。
+
+若某語言沒有對應的抽取器，「應當」記錄此一事實，
+且受影響的發現「應當」帶有 Low 而非 High 的信心度。

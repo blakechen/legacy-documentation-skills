@@ -1,10 +1,10 @@
-# .NET Example
+# .NET 範例
 
-## Scenario
+## 情境
 
-ASP.NET Core enterprise application.
+ASP.NET Core 企業應用程式。
 
-## Technology
+## 技術
 
 - ASP.NET Core
 
@@ -14,14 +14,14 @@ ASP.NET Core enterprise application.
 
 - IIS
 
-Expected Outputs
+預期輸出
 
-Architecture
+架構
 
-Modules
+模組
 
-Database
+資料庫
 
 REST
 
-Specifications
+規格

@@ -1,91 +1,87 @@
-# Incremental Update
+# 增量更新
 
-## Objective
+## 目標
 
-Bind every document to the version of the source it describes, and re-run
-only what has changed.
-
----
-
-## The Problem
-
-Evidence that cites `TransferTrx.java:120-128` is true of one version of that
-file. The citation does not say which. A year later the document is either
-still correct or describes code that no longer exists, and nothing in the
-document distinguishes the two cases.
-
-A pipeline with no version binding also has no incremental mode: every re-run
-is a full re-run, which for a 458-unit system means it is never re-run.
+把每一份文件綁定到它所描述的原始碼版本，並且只重新執行有變動的部分。
 
 ---
 
-## Rule
+## 問題所在
 
-### Evidence carries a version
+引用 `TransferTrx.java:120-128` 的證據，只對該檔案的某一個版本為真。
+引用本身並沒有說是哪一個版本。一年之後，這份文件要嘛依然正確，
+要嘛描述的是早已不存在的程式碼，而文件裡沒有任何東西能分辨這兩種情況。
 
-The factbase records, for every file, its sha256 and the commit the scan ran
-against, in `docs/facts/hashes.psv` and `docs/facts/manifest.psv`.
+沒有版本綁定的流水線也沒有增量模式：每次重跑都是完整重跑，
+對一個 458 個單元的系統而言，這意味著它永遠不會被重跑。
 
-Every generated document SHALL record, in its metadata block
+---
+
+## 規則
+
+### 證據帶有版本
+
+factbase 會為每一個檔案記錄它的 sha256 以及此次掃描所對應的 commit，
+存放在 `docs/facts/hashes.psv` 與 `docs/facts/manifest.psv`。
+
+每一份產生的文件「應當」在其中繼資料區塊中記錄
 
     Factbase commit: <sha>
     Generated: <date>
 
-### State is recorded after verification
+### 狀態在驗證之後才記錄
 
-After a batch reaches depth-complete, run
+當一批單元達到深度完備後，執行
 
-    tools/verify/staleness.sh ... --record
+    tools/shell/verify/staleness.sh ... --record
 
-This writes, per unit, the sha256 of every source file the unit's document
-cites -- the unit's own file plus every file named in an excerpt citation.
+這會逐單元寫下該單元文件所引用之每一個原始碼檔案的 sha256 ——
+包括單元自身的檔案，以及摘錄引用中提到的每一個檔案。
 
 `docs/model/unit-state.psv`
 
-### Re-runs check before regenerating
+### 重跑時先檢查再重新產生
 
-At the start of a later run
+在後續執行的開始
 
-    tools/verify/staleness.sh ...
+    tools/shell/verify/staleness.sh ...
 
-reports each unit as up to date, stale, or never recorded.
+會把每個單元回報為最新、已陳舊，或從未記錄。
 
-Stale units are regenerated. Everything else is left alone, and its recorded
-state is carried forward.
-
----
-
-## What counts as stale
-
-A unit is stale when any file its document cites has a different sha256 from
-the one recorded.
-
-A unit is NOT stale merely because the commit moved. Most commits touch
-nothing a given document cites.
+已陳舊的單元會重新產生。其餘一切維持原狀，並沿用其已記錄的狀態。
 
 ---
 
-## Rule for the orchestrator
+## 什麼算是陳舊
 
-A re-run over an already-documented repository SHALL begin with the staleness
-report and SHALL state, before starting work
+當某單元文件所引用的任何檔案，其 sha256 與記錄值不同時，該單元即為陳舊。
+
+單元「不會」僅因為 commit 前進了就變成陳舊。
+大多數 commit 並不會動到某份特定文件所引用的東西。
+
+---
+
+## 給 orchestrator 的規則
+
+在一個已有文件的程式碼庫上重跑時，「應當」以陳舊度報告開場，
+並在開始工作之前聲明
 
     N units total, M stale, K never documented
 
-Regenerating an unchanged unit is waste. Leaving a stale unit in place is a
-false claim about the current system. Both are failures.
+重新產生未變動的單元是浪費。放著陳舊單元不管，
+則是對現行系統做出不實宣稱。兩者都是失敗。
 
 ---
 
-## Interaction with depth checks
+## 與深度檢查的互動
 
-`depth_checks.sh` validates excerpts against the CURRENT source. A stale
-document therefore usually fails the excerpt check as well.
+`depth_checks.sh` 會對照「目前」的原始碼驗證摘錄。
+因此一份陳舊的文件通常連摘錄檢查也一併失敗。
 
-The two tools answer different questions:
+這兩項工具回答的是不同的問題：
 
-- staleness: has the source moved since this document was written?
-- depth checks: does this document match the source as it is now?
+- 陳舊度：自這份文件寫成以來，原始碼變動了嗎？
+- 深度檢查：這份文件與現在的原始碼相符嗎？
 
-Run staleness first. A stale document should be regenerated, not patched
-until its excerpts pass.
+先跑陳舊度。陳舊的文件應該重新產生，
+而不是一路修補到摘錄能通過為止。

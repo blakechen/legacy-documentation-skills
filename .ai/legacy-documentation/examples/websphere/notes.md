@@ -1,6 +1,6 @@
-# Validation Notes
+# 驗證備註
 
-Special focus
+特別關注
 
 IBM MQ
 
@@ -12,9 +12,9 @@ EJB
 
 Servlet
 
-Legacy XML Configuration
+老舊 XML 組態
 
-Expected Integration
+預期整合
 
 SOAP
 
@@ -22,20 +22,20 @@ REST
 
 MQ
 
-Batch
+批次
 
-Scheduler
+排程器
 
-Expected Database
+預期資料庫
 
 DB2
 
 Stored Procedure
 
-Expected Security
+預期安全機制
 
 JAAS
 
 LDAP
 
-Client Certificate
+用戶端憑證

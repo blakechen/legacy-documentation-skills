@@ -1,125 +1,130 @@
-# Iterative Depth Principle
+# 逐步深化原則
 
-## Objective
+## 目標
 
-Ensure documentation reaches the correct granularity level for each system.
-
----
-
-## Rule
-
-Every analysis Skill SHALL determine the system's primary unit of work and document at that level.
+確保文件對每一個系統都達到正確的細緻程度。
 
 ---
 
-## Determining the Primary Unit
+## 規則
 
-### Dispatcher-Based Systems
-
-If the system uses a central dispatcher (e.g., TrxDispatcher, Front Controller, Action Servlet):
-
-The primary unit is each **transaction/action class** registered with the dispatcher.
-
-Each transaction class SHALL receive its own document.
-
-### Controller-Based Systems (MVC/REST)
-
-If the system uses REST controllers or MVC controllers:
-
-The primary unit is each **controller class** or **endpoint group**.
-
-### Batch-Based Systems
-
-If the system is batch-oriented:
-
-The primary unit is each **batch job** or **batch step**.
+每個分析型 Skill「應當」判定該系統的主要工作單元，並在該層級撰寫文件。
 
 ---
 
-## Depth Requirements
+## 判定主要單元
 
-For each primary unit, document:
+### 以 Dispatcher 為基礎的系統
 
-- Entry point (state/method)
+若系統使用集中式 dispatcher（例如 TrxDispatcher、Front Controller、Action Servlet）：
 
-- All state methods or action methods
+主要單元是每一個向 dispatcher 註冊的**交易／動作類別**。
 
-- Database objects accessed
+每個交易類別「應當」擁有自己的一份文件。
 
-- External systems called
+### 以 Controller 為基礎的系統（MVC／REST）
 
-- Business rules enforced
+若系統使用 REST controller 或 MVC controller：
 
-- Input parameters
+主要單元是每一個 **controller 類別**或**端點群組**。
 
-- Output/redirect targets
+### 以批次為基礎的系統
 
-- Error handling
+若系統以批次為導向：
 
-The list above is the minimum FACT set. Facts alone are NOT depth.
-
-For each primary unit, also apply shared/logic-depth.md: per-method processing flow,
-pseudocode, source excerpts, and field mapping.
-
-A document containing every fact above and no processing narrative is INCOMPLETE.
+主要單元是每一個**批次工作**或**批次步驟**。
 
 ---
 
-## Anti-Pattern
+## 深度要求
 
-Documenting only at the package or module level when the system has finer-grained transaction units is INSUFFICIENT.
+對每一個主要單元，記錄：
 
-Treating all transaction classes as one group is FORBIDDEN.
+- 進入點（狀態／方法）
 
-Listing facts about a unit without explaining how the unit processes a request is INSUFFICIENT.
+- 所有狀態方法或動作方法
 
----
+- 存取到的資料庫物件
 
-## Batching Strategy for Large Systems
+- 呼叫的外部系統
 
-When the primary unit count exceeds what can be processed in a single pass (typically > 20 units):
+- 施行的業務規則
 
-1. Order units by documentation value, not by package name.
-   See shared/prioritization.md. Consume `docs/enumeration/priority.txt`
-   and `docs/enumeration/batches.txt`.
+- 輸入參數
 
-2. Collapse copy-and-paste families first. See shared/archetypes.md.
-   Document each archetype's representative at full depth and every other
-   member as a delta. This is not a reduction in depth; a delta document is
-   depth-complete when its Differences table is complete.
+- 輸出／轉導目標
 
-3. Process one batch at a time, completing all depth requirements for that
-   batch before moving to the next.
+- 錯誤處理
 
-4. Track progress explicitly (e.g., "batch 1 of N complete, M/Total classes documented").
+上述清單是最低限度的「事實」集合。光有事實「不等於」深度。
 
-5. Never produce a summary document as a substitute for per-unit documents.
+對每一個主要單元，還要套用 shared/logic-depth.md：逐方法的處理流程、
+虛擬碼、原始碼摘錄與欄位對應。
 
-### Why not by package
-
-Alphabetical order spends the same effort on a unit nothing has called since
-2011 as on the one that moves money, and hides that behind a percentage.
-Reachability, change frequency and runtime usage are all already available in
-the repository.
+一份包含上述所有事實、卻沒有處理敘事的文件，是「不完整」的。
 
 ---
 
-## Lessons Learned
+## 反模式
 
-### Problem: Module-level summary treated as complete
+當系統擁有更細緻的交易單元時，卻只在套件或模組層級撰寫文件，是「不足」的。
 
-The AI produced `docs/modules/module-index.md` (one summary file) instead of 458 per-transaction documents. This violates iterative-depth because the system's primary unit is the transaction class, not the module.
+把所有交易類別當成一個群組處理，是「被禁止」的。
 
-**Fix**: After Architecture Discovery identifies a dispatcher pattern, the Skill MUST confirm: "Primary unit = transaction class. Expected document count = [enumeration count]. I will produce one file per class."
+只列出某個單元的事實，卻不解釋該單元如何處理一個請求，是「不足」的。
 
-### Problem: Depth skipped due to scale
+---
 
-When facing 400+ classes, the AI defaulted to high-level summaries rather than attempting even a subset at proper depth.
+## 大型系統的分批策略
 
-**Fix**: It is acceptable to process in batches. It is NOT acceptable to skip depth entirely. Even if only 6 classes are documented per pass, those 6 must be at full depth. Progress tracking ensures eventual completion.
+當主要單元數量超出單趟可處理的範圍時（通常 > 20 個單元）：
 
-### Problem: Coverage fixed, depth still missing
+1. 依「文件價值」排序單元，而不是依套件名稱。
+   見 shared/prioritization.md。取用 `docs/enumeration/priority.txt`
+   與 `docs/enumeration/batches.txt`。
 
-After enumeration was gated, the pipeline produced one file per transaction class, but each file was a set of fact tables. Readers still could not tell what a program does with a request.
+2. 先收斂複製貼上家族。見 shared/archetypes.md。
+   對每個原型的代表單元撰寫全深度文件，其餘每個成員撰寫差異文件。
+   這並不是降低深度；當差異表完整時，差異文件即為深度完備。
 
-**Fix**: Apply shared/logic-depth.md. The unit of completion is a depth-complete document, not an existing file.
+3. 一次處理一批，在轉向下一批之前，先完成該批的所有深度要求。
+
+4. 明確追蹤進度（例如「batch 1 of N complete, M/Total classes documented」）。
+
+5. 絕不以摘要文件取代逐單元文件。
+
+### 為什麼不依套件排序
+
+字母順序會把「自 2011 年以來沒有任何東西呼叫過的單元」
+與「負責搬動金錢的單元」耗上同樣的心力，並用一個百分比把這件事蓋掉。
+可達性、變更頻率與執行期使用狀況，在儲存庫中原本就都取得到。
+
+---
+
+## 經驗教訓
+
+### 問題：把模組層級的摘要當成已完成
+
+AI 產出了 `docs/modules/module-index.md`（單一摘要檔），
+而不是 458 份逐交易文件。這違反了逐步深化原則，
+因為該系統的主要單元是交易類別，而不是模組。
+
+**修正**：在架構探索辨識出 dispatcher 模式之後，Skill「必須」確認：
+「主要單元＝交易類別。預期文件數＝[列舉數量]。我將為每個類別產生一個檔案。」
+
+### 問題：因規模而略過深度
+
+面對 400 個以上的類別時，AI 預設退回到高層摘要，
+連對其中一個子集嘗試達到應有深度都沒有做。
+
+**修正**：分批處理是可接受的。完全略過深度則「不」可接受。
+即使每一趟只記錄 6 個類別，那 6 個也必須是全深度。
+進度追蹤可確保最終能夠完成。
+
+### 問題：覆蓋率修好了，深度仍然缺席
+
+在列舉被設為關卡之後，流水線確實為每個交易類別產出了一個檔案，
+但每個檔案都只是一堆事實表格。讀者仍然看不出程式拿到一個請求之後做了什麼。
+
+**修正**：套用 shared/logic-depth.md。完成的單位是一份深度完備的文件，
+而不是一個已存在的檔案。

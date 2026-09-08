@@ -2,10 +2,9 @@
 name: reflexion-check
 
 description: |
-  Compare a person's stated model of the system against the relationships
-  the factbase actually contains, and report convergence, divergence and
-  absence. The only check in this library that uses knowledge the code
-  does not contain.
+  把某個人所陳述的系統模型，與 factbase 中實際存在的關聯相比較，
+  並回報收斂、分歧與缺席。
+  這是本函式庫中唯一使用「程式碼裡沒有的知識」的檢查。
 
 version: 1.0.0
 
@@ -35,40 +34,39 @@ outputs:
   - docs/architecture/reflexion-report.md
 ---
 
-# Objective
+# 目標
 
-Test the recovered architecture against a belief formed independently of it.
+以一個獨立於還原結果之外所形成的信念，來檢驗還原出的架構。
 
-Apply shared/reflexion-model.md.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- obtain a hypothesis map written by a person who knows the system
-
-- map every type in the factbase onto that model
-
-- compute convergence, divergence and absence
-
-- require a resolution for every divergence and every absence
-
-- report every unmapped type
-
-This Skill SHALL NOT
-
-- generate the hypothesis map from the package structure and then test
-  against it
-
-- discard a divergence as a tool error
-
-- treat a clean report as evidence when the map was derived from the code
+套用 shared/reflexion-model.md。
 
 ---
 
-# Inputs
+# 職責
+
+本 Skill「應當」
+
+- 取得一份由懂這個系統的人所寫的假說地圖
+
+- 把 factbase 中的每一個型別對應到該模型上
+
+- 計算收斂、分歧與缺席
+
+- 要求每一項分歧與每一項缺席都有處置
+
+- 回報每一個未對應的型別
+
+本 Skill「不得」
+
+- 先從套件結構產生假說地圖，再拿它來檢驗
+
+- 把分歧當成工具錯誤而丟棄
+
+- 在地圖是從程式碼推導而來時，把乾淨的報告當成證據
+
+---
+
+# 輸入
 
 docs/facts/types.psv
 
@@ -78,7 +76,7 @@ docs/architecture/hypothesis-map.txt
 
 ---
 
-# Deliverables
+# 交付物
 
 docs/architecture/reflexion-report.md
 
@@ -86,79 +84,79 @@ docs/architecture/reflexion-report.md
 
 # Prompt
 
-# Reflexion Check Skill
+# 反思檢查 Skill
 
-## Step 1
+## 步驟 1
 
-Obtain the hypothesis.
+取得假說。
 
-Ask for a module map from someone who knows the system. Ten to fifteen
-modules, the edges they expect between them, and a mapping rule per module.
+向懂這個系統的人索取一份模組地圖。十到十五個模組、
+他們預期模組之間存在的邊，以及每個模組一條對應規則。
 
-If no such person is available, say so in the report and record the map's
-author as the analyst. A map written by whoever read the code is weaker
-evidence, and the report SHALL say which case applies.
+若找不到這樣的人，就在報告中如實說明，
+並把地圖作者記錄為分析師本人。由讀過程式碼的人所寫的地圖是較弱的證據，
+而報告「應當」說明適用的是哪一種情況。
 
-Do NOT generate the map from package names as a substitute. A map derived
-from the code cannot disagree with the code.
+「不要」以套件名稱產生地圖作為替代方案。
+從程式碼推導出來的地圖不可能與程式碼不一致。
 
-## Step 2
+## 步驟 2
 
-Run.
+執行。
 
-    sh tools/reflexion/reflexion.sh \
+    sh tools/shell/reflexion/reflexion.sh \
         --facts <repo>/docs/facts \
         --map <repo>/docs/architecture/hypothesis-map.txt \
         --out <repo>/docs/architecture/reflexion-report.md
 
-## Step 3
+## 步驟 3
 
-Resolve every divergence.
+處置每一項分歧。
 
-For each, record one of
+對每一項，記錄下列其中之一
 
-- an undocumented fact about the system, now written down
-- a defect: a layering violation or a shortcut, recorded in the gap analysis
-- a mapping-rule error, corrected in the map, with the correction noted
+- 一項關於系統的未記錄事實，現已寫下
+- 一項缺陷：分層違規或抄捷徑，記錄於落差分析中
+- 一項對應規則錯誤，已在地圖中修正，並註記該修正
 
-## Step 4
+## 步驟 4
 
-Resolve every absence.
+處置每一項缺席。
 
-For each, record one of
+對每一項，記錄下列其中之一
 
-- the belief was wrong, and why
-- the relationship exists by a mechanism this scan cannot see: name the
-  mechanism (scheduler, queue, stored procedure, file transfer, operator
-  script)
-- the enumeration missed the classes that carry it. This outcome is a
-  CRITICAL finding: return to artifact-enumeration.
+- 該信念是錯的，以及錯在哪裡
+- 該關聯確實存在，但透過本次掃描看不見的機制：
+  請指名該機制（排程器、佇列、stored procedure、檔案傳輸、
+  維運腳本）
+- 列舉漏掉了承載該關聯的類別。這個結果屬於
+  「關鍵」發現：退回 artifact-enumeration。
 
-## Step 5
+## 步驟 5
 
-Account for unmapped types.
+交代未對應的型別。
 
-An unmapped type means the model has no module for it, or it is not part of
-the system the model describes. Decide which, per type or per group, and
-record the decision.
-
----
-
-# Completion Criteria
-
-`docs/architecture/reflexion-report.md` exists.
-
-Every divergence has a recorded resolution.
-
-Every absence has a recorded resolution.
-
-Unmapped types are accounted for.
-
-The report states who wrote the hypothesis map.
+未對應的型別意味著模型中沒有對應它的模組，
+或它根本不屬於模型所描述的系統。逐一或逐群判定是哪一種，
+並記錄該決定。
 
 ---
 
-# Required By
+# 完成判準
+
+`docs/architecture/reflexion-report.md` 存在。
+
+每一項分歧都有已記錄的處置。
+
+每一項缺席都有已記錄的處置。
+
+未對應的型別都已交代清楚。
+
+報告載明假說地圖是由誰所寫。
+
+---
+
+# 被下列 Skill 依賴
 
 specification-generation
 
@@ -166,20 +164,20 @@ gap-analysis
 
 ---
 
-# Quality Checklist
+# 品質檢查清單
 
-☐ Hypothesis map author recorded
+☐ 已記錄假說地圖的作者
 
-☐ Map not derived from package structure
+☐ 地圖並非從套件結構推導而來
 
-☐ Tool run and report generated
+☐ 已執行工具並產生報告
 
-☐ Every divergence resolved
+☐ 每一項分歧都已處置
 
-☐ Every absence resolved
+☐ 每一項缺席都已處置
 
-☐ Unmapped types accounted for
+☐ 未對應的型別都已交代
 
-☐ Enumeration re-opened where an absence pointed at missing classes
+☐ 凡缺席指向遺漏類別者，已重新開啟列舉
 
-End.
+結束。

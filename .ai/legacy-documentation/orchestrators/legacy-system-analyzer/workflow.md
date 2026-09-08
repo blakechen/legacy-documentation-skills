@@ -1,72 +1,72 @@
-# Workflow
+# 工作流程
 
 ## Phase 0
 
-Fact Extraction (MANDATORY, runs first)
+事實抽取（強制，最先執行）
 
-Skill: fact-extraction
+Skill：fact-extraction
 
-Parse source into a factbase
+把原始碼解析成 factbase
 
-Resolve the transitive type hierarchy
+解析出遞移的型別階層
 
-Verify against compiled artefacts
+對照編譯產出物驗證
 
-### Gate Check
+### 關卡檢查
 
-`docs/facts/types.psv` MUST exist and be non-empty.
+`docs/facts/types.psv`「必須」存在且非空。
 
-`docs/verification-tier.txt` MUST exist and name tier A or B.
+`docs/verification-tier.txt`「必須」存在，並載明層級 A 或 B。
 
-`docs/facts/bytecode-verification.md` MUST exist.
+`docs/facts/bytecode-verification.md`「必須」存在。
 
-Its status MUST NOT be `FAILED`.
+其狀態「不得」為 `FAILED`。
 
-`UNAVAILABLE` is permitted and MUST be carried into every later report.
+`UNAVAILABLE` 是允許的，且「必須」帶入之後的每一份報告。
 
-If the gate fails → STOP. No documentation Skill may run without a factbase.
+若關卡失敗 → 停止。沒有 factbase，任何文件產生 Skill 都不得執行。
 
-EXCEPT where the environment cannot execute commands at all. That is Tier C:
-the pipeline proceeds, `docs/verification-tier.txt` is written by hand with
-`tier|C`, and every later phase applies the Tier C rules in
-shared/verification-tiers.md. Tier C is a declared limitation, not a failed
-gate. Skipping the gate without declaring it is a failed gate.
+「除非」該環境根本無法執行指令。那屬於層級 C：
+流水線繼續進行，`docs/verification-tier.txt` 以 `tier|C` 手寫產生，
+且之後的每一個階段都套用 shared/verification-tiers.md 中的層級 C 規則。
+層級 C 是一項已宣告的限制，不是一道失敗的關卡。
+沒有宣告就略過關卡，才是失敗的關卡。
 
 ---
 
 ## Phase 1
 
-Repository Discovery
+儲存庫探索
 
-Inventory
+清冊盤點
 
-Technology
+技術
 
-Architecture
+架構
 
-Custom Framework Detection
+自製框架偵測
 
-Validation
+驗證
 
 ---
 
 ## Phase 1.5
 
-Artifact Enumeration (CRITICAL)
+產出物列舉（關鍵）
 
-Skill: artifact-enumeration
+Skill：artifact-enumeration
 
-Query ALL transaction/action classes from the factbase
+從 factbase 查詢「所有」交易／動作類別
 
-Query ALL DB object classes
+查詢「所有」DB 物件類別
 
-Query ALL servlets
+查詢「所有」servlet
 
-Rank by documentation value
+依文件價值排序
 
-### Gate Check
+### 關卡檢查
 
-Output files MUST exist on disk before proceeding:
+在繼續之前，輸出檔案「必須」已存在於磁碟上：
 
 - `docs/enumeration/transaction-classes.txt`
 - `docs/enumeration/db-object-classes.txt`
@@ -74,109 +74,109 @@ Output files MUST exist on disk before proceeding:
 - `docs/enumeration/enumeration-evidence.psv`
 - `docs/enumeration/priority.txt`
 
-Each file MUST contain `ClassName|Path` entries (not just counts).
+每個檔案「必須」包含 `ClassName|Path` 條目（而不只是數量）。
 
-db-object-classes.txt carries a third field: `ClassName|Path|TargetTable`.
+db-object-classes.txt 帶有第三個欄位：`ClassName|Path|TargetTable`。
 
-The enumeration report MUST record the inheritance depth of every entry and
-the resolution of every dangling class reference.
+列舉報告「必須」記錄每一筆條目的繼承深度，
+以及每一個懸空類別參照的處置結果。
 
-If gate fails → STOP. Do not proceed.
+若關卡失敗 → 停止。不得繼續。
 
 ---
 
 ## Phase 1.6
 
-Archetype Clustering
+原型分群
 
-Skill: archetype-clustering
+Skill：archetype-clustering
 
-Collapse copy-and-paste families
+收斂複製貼上家族
 
-Assign full-depth or delta mode to every unit
+為每一個單元指派全深度或差異模式
 
 ---
 
 ## Phase 1.7
 
-Reflexion Check
+反思檢查
 
-Skill: reflexion-check
+Skill：reflexion-check
 
-Obtain a module map from a person who knows the system
+向懂這個系統的人取得一份模組地圖
 
-Compute convergence, divergence, absence
+計算收斂、分歧與缺席
 
-### Gate Check
+### 關卡檢查
 
-Every divergence and every absence has a recorded resolution.
+每一項分歧與每一項缺席都有已記錄的處置。
 
-An absence caused by missing classes returns the pipeline to Phase 1.5.
+若缺席是由遺漏類別造成，流水線退回 Phase 1.5。
 
 ---
 
 ## Phase 2
 
-Structural Analysis
+結構分析
 
-Modules
+模組
 
-Per-Unit Analysis, in priority order
+逐單元分析，依優先序
 
-Database (from DB object enumeration)
+資料庫（來自 DB 物件列舉）
 
-Interfaces
+介面
 
-Validation
+驗證
 
 ---
 
 ## Phase 3
 
-Behavior Analysis
+行為分析
 
-Domain Variables (derived, before any rule extraction)
+領域變數（推導而得，在任何規則抽取之前）
 
-Business Rules (per unit, domain-variable test applied)
+業務規則（逐單元，套用領域變數判定測試）
 
-Sequences (per unit)
+循序圖（逐單元）
 
-Validation
+驗證
 
 ---
 
 ## Phase 4
 
-Documentation
+文件產出
 
-Per-Unit Specifications
+逐單元規格
 
-System Specifications
+系統規格
 
-Characterization Tests
+特徵化測試
 
-Gap Analysis (staleness first, then depth; both by tool)
+落差分析（先陳舊度，再深度；兩者皆由工具判定）
 
-Validation
+驗證
 
 ---
 
-Stop immediately if
+出現下列情況時立即停止
 
-Fact extraction fails
+事實抽取失敗
 
-or
+或
 
-The bytecode oracle reports FAILED
+bytecode 判準回報 FAILED
 
-or
+或
 
-Inventory fails
+清冊盤點失敗
 
-or
+或
 
-Architecture cannot be established
+架構無法確立
 
-or
+或
 
-Transaction class enumeration finds zero classes.
+交易類別列舉找到零個類別。

@@ -2,8 +2,8 @@
 name: technology-discovery
 
 description: |
-  Discover technologies, frameworks, runtime environments,
-  libraries and infrastructure components used by the repository.
+  發掘儲存庫所使用的技術、框架、執行環境、
+  函式庫與基礎設施元件。
 
 version: 1.0.0
 
@@ -51,85 +51,85 @@ outputs:
   - docs/overview/dependency-summary.md
 ---
 
-# Objective
+# 目標
 
-Discover technologies used by the repository.
+發掘儲存庫所使用的技術。
 
-Only identify observable technologies.
+只辨識可觀察到的技術。
 
-Do not analyse architecture.
+不要分析架構。
 
-Do not analyse business logic.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify programming languages
-
-- identify frameworks
-
-- identify runtime
-
-- identify application servers
-
-- identify databases
-
-- identify ORM frameworks
-
-- identify logging frameworks
-
-- identify testing frameworks
-
-- identify build systems
-
-- identify dependency managers
-
-- identify messaging technologies
-
-- identify cache technologies
-
-- identify scheduling technologies
-
-- identify container technologies
-
-- identify cloud technologies
-
-- identify API technologies
-
-- identify security frameworks
-
-This Skill SHALL NOT
-
-- infer architecture
-
-- analyse business rules
-
-- analyse source code flow (owned by module-analysis, see shared/logic-depth.md)
-
-- generate specifications
-
-- generate sequence diagrams
+不要分析業務邏輯。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Inventory
+本 Skill「應當」
 
-Build Files
+- 辨識程式語言
 
-Configuration Files
+- 辨識框架
 
-Dependency Definitions
+- 辨識執行環境
 
-Container Files
+- 辨識應用伺服器
+
+- 辨識資料庫
+
+- 辨識 ORM 框架
+
+- 辨識日誌框架
+
+- 辨識測試框架
+
+- 辨識建置系統
+
+- 辨識相依套件管理工具
+
+- 辨識訊息傳遞技術
+
+- 辨識快取技術
+
+- 辨識排程技術
+
+- 辨識容器技術
+
+- 辨識雲端技術
+
+- 辨識 API 技術
+
+- 辨識安全框架
+
+本 Skill「不得」
+
+- 推測架構
+
+- 分析業務規則
+
+- 分析原始碼流程（由 module-analysis 負責，見 shared/logic-depth.md）
+
+- 產生規格
+
+- 產生循序圖
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫清冊
+
+建置檔
+
+組態檔
+
+相依定義
+
+容器檔案
+
+---
+
+# 交付物
 
 docs/overview/
 
@@ -143,11 +143,11 @@ dependency-summary.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every identified technology must be supported by evidence.
+每一項辨識出的技術都必須有證據支撐。
 
-Examples
+範例
 
 pom.xml
 
@@ -161,31 +161,31 @@ server.xml
 
 application.yml
 
-Imports
+Import 敘述
 
-Annotations
+Annotation
 
-Configuration
+組態
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Never guess.
-
----
-
-# Completion Criteria
-
-Every major technology has been classified.
-
-Every framework has evidence.
-
-Every runtime has evidence.
-
-Every database technology has evidence.
+絕不臆測。
 
 ---
 
-# Required By
+# 完成判準
+
+每一項主要技術都已分類。
+
+每一個框架都有證據。
+
+每一個執行環境都有證據。
+
+每一項資料庫技術都有證據。
+
+---
+
+# 被下列 Skill 依賴
 
 architecture-discovery
 
@@ -199,9 +199,9 @@ interface-analysis
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -212,32 +212,32 @@ Every output of this Skill SHALL comply with:
 - shared/quality-checklist.md
 - shared/logic-depth.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Technology Discovery
+# 技術探索
 
 ---
 
-## Goal
+## 目標
 
-Identify every technology used by the repository.
+辨識儲存庫所使用的每一項技術。
 
-This Skill documents technologies only.
+本 Skill 只記錄技術。
 
-Do not analyse software design.
+不要分析軟體設計。
 
 ---
 
-## Step 1
+## 步驟 1
 
-Identify Programming Languages
+辨識程式語言
 
-Examples
+範例
 
 Java
 
@@ -269,21 +269,21 @@ JSON
 
 Shell
 
-Record
+記錄
 
-Language
+語言
 
-Version if known
+版本（若已知）
 
-Evidence
+證據
 
 ---
 
-## Step 2
+## 步驟 2
 
-Identify Frameworks
+辨識框架
 
-Examples
+範例
 
 Spring Boot
 
@@ -317,21 +317,21 @@ Angular
 
 Vue
 
-Record
+記錄
 
-Framework
+框架
 
-Version
+版本
 
-Evidence
+證據
 
 ---
 
-## Step 3
+## 步驟 3
 
-Identify Runtime
+辨識執行環境
 
-Examples
+範例
 
 JDK
 
@@ -345,21 +345,21 @@ Go Runtime
 
 PHP Runtime
 
-Record
+記錄
 
-Runtime
+執行環境
 
-Version
+版本
 
-Evidence
+證據
 
 ---
 
-## Step 4
+## 步驟 4
 
-Identify Application Servers
+辨識應用伺服器
 
-Examples
+範例
 
 WebSphere
 
@@ -375,21 +375,21 @@ Jetty
 
 Undertow
 
-Record
+記錄
 
-Server
+伺服器
 
-Version
+版本
 
-Evidence
+證據
 
 ---
 
-## Step 5
+## 步驟 5
 
-Identify Build Systems
+辨識建置系統
 
-Examples
+範例
 
 Maven
 
@@ -407,23 +407,23 @@ MSBuild
 
 Make
 
-Record
+記錄
 
-Tool
+工具
 
-Version
+版本
 
 Wrapper
 
-Evidence
+證據
 
 ---
 
-## Step 6
+## 步驟 6
 
-Identify Databases
+辨識資料庫
 
-Examples
+範例
 
 Oracle
 
@@ -443,21 +443,21 @@ MongoDB
 
 Redis
 
-Record
+記錄
 
-Database
+資料庫
 
-Driver
+驅動程式
 
-Evidence
+證據
 
 ---
 
-## Step 7
+## 步驟 7
 
-Identify ORM
+辨識 ORM
 
-Examples
+範例
 
 Hibernate
 
@@ -471,19 +471,19 @@ Entity Framework
 
 Dapper
 
-Record
+記錄
 
 ORM
 
-Evidence
+證據
 
 ---
 
-## Step 8
+## 步驟 8
 
-Identify Messaging
+辨識訊息傳遞
 
-Examples
+範例
 
 IBM MQ
 
@@ -499,19 +499,19 @@ Azure Service Bus
 
 AWS SQS
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 9
+## 步驟 9
 
-Identify API Technologies
+辨識 API 技術
 
-Examples
+範例
 
 REST
 
@@ -527,19 +527,19 @@ OpenAPI
 
 Swagger
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 10
+## 步驟 10
 
-Identify Security
+辨識安全機制
 
-Examples
+範例
 
 Spring Security
 
@@ -559,19 +559,19 @@ TLS
 
 SSL
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 11
+## 步驟 11
 
-Identify Logging
+辨識日誌
 
-Examples
+範例
 
 SLF4J
 
@@ -585,19 +585,19 @@ NLog
 
 Serilog
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 12
+## 步驟 12
 
-Identify Testing
+辨識測試
 
-Examples
+範例
 
 JUnit
 
@@ -615,19 +615,19 @@ PyTest
 
 NUnit
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 13
+## 步驟 13
 
-Identify Containers
+辨識容器
 
-Examples
+範例
 
 Docker
 
@@ -641,19 +641,19 @@ Helm
 
 Podman
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
+證據
 
 ---
 
-## Step 14
+## 步驟 14
 
-Identify CI/CD
+辨識 CI/CD
 
-Examples
+範例
 
 GitHub Actions
 
@@ -665,31 +665,31 @@ Azure DevOps
 
 Bamboo
 
-Record
+記錄
 
-Technology
+技術
 
-Evidence
-
----
-
-## Output Rules
-
-Classify only.
-
-Never infer architecture.
-
-Never infer dependencies between modules.
-
-Never explain execution flow.
-
-Never describe business rules.
+證據
 
 ---
 
-## Required Outputs
+## 輸出規則
 
-Generate
+只做分類。
+
+絕不推測架構。
+
+絕不推測模組之間的相依關係。
+
+絕不解釋執行流程。
+
+絕不描述業務規則。
+
+---
+
+## 必要輸出
+
+產生
 
 docs/overview/technology-stack.md
 
@@ -701,36 +701,36 @@ docs/overview/dependency-summary.md
 
 ---
 
-## Quality Checklist
+## 品質檢查清單
 
-☐ Every language classified
+☐ 每種語言都已分類
 
-☐ Every framework classified
+☐ 每個框架都已分類
 
-☐ Runtime identified
+☐ 已辨識執行環境
 
-☐ Build tools identified
+☐ 已辨識建置工具
 
-☐ Databases identified
+☐ 已辨識資料庫
 
-☐ ORM identified
+☐ 已辨識 ORM
 
-☐ Messaging identified
+☐ 已辨識訊息傳遞
 
-☐ Security identified
+☐ 已辨識安全機制
 
-☐ Logging identified
+☐ 已辨識日誌
 
-☐ Testing identified
+☐ 已辨識測試
 
-☐ Container technologies identified
+☐ 已辨識容器技術
 
-☐ CI/CD identified
+☐ 已辨識 CI/CD
 
-☐ Evidence included
+☐ 已附上證據
 
-☐ No hallucinations
+☐ 沒有任何幻覺內容
 
 ---
 
-End.
+結束。

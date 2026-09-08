@@ -2,9 +2,9 @@
 name: inventory
 
 description: |
-  Scan the repository and build a deterministic inventory of the software
-  project. This Skill discovers observable facts only and creates the
-  foundation for all downstream documentation Skills.
+  掃描儲存庫並建立軟體專案的決定性清冊。
+  本 Skill 只發掘可觀察的事實，
+  並為所有下游文件產生 Skill 打下基礎。
 
 version: 1.0.0
 
@@ -52,87 +52,87 @@ outputs:
   - docs/overview/file-statistics.md
 ---
 
-# Objective
+# 目標
 
-Create a complete inventory of the repository.
+為儲存庫建立完整的清冊。
 
-This Skill documents only observable facts.
+本 Skill 只記錄可觀察的事實。
 
-Business logic is outside the scope of this Skill.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify projects
-
-- identify modules
-
-- identify programming languages
-
-- identify build systems
-
-- identify dependency managers
-
-- identify configuration files
-
-- identify deployment descriptors
-
-- identify infrastructure files
-
-- identify documentation
-
-- identify test projects
-
-- identify scripts
-
-- identify containers
-
-- identify CI/CD
-
-- identify generated source
-
-- identify external libraries
-
-This Skill SHALL NOT
-
-- infer business rules
-
-- analyse SQL logic
-
-- analyse APIs
-
-- analyse architecture
-
-- analyse workflows
-
-- create specifications
+業務邏輯不在本 Skill 的範圍內。
 
 ---
 
-# Inputs
+# 職責
 
-Repository Root
+本 Skill「應當」
 
-Source Code
+- 辨識專案
 
-Configuration Files
+- 辨識模組
 
-Build Files
+- 辨識程式語言
 
-Documentation
+- 辨識建置系統
 
-Scripts
+- 辨識相依套件管理工具
 
-Container Files
+- 辨識組態檔
 
-CI/CD Definitions
+- 辨識部署描述檔
+
+- 辨識基礎設施檔案
+
+- 辨識文件
+
+- 辨識測試專案
+
+- 辨識腳本
+
+- 辨識容器
+
+- 辨識 CI/CD
+
+- 辨識產生的原始碼
+
+- 辨識外部函式庫
+
+本 Skill「不得」
+
+- 推測業務規則
+
+- 分析 SQL 邏輯
+
+- 分析 API
+
+- 分析架構
+
+- 分析工作流程
+
+- 建立規格
 
 ---
 
-# Deliverables
+# 輸入
+
+儲存庫根目錄
+
+原始碼
+
+組態檔
+
+建置檔
+
+文件
+
+腳本
+
+容器檔案
+
+CI/CD 定義
+
+---
+
+# 交付物
 
 docs/overview/
 
@@ -146,43 +146,43 @@ file-statistics.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every observation must reference actual files.
+每一項觀察都必須參照實際存在的檔案。
 
-Never infer missing information.
+絕不推測缺少的資訊。
 
-Unknown is acceptable.
+Unknown 是可以接受的。
 
-Guessing is prohibited.
-
----
-
-# Completion Criteria
-
-Inventory is complete when
-
-every directory
-
-every project
-
-every module
-
-every build file
-
-every configuration
-
-has been indexed.
+臆測則是被禁止的。
 
 ---
 
-# Dependencies
+# 完成判準
 
-None
+當下列各項
+
+每個目錄
+
+每個專案
+
+每個模組
+
+每個建置檔
+
+每份組態
+
+都已建立索引時，清冊即為完成。
 
 ---
 
-# Required By
+# 相依
+
+無
+
+---
+
+# 被下列 Skill 依賴
 
 technology-discovery
 
@@ -204,9 +204,9 @@ specification-generation
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -216,60 +216,60 @@ Every output of this Skill SHALL comply with:
 - shared/output-schema.md
 - shared/quality-checklist.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/system-overview.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Inventory Skill
+# 清冊盤點 Skill
 
 ---
 
-## Goal
+## 目標
 
-Scan the entire repository recursively.
+遞迴掃描整個儲存庫。
 
-Create a complete inventory.
+建立完整清冊。
 
-Do not perform architectural analysis.
+不要進行架構分析。
 
-Do not infer business logic.
+不要推測業務邏輯。
 
-Only document observable facts.
+只記錄可觀察的事實。
 
 ---
 
-## Step 1
+## 步驟 1
 
-Identify Repository Type
+辨識儲存庫類型
 
-Determine whether the repository is
+判定該儲存庫是
 
 - Monorepo
 
-- Multi-module
+- 多模組
 
-- Single Application
+- 單一應用程式
 
-- Multi Repository Import
+- 多儲存庫匯入
 
-Record evidence.
+記錄證據。
 
 ---
 
-## Step 2
+## 步驟 2
 
-Identify Projects
+辨識專案
 
-Locate every project.
+找出每一個專案。
 
-Examples
+範例
 
 Java
 
@@ -285,31 +285,31 @@ PHP
 
 COBOL
 
-Record
+記錄
 
-Project Name
+專案名稱
 
-Location
+位置
 
-Primary Language
+主要語言
 
-Framework if known
+框架（若已知）
 
-Build Tool
+建置工具
 
-Entry Point
+進入點
 
 ---
 
-## Step 3
+## 步驟 3
 
-Identify Modules
+辨識模組
 
-For every project
+對每一個專案
 
-identify logical modules.
+辨識其邏輯模組。
 
-Examples
+範例
 
 loan
 
@@ -333,13 +333,13 @@ scheduler
 
 ---
 
-## Step 4
+## 步驟 4
 
-Programming Languages
+程式語言
 
-Identify every language.
+辨識每一種語言。
 
-Examples
+範例
 
 Java
 
@@ -377,11 +377,11 @@ Batch
 
 ---
 
-## Step 5
+## 步驟 5
 
-Build System
+建置系統
 
-Identify
+辨識
 
 Gradle
 
@@ -401,21 +401,21 @@ Make
 
 CMake
 
-Record
+記錄
 
-version if available
+版本（若有）
 
 wrapper
 
-plugins
+外掛
 
 ---
 
-## Step 6
+## 步驟 6
 
-Dependency Managers
+相依套件管理工具
 
-Locate
+找出
 
 pom.xml
 
@@ -433,21 +433,21 @@ go.mod
 
 composer.json
 
-Record
+記錄
 
-dependency manager
+相依管理工具
 
-dependency count
+相依套件數量
 
-important libraries
+重要函式庫
 
 ---
 
-## Step 7
+## 步驟 7
 
-Configuration Files
+組態檔
 
-Locate
+找出
 
 application.yml
 
@@ -471,19 +471,19 @@ Dockerfile
 
 .env
 
-Record
+記錄
 
-purpose
+用途
 
-location
+位置
 
 ---
 
-## Step 8
+## 步驟 8
 
-Infrastructure
+基礎設施
 
-Locate
+找出
 
 Docker
 
@@ -507,11 +507,11 @@ Azure DevOps
 
 ---
 
-## Step 9
+## 步驟 9
 
-Database Indicators
+資料庫線索
 
-Locate
+找出
 
 SQL
 
@@ -525,15 +525,15 @@ Hibernate
 
 MyBatis
 
-Stored Procedures
+Stored Procedure
 
 ---
 
-## Step 10
+## 步驟 10
 
-Integration Indicators
+整合線索
 
-Locate
+找出
 
 REST
 
@@ -555,75 +555,75 @@ RabbitMQ
 
 ---
 
-## Step 11
+## 步驟 11
 
-Documentation
+文件
 
-Locate
+找出
 
 README
 
-Architecture
+架構文件
 
 Wiki
 
-Design
+設計文件
 
 ADR
 
-Decision Records
+決策記錄
 
-Specifications
+規格
 
-Runbooks
-
----
-
-## Step 12
-
-Statistics
-
-Collect
-
-Total Files
-
-Directories
-
-Projects
-
-Modules
-
-Languages
-
-Configuration Files
-
-Documentation Files
-
-SQL Files
-
-Tests
-
-Build Files
+Runbook
 
 ---
 
-# Output Rules
+## 步驟 12
 
-Never describe architecture.
+統計
 
-Never describe business rules.
+蒐集
 
-Never infer relationships.
+總檔案數
 
-Never explain workflows.
+目錄數
 
-Inventory only.
+專案數
+
+模組數
+
+語言數
+
+組態檔數
+
+文件檔數
+
+SQL 檔數
+
+測試數
+
+建置檔數
 
 ---
 
-# Required Outputs
+# 輸出規則
 
-Generate
+絕不描述架構。
+
+絕不描述業務規則。
+
+絕不推測關聯。
+
+絕不解釋工作流程。
+
+只做清冊。
+
+---
+
+# 必要輸出
+
+產生
 
 docs/overview/system-overview.md
 
@@ -635,26 +635,26 @@ docs/overview/file-statistics.md
 
 ---
 
-# Quality Checklist
+# 品質檢查清單
 
-☐ Every directory indexed
+☐ 每個目錄都已建立索引
 
-☐ Every project indexed
+☐ 每個專案都已建立索引
 
-☐ Every module indexed
+☐ 每個模組都已建立索引
 
-☐ Every build file indexed
+☐ 每個建置檔都已建立索引
 
-☐ Every configuration indexed
+☐ 每份組態都已建立索引
 
-☐ Every language identified
+☐ 每種語言都已辨識
 
-☐ No assumptions
+☐ 沒有任何假設
 
-☐ No hallucinations
+☐ 沒有任何幻覺內容
 
-☐ Evidence available
+☐ 證據可取得
 
 ---
 
-End.
+結束。

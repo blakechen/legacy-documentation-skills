@@ -2,9 +2,9 @@
 name: gap-analysis
 
 description: |
-  Perform a comprehensive quality review of all generated
-  documentation. Verify documentation coverage, consistency,
-  completeness and traceability across every generated artifact.
+  對所有產生的文件執行全面性品質審查。
+  驗證每一份產出物的文件覆蓋率、一致性、
+  完整性與可追溯性。
 
 version: 1.0.0
 
@@ -60,69 +60,68 @@ outputs:
   - docs/gap-analysis/todo.md
 ---
 
-# Objective
+# 目標
 
-Evaluate the generated documentation.
+評估所產生的文件。
 
-This Skill performs quality assurance only.
+本 Skill 只做品質保證。
 
-Apply shared/mechanical-verification.md.
+套用 shared/mechanical-verification.md。
 
-The mechanical checks are performed by running a program, not by reading.
-`tools/verify/depth_checks.sh` decides all four, using the factbase for
-the source-side facts. This Skill runs it and reports what it returns.
+機械式檢查是靠執行程式完成的，而不是靠閱讀。
+`tools/shell/verify/depth_checks.sh` 判定全部四項檢查，
+並以 factbase 作為原始碼側的事實來源。
+本 Skill 執行它，並回報它所回傳的結果。
 
-Source code may be read only to explain a finding the tool has already
-raised.
+只有在需要解釋工具「已經提出」的某項發現時，才可閱讀原始碼。
 
-Interpreting logic, judging correctness, or writing documentation from source
-is FORBIDDEN.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- verify documentation coverage
-
-- verify document consistency
-
-- verify traceability
-
-- verify required deliverables
-
-- identify undocumented artifacts
-
-- identify orphaned documents
-
-- identify conflicting documentation
-
-- identify missing references
-
-- generate improvement recommendations
-
-This Skill SHALL NOT
-
-- generate new documentation
-
-- analyse business logic (counting methods and resolving quoted line ranges is not analysis)
-
-- modify existing documents
-
-- infer missing information
-
-- rewrite specifications
+詮釋邏輯、判斷正確性，或從原始碼撰寫文件，都是「被禁止」的。
 
 ---
 
-# Inputs
+# 職責
 
-All generated documentation.
+本 Skill「應當」
+
+- 驗證文件覆蓋率
+
+- 驗證文件一致性
+
+- 驗證可追溯性
+
+- 驗證必要交付物
+
+- 找出未被記錄的產出物
+
+- 找出孤兒文件
+
+- 找出彼此衝突的文件
+
+- 找出缺少的參照
+
+- 產生改進建議
+
+本 Skill「不得」
+
+- 產生新文件
+
+- 分析業務邏輯（計算方法數量與解析引用行號範圍不算分析）
+
+- 修改既有文件
+
+- 推測缺少的資訊
+
+- 改寫規格
 
 ---
 
-# Deliverables
+# 輸入
+
+所有已產生的文件。
+
+---
+
+# 交付物
 
 docs/gap-analysis/
 
@@ -140,39 +139,39 @@ todo.md
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every reported issue shall reference
+每一項回報的問題都應參照
 
-Document
+文件
 
-Section
+章節
 
-Related Artifact
+相關產出物
 
-Reason
+原因
 
-Never report unsupported issues.
-
----
-
-# Completion Criteria
-
-Coverage verified.
-
-Consistency verified.
-
-Traceability verified.
-
-Improvement list generated.
-
-Quality report completed.
+絕不回報沒有依據的問題。
 
 ---
 
-# Shared Rules
+# 完成判準
 
-Every output of this Skill SHALL comply with:
+覆蓋率已驗證。
+
+一致性已驗證。
+
+可追溯性已驗證。
+
+已產生改進清單。
+
+品質報告已完成。
+
+---
+
+# 共用規則
+
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -184,33 +183,33 @@ Every output of this Skill SHALL comply with:
 - shared/enumeration-first.md
 - shared/logic-depth.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Gap Analysis
+# 落差分析
 
 ---
 
-# Goal
+# 目標
 
-Perform a complete documentation quality review.
+執行完整的文件品質審查。
 
-Review documentation.
+審查文件。
 
-Source code may be read ONLY to count public methods in a primary unit class and to
-confirm that a quoted `file:line` excerpt resolves to the quoted text.
+「只有」在計算主要單元類別的公開方法數量，
+以及確認某段引用的 `file:line` 摘錄確實對應到所引文字時，才可閱讀原始碼。
 
-Never interpret logic. Never judge correctness. Never write documentation from source.
+絕不詮釋邏輯。絕不判斷正確性。絕不從原始碼撰寫文件。
 
 ---
 
-# Review Scope
+# 審查範圍
 
-Review
+審查
 
 overview/
 
@@ -230,291 +229,290 @@ specifications/
 
 ---
 
-# Step 1
+# 步驟 1
 
-Coverage Review
+覆蓋率審查
 
-Verify
+驗證
 
-Every module documented.
+每個模組都已記錄。
 
-Every transaction class documented (compare to enumeration list).
+每個交易類別都已記錄（與列舉清單比對）。
 
-Every interface documented.
+每個介面都已記錄。
 
-Every database object documented (compare to DB object enumeration).
+每個資料庫物件都已記錄（與 DB 物件列舉比對）。
 
-Every business rule documented.
+每一條業務規則都已記錄。
 
-Every sequence documented.
+每一張循序圖都已記錄。
 
-Every specification generated.
+每一份規格都已產生。
 
-Per-transaction specifications generated for every transaction class.
+每個交易類別都已產生逐交易規格。
 
-Report missing artifacts.
+回報缺少的產出物。
 
-Report count mismatches between enumeration lists and generated documents.
+回報列舉清單與已產生文件之間的數量不符。
 
-A file that exists but is not depth-complete counts as MISSING for coverage purposes.
-See Step 1b.
+檔案存在但未達深度完備者，就覆蓋率而言算「缺少」。
+見步驟 1b。
 
 ---
 
-# Step 1a
+# 步驟 1a
 
-Staleness Review
+陳舊度審查
 
-Apply shared/incremental-update.md.
+套用 shared/incremental-update.md。
 
-    sh tools/verify/staleness.sh \
+    sh tools/shell/verify/staleness.sh \
         --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
         --state <repo>/docs/model/unit-state.psv \
         --out <repo>/docs/gap-analysis/staleness-report.md
 
-A stale document describes source that has since changed. It is a false claim
-about the current system and counts as MISSING, not as a warning.
+陳舊的文件描述的是其後已變動的原始碼。
+它是對現行系統的不實宣稱，算「缺少」，而不是警告。
 
-Run this BEFORE the depth review: a stale document usually fails the excerpt
-check too, and patching its excerpts instead of regenerating it produces a
-document that is half-true.
+在深度審查「之前」先執行本步驟：陳舊的文件通常連摘錄檢查也一併失敗，
+而修補它的摘錄而不重新產生它，只會得到一份半真半假的文件。
 
-After a unit passes its depth checks, re-run with `--record` so the next run
-knows what it was verified against.
+在某個單元通過深度檢查之後，加上 `--record` 再跑一次，
+讓下一次執行知道它當時是對照什麼驗證的。
 
 ---
 
-# Step 1b
+# 步驟 1b
 
-Depth Review
+深度審查
 
-Apply shared/logic-depth.md.
+套用 shared/logic-depth.md。
 
-Run the checks; do not perform them by reading:
+執行檢查；不要靠閱讀來做這些檢查：
 
-    sh tools/verify/depth_checks.sh \
+    sh tools/shell/verify/depth_checks.sh \
         --repo <repo> --facts <repo>/docs/facts \
         --docs <repo>/docs/modules/transactions \
         --enumeration <repo>/docs/enumeration \
         --out <repo>/docs/gap-analysis/depth-report.md
 
-Exit 0 means every unit is depth-complete. Exit 1 means at least one failed.
-Exit 3 means a unit in the enumeration has no document at all.
+結束碼 0 代表每個單元都達到深度完備。結束碼 1 代表至少有一個失敗。
+結束碼 3 代表列舉中有某個單元根本沒有文件。
 
-Report the Depth-Complete Rate the tool computed. A rate stated without the
-tool output is not a rate.
+回報工具計算出的深度完備率。
+沒有工具輸出就陳述的比率，不是比率。
 
-For every FAIL the tool raises, add one line of explanation naming the cause.
-That is the only reason to open the source in this Skill.
+工具提出的每一項 FAIL，都補上一行說明指出成因。
+那是本 Skill 唯一有理由打開原始碼的時機。
 
-Report a passing run as "consistent with source; meaning not verified". Do
-not report it as verified documentation. See
-shared/mechanical-verification.md.
+把通過的執行結果回報為「consistent with source; meaning not verified」。
+不要回報成已驗證的文件。見
+shared/mechanical-verification.md。
 
-The wording depends on the tier in `docs/verification-tier.txt`:
+措辭取決於 `docs/verification-tier.txt` 中的層級：
 
-Tier A - "Consistent with source; meaning not verified."
+層級 A —— 「Consistent with source; meaning not verified.」
 
-Tier B - "Consistent with source as read lexically; not independently
-verified."
+層級 B —— 「Consistent with source as read lexically; not independently
+verified.」
 
-Tier C - the checks could not be run. Report
-`Depth-Complete Rate: NOT MEASURED (Tier C)`, the count of units with a
-document, and `Units whose document was checked against source: 0`.
-Open every report with the `VERIFICATION: NONE` block from
-shared/verification-tiers.md. Estimating the rate is FORBIDDEN.
+層級 C —— 檢查無法執行。回報
+`Depth-Complete Rate: NOT MEASURED (Tier C)`、有文件的單元數，
+以及 `Units whose document was checked against source: 0`。
+每一份報告都要以 shared/verification-tiers.md 中的
+`VERIFICATION: NONE` 區塊開頭。估算比率是「被禁止」的。
 
-For EVERY file in docs/modules/transactions/ and docs/specifications/transactions/,
-evaluate the Definition of Depth-Complete and record one row:
+對 docs/modules/transactions/ 與 docs/specifications/transactions/ 中的
+「每一個」檔案，評估「深度完備的定義」，並記錄一列：
 
 | Unit | Methods in Source | Method Subsections | Flows >=3 Steps | Pseudocode Blocks | Excerpts with file:line | Field Mapping Tables | Depth-Complete |
 |------|-------------------|--------------------|-----------------|-------------------|-------------------------|----------------------|----------------|
 
-Checks
+檢查項目
 
-1. `### Method:` subsection count equals the public method count in the source class.
-   Mismatch = CRITICAL.
+1. `### Method:` 小節數量等於原始碼類別中的公開方法數量。
+   不符 = CRITICAL。
 
-2. Each subsection's Processing Flow has at least 3 numbered steps, or the explicit
-   trivial-method sentence. Otherwise = CRITICAL.
+2. 每個小節的 Processing Flow 至少有 3 個編號步驟，
+   或有那句明確的簡單方法字面句。否則 = CRITICAL。
 
-3. Each subsection has a non-empty pseudocode fenced block. Otherwise = CRITICAL.
+3. 每個小節都有一個非空的虛擬碼 fenced 區塊。否則 = CRITICAL。
 
-4. Each subsection has at least one excerpt matching `path:line` and the excerpt
-   resolves to the quoted text, or the explicit no-critical-logic sentence.
-   Otherwise = HIGH.
+4. 每個小節至少有一段符合 `path:line` 的摘錄，且該摘錄能對應到所引文字，
+   或有那句明確的無關鍵邏輯字面句。
+   否則 = HIGH。
 
-5. Each subsection has a Field Mapping table with at least one row. Otherwise = HIGH.
+5. 每個小節都有一張至少一列的 Field Mapping 表。否則 = HIGH。
 
-6. Specification subsections are not shorter than the module subsections.
-   Otherwise = HIGH.
+6. 規格中的小節不短於模組文件中的對應小節。
+   否則 = HIGH。
 
-Report
+回報
 
-Depth-complete unit count over total enumerated unit count.
+深度完備的單元數 ÷ 已列舉的單元總數。
 
-The full list of units failing each check.
+未通過各項檢查的單元完整清單。
 
-Depth-Complete Rate = depth-complete units / enumeration line count.
+深度完備率 ＝ 深度完備單元數 ÷ 列舉檔行數。
 
-If Depth-Complete Rate is below 100%, the pipeline is NOT complete,
-even when every file exists.
-
----
-
-# Step 2
-
-Consistency Review
-
-Verify
-
-Module names are consistent.
-
-API names are consistent.
-
-Database object names are consistent.
-
-Business rule identifiers are unique.
-
-Sequence names are consistent.
-
-Specification references are valid.
-
-Report inconsistencies.
+若深度完備率低於 100%，即使每個檔案都存在，
+流水線也「不算」完成。
 
 ---
 
-# Step 3
+# 步驟 2
 
-Traceability Review
+一致性審查
 
-Verify
+驗證
 
-Architecture references modules.
+模組名稱一致。
 
-Modules reference interfaces.
+API 名稱一致。
 
-Modules reference database objects.
+資料庫物件名稱一致。
 
-Business rules reference evidence.
+業務規則識別碼唯一。
 
-Sequences reference business rules.
+循序圖名稱一致。
 
-Specifications reference architecture.
+規格參照有效。
 
-Specifications reference modules.
-
-Specifications reference business rules.
-
-Specifications reference sequences.
-
-Every relationship shall be traceable.
+回報不一致之處。
 
 ---
 
-# Step 4
+# 步驟 3
 
-Cross-reference Validation
+可追溯性審查
 
-Check
+驗證
 
-Module → Database
+架構參照模組。
 
-Module → API
+模組參照介面。
 
-Module → Sequence
+模組參照資料庫物件。
 
-Business Rule → Module
+業務規則參照證據。
 
-Business Rule → Database
+循序圖參照業務規則。
 
-Business Rule → Sequence
+規格參照架構。
 
-API → Sequence
+規格參照模組。
 
-Database → Specification
+規格參照業務規則。
 
-Architecture → Specification
+規格參照循序圖。
 
-Report missing references.
-
----
-
-# Step 5
-
-Document Completeness
-
-Verify required sections.
-
-Examples
-
-Overview
-
-Purpose
-
-Responsibilities
-
-Evidence
-
-Dependencies
-
-References
-
-Unknown sections
-
-Report incomplete documents.
+每一項關聯都應可追溯。
 
 ---
 
-# Step 6
+# 步驟 4
 
-Orphan Detection
+交叉參照驗證
 
-Detect
+檢查
 
-Unused module documents
+模組 → 資料庫
 
-Unused sequence diagrams
+模組 → API
 
-Unreferenced business rules
+模組 → 循序圖
 
-Unreferenced APIs
+業務規則 → 模組
 
-Unreferenced database objects
+業務規則 → 資料庫
 
-Duplicate documentation
+業務規則 → 循序圖
 
-Report findings.
+API → 循序圖
 
----
+資料庫 → 規格
 
-# Step 7
+架構 → 規格
 
-Quality Metrics
-
-Generate
-
-Documentation Coverage
-
-Reference Coverage
-
-Traceability Coverage
-
-Diagram Coverage
-
-Evidence Coverage
-
-Document Completeness
+回報缺少的參照。
 
 ---
 
-# Step 8
+# 步驟 5
 
-Generate TODO
+文件完整性
 
-Prioritize
+驗證必要章節。
+
+範例
+
+概觀
+
+目的
+
+職責
+
+證據
+
+相依關係
+
+參考資料
+
+Unknown 章節
+
+回報不完整的文件。
+
+---
+
+# 步驟 6
+
+孤兒偵測
+
+偵測
+
+未被使用的模組文件
+
+未被使用的循序圖
+
+未被參照的業務規則
+
+未被參照的 API
+
+未被參照的資料庫物件
+
+重複的文件
+
+回報發現。
+
+---
+
+# 步驟 7
+
+品質指標
+
+產生
+
+文件覆蓋率
+
+參照覆蓋率
+
+可追溯性覆蓋率
+
+圖表覆蓋率
+
+證據覆蓋率
+
+文件完整性
+
+---
+
+# 步驟 8
+
+產生 TODO
+
+排定優先序
 
 Critical
 
@@ -524,37 +522,37 @@ Medium
 
 Low
 
-Each TODO shall include
+每一筆 TODO 都應包含
 
-Issue
+問題
 
-Reason
+原因
 
-Related Document
+相關文件
 
-Suggested Action
+建議動作
 
-Priority
-
----
-
-# Output Rules
-
-Never invent missing information.
-
-Never modify documentation.
-
-Never rewrite evidence.
-
-Never infer undocumented relationships.
-
-Only report observable gaps.
+優先序
 
 ---
 
-# Required Outputs
+# 輸出規則
 
-Generate
+絕不憑空補上缺少的資訊。
+
+絕不修改文件。
+
+絕不改寫證據。
+
+絕不推測未記錄的關聯。
+
+只回報可觀察到的落差。
+
+---
+
+# 必要輸出
+
+產生
 
 docs/gap-analysis/gap-report.md
 
@@ -572,73 +570,72 @@ docs/gap-analysis/progress.md
 
 ---
 
-# Enumeration-to-Document Verification (added from lessons learned)
+# 列舉對文件的驗證（源自經驗教訓）
 
-The Gap Analysis Skill MUST perform the following numeric checks:
+落差分析 Skill「必須」執行下列數值檢查：
 
-1. Count lines in `docs/enumeration/transaction-classes.txt` → expected transaction doc count.
+1. 計算 `docs/enumeration/transaction-classes.txt` 的行數 → 預期的交易文件數。
 
-2. Count files in `docs/modules/transactions/*.md` → actual transaction doc count.
+2. 計算 `docs/modules/transactions/*.md` 的檔案數 → 實際的交易文件數。
 
-3. Count files in `docs/business-rules/transactions/*.md` → actual BR doc count.
+3. 計算 `docs/business-rules/transactions/*.md` 的檔案數 → 實際的 BR 文件數。
 
-4. Count files in `docs/sequence/transactions/*.md` → actual sequence doc count.
+4. 計算 `docs/sequence/transactions/*.md` 的檔案數 → 實際的循序文件數。
 
-5. Count files in `docs/specifications/transactions/*.md` → actual spec doc count.
+5. 計算 `docs/specifications/transactions/*.md` 的檔案數 → 實際的規格文件數。
 
-6. Count lines in `docs/enumeration/db-object-classes.txt` → expected DB entries.
+6. 計算 `docs/enumeration/db-object-classes.txt` 的行數 → 預期的 DB 條目數。
 
-7. Count entries in `docs/database/table-reference.md` → actual DB entries.
+7. 計算 `docs/database/table-reference.md` 的條目數 → 實際的 DB 條目數。
 
-8. A file that exists but is not depth-complete (Step 1b) counts as MISSING for
-   check 2 and check 5.
+8. 檔案存在但未達深度完備者（步驟 1b），在檢查 2 與檢查 5 中算「缺少」。
 
-If ANY actual count < expected count, report as CRITICAL gap with exact numbers.
+若「任何」實際數量 < 預期數量，就以 CRITICAL 落差回報，並附上確切數字。
 
-Coverage and depth are separate gates. Both must pass.
-
----
-
-# Quality Checklist
-
-☐ Coverage verified
-
-☐ Consistency verified
-
-☐ Traceability verified
-
-☐ Cross-reference validated
-
-☐ Orphans detected
-
-☐ Duplicate documents detected
-
-☐ Quality metrics generated
-
-☐ TODO prioritized
-
-☐ Enumeration-to-document count verified
-
-☐ Depth verified by running tools/verify/depth_checks.sh
-
-☐ Depth-Complete Rate taken from the tool output, not asserted
-
-☐ Every tool FAIL explained
-
-☐ Staleness checked before depth
-
-☐ Verified units recorded with tools/verify/staleness.sh --record
-
-☐ Reflexion divergences and absences resolved (shared/reflexion-model.md)
-
-☐ Verification tier read from docs/verification-tier.txt and stamped on the report
-
-☐ Result wording matches the tier
-
-☐ In Tier C: VERIFICATION: NONE block present, no rate claimed
-
-☐ No hallucinations
+覆蓋率與深度是兩道分開的關卡。兩者都必須通過。
 
 ---
 
-End.
+# 品質檢查清單
+
+☐ 已驗證覆蓋率
+
+☐ 已驗證一致性
+
+☐ 已驗證可追溯性
+
+☐ 已驗證交叉參照
+
+☐ 已偵測孤兒
+
+☐ 已偵測重複文件
+
+☐ 已產生品質指標
+
+☐ TODO 已排定優先序
+
+☐ 已驗證列舉對文件的數量
+
+☐ 深度已透過執行 tools/shell/verify/depth_checks.sh 驗證
+
+☐ 深度完備率取自工具輸出，而非自行宣稱
+
+☐ 工具的每一項 FAIL 都已說明
+
+☐ 已在深度檢查之前檢查陳舊度
+
+☐ 已驗證的單元已用 tools/shell/verify/staleness.sh --record 記錄
+
+☐ 反思分歧與缺席都已處置（shared/reflexion-model.md）
+
+☐ 已從 docs/verification-tier.txt 讀取驗證層級並蓋在報告上
+
+☐ 結果措辭與層級相符
+
+☐ 層級 C 時：VERIFICATION: NONE 區塊已存在，且未宣稱任何比率
+
+☐ 沒有任何幻覺內容
+
+---
+
+結束。

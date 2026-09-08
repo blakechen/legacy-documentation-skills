@@ -1,34 +1,34 @@
-# Glossary
+# 術語表
 
-| Term | Definition | Evidence |
-|------|------------|----------|
-
----
-
-## Abbreviations
-
-| Abbreviation | Meaning |
+| 術語 | 定義 | 證據 |
+|------|------|------|
 
 ---
 
-## External Systems
+## 縮寫
 
-| Name | Description |
-
----
-
-## Modules
-
-| Module | Description |
+| 縮寫 | 意義 |
 
 ---
 
-## Database Terms
+## 外部系統
 
-| Term | Description |
+| 名稱 | 說明 |
 
 ---
 
-## API Terms
+## 模組
 
-| Term | Description |
+| 模組 | 說明 |
+
+---
+
+## 資料庫術語
+
+| 術語 | 說明 |
+
+---
+
+## API 術語
+
+| 術語 | 說明 |

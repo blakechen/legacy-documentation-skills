@@ -1,18 +1,18 @@
-# Validation Notes
+# 驗證備註
 
-Expected Architecture
+預期架構
 
-Layered
+分層
 
-Expected ORM
+預期 ORM
 
 Entity Framework
 
-Expected Integration
+預期整合
 
 REST
 
-Authentication
+認證
 
 OAuth
 

@@ -2,10 +2,10 @@
 name: business-rule-extraction
 
 description: |
-  Extract business rules hidden inside legacy source code,
-  database logic, configurations and integration definitions.
-  Convert technical implementations into human-readable rules
-  with traceable evidence.
+  從老舊原始碼、資料庫邏輯、組態與整合定義中，
+  抽取隱藏其中的業務規則。
+  把技術實作轉換成人類可讀、
+  且具可追溯證據的規則。
 
 version: 1.0.0
 
@@ -56,96 +56,96 @@ outputs:
   - docs/business-rules/technical-logic.md
 ---
 
-# Objective
+# 目標
 
-Discover business rules implemented inside the system.
+發掘系統內部所實作的業務規則。
 
-Convert technical conditions into readable rules.
+把技術條件轉換成可讀的規則。
 
-Every rule must be traceable to source evidence.
+每一條規則都必須可追溯到原始碼證據。
 
-Apply shared/business-rule-criteria.md.
+套用 shared/business-rule-criteria.md。
 
-A rule is a condition that reads or writes a DOMAIN VARIABLE. Everything else
-is technical logic and belongs in the module document. Without this test,
-every null check becomes a business rule and the rules that matter are lost
-in the noise.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- identify conditional logic
-
-- identify validation rules
-
-- identify calculation rules
-
-- identify status transition rules
-
-- identify authorization rules
-
-- identify exception-based rules
-
-- identify configuration-driven rules
-
-- identify database rules
-
-- identify stored procedure rules
-
-- identify integration routing rules
-
-- identify workflow constraints
-
-This Skill SHALL NOT
-
-- modify source code
-
-- generate new business logic
-
-- assume business intent
-
-- invent missing rules
-
-- create functional specifications
-
-- record technical logic as a business rule
-
-- report a rule without naming the domain variable it governs
+規則是一個讀取或寫入「領域變數」的條件。其餘一切都是技術邏輯，
+屬於模組文件。沒有這項判定測試，
+每一個 null 檢查都會變成業務規則，
+而真正重要的規則會淹沒在雜訊之中。
 
 ---
 
-# Inputs
+# 職責
 
-Source Code
+本 Skill「應當」
 
-Module Analysis
+- 辨識條件邏輯
 
-Database Analysis
+- 辨識驗證規則
 
-Interface Analysis
+- 辨識計算規則
 
-Architecture Analysis
+- 辨識狀態轉換規則
 
-Configuration Files
+- 辨識授權規則
+
+- 辨識以例外為基礎的規則
+
+- 辨識由組態驅動的規則
+
+- 辨識資料庫規則
+
+- 辨識 stored procedure 規則
+
+- 辨識整合路由規則
+
+- 辨識工作流程限制
+
+本 Skill「不得」
+
+- 修改原始碼
+
+- 產生新的業務邏輯
+
+- 假設業務意圖
+
+- 憑空造出缺少的規則
+
+- 建立功能規格
+
+- 把技術邏輯記錄成業務規則
+
+- 在沒有指名所治理之領域變數的情況下回報規則
+
+---
+
+# 輸入
+
+原始碼
+
+模組分析
+
+資料庫分析
+
+介面分析
+
+架構分析
+
+組態檔
 
 SQL
 
-Stored Procedures
+Stored Procedure
 
-Message Definitions
+訊息定義
 
 ---
 
-# Rule Discovery Sources
+# 規則發掘來源
 
-Analyse:
+分析：
 
-## Application Code
+## 應用程式碼
 
-Examples:
+範例：
 
 if
 
@@ -165,9 +165,9 @@ annotation
 
 state machine
 
-## Database Logic
+## 資料庫邏輯
 
-Examples:
+範例：
 
 SQL CASE
 
@@ -179,9 +179,9 @@ Stored Procedure
 
 Function
 
-## Configuration
+## 組態
 
-Examples:
+範例：
 
 Properties
 
@@ -189,23 +189,23 @@ YAML
 
 XML
 
-Feature Flags
+Feature Flag
 
-Threshold Values
+門檻值
 
-## Integration
+## 整合
 
-Examples:
+範例：
 
-Message Routing
+訊息路由
 
-Error Code Mapping
+錯誤碼對應
 
-Response Handling
+回應處理
 
 ---
 
-# Deliverables
+# 交付物
 
 docs/business-rules/
 
@@ -215,94 +215,94 @@ transactions/[ClassName].md
 
 cross-cutting.md
 
-One file per transaction class under `transactions/`, named after the class.
+`transactions/` 底下每個交易類別一個檔案，以類別命名。
 
-Every rule owned by that class lives in that file, in the Business Rule
-Document Format, as a `## BR-NNN` section.
+該類別所擁有的每一條規則都放在那個檔案裡，
+以「業務規則文件格式」寫成一個 `## BR-NNN` 章節。
 
-Rules that belong to no single transaction class go in `cross-cutting.md`.
+不屬於任何單一交易類別的規則放進 `cross-cutting.md`。
 
-BR-IDs are globally unique across all files.
+BR-ID 在所有檔案之間全域唯一。
 
-`business-rule-index.md` maps every BR-ID to its owning file.
+`business-rule-index.md` 把每一個 BR-ID 對應到它所屬的檔案。
 
 ---
 
-# Evidence Rule
+# 證據規則
 
-Every business rule must contain evidence.
+每一條業務規則都必須包含證據。
 
-Evidence format:
+證據格式：
 
-Source File
+原始碼檔案
 
 Class
 
 Method
 
-Line Reference if available
+行號參照（若有）
 
 SQL
 
-Configuration Key
+組態鍵
 
-Message Definition
+訊息定義
 
 ---
 
-# Rule Confidence
+# 規則信心度
 
-Each rule must include confidence.
+每一條規則都必須附上信心度。
 
-Values:
+值：
 
 High
 
-Directly implemented rule.
+直接實作的規則。
 
 Medium
 
-Strong evidence but requires interpretation.
+證據充分，但需要詮釋。
 
 Low
 
-Possible rule with incomplete evidence.
+可能的規則，證據不完整。
 
 ---
 
-# Completion Criteria
+# 完成判準
 
-Business rules are complete when:
+當下列條件成立時，業務規則即為完成：
 
-- `docs/business-rules/domain-variables.txt` exists and is non-empty
+- `docs/business-rules/domain-variables.txt` 存在且非空
 
-- every recorded rule names at least one domain variable
+- 每一條記錄的規則都指名至少一個領域變數
 
-- `docs/business-rules/technical-logic.md` exists, so that what was excluded
-  is visible and reviewable
+- `docs/business-rules/technical-logic.md` 存在，
+  使得被排除的內容可見、可供審閱
 
-- all validation logic reviewed
+- 所有驗證邏輯都已檢視
 
-- all decision points reviewed
+- 所有決策點都已檢視
 
-- all status changes reviewed
+- 所有狀態變更都已檢視
 
-- all calculations reviewed
+- 所有計算都已檢視
 
-- all authorization checks reviewed
+- 所有授權檢查都已檢視
 
-- evidence recorded
+- 已記錄證據
 
-- `ls docs/business-rules/transactions/*.md | wc -l` equals the line count of
-  `docs/enumeration/transaction-classes.txt`
+- `ls docs/business-rules/transactions/*.md | wc -l` 等於
+  `docs/enumeration/transaction-classes.txt` 的行數
 
-A transaction class that yields no rules still gets a file, recording
-`No business rules found` and the methods reviewed. A missing file is a gap;
-an empty result is a finding.
+即使某個交易類別沒有產出任何規則，仍然要有一個檔案，
+記錄 `No business rules found` 以及所檢視過的方法。
+檔案缺席是落差；結果為空則是一項發現。
 
 ---
 
-# Required By
+# 被下列 Skill 依賴
 
 sequence-discovery
 
@@ -312,9 +312,9 @@ gap-analysis
 
 ---
 
-# Shared Rules
+# 共用規則
 
-Every output of this Skill SHALL comply with:
+本 Skill 的每一項輸出「應當」遵循：
 
 - shared/evidence-rules.md
 - shared/confidence-scoring.md
@@ -327,111 +327,111 @@ Every output of this Skill SHALL comply with:
 - shared/iterative-depth.md
 - shared/logic-depth.md
 
-Document structure SHALL follow:
+文件結構「應當」遵循：
 
 - skills/templates/business-rule.md
 
-A document that violates a shared rule is INCOMPLETE,
-regardless of its content.
+違反任一共用規則的文件即為「不完整」，
+無論其內容如何。
 
 ---
 
 # Prompt
 
-# Business Rule Extraction
+# 業務規則抽取
 
 ---
 
-# Goal
+# 目標
 
-Extract business rules from legacy implementation.
+從老舊實作中抽取業務規則。
 
-Each business rule entry describes WHAT the system enforces, in business terms.
+每一筆業務規則條目以業務語彙描述系統「施行了什麼」。
 
-HOW the code implements it is documented by module-analysis in
-docs/modules/transactions/[ClassName].md. Do not duplicate that narrative here.
+程式碼「如何」實作它，由 module-analysis 記錄於
+docs/modules/transactions/[ClassName].md。不要在此重複那段敘事。
 
-Instead, every rule SHALL link to the method subsection that implements it:
+取而代之，每一條規則「應當」連結到實作它的方法小節：
 
 `Implemented at: ../../modules/transactions/[ClassName].md#method-[name] (step N)`
 
-This division is intentional.
+這樣的分工是刻意的。
 
-It is not a reason for either document to be shallow.
-
----
-
-# CRITICAL: Exhaustive Extraction
-
-Apply shared/enumeration-first.md.
-
-Apply shared/iterative-depth.md.
-
-1. Obtain the complete transaction class list from Module Analysis.
-
-2. For EVERY transaction class, analyse EVERY state method.
-
-3. Extract ALL conditional logic, validation, calculation, authorization, and status rules.
-
-4. Do NOT stop after finding a few rules. Continue until every transaction class has been reviewed.
-
-5. Write one file per transaction class to
-   `docs/business-rules/transactions/[ClassName].md`, iterating the complete
-   list in `docs/enumeration/transaction-classes.txt`.
-
-6. Every transaction class in that list gets a file, including classes that
-   yield no rules.
+它不是任一份文件可以淺薄的理由。
 
 ---
 
-# Rule Discovery Process
+# 關鍵：窮盡式抽取
 
-## Step 0
+套用 shared/enumeration-first.md。
 
-Derive the domain variables.
+套用 shared/iterative-depth.md。
 
-    sh tools/factbase/domain_variables.sh \
+1. 從模組分析取得完整的交易類別清單。
+
+2. 對「每一個」交易類別，分析「每一個」狀態方法。
+
+3. 抽取「所有」條件邏輯、驗證、計算、授權與狀態規則。
+
+4. 找到幾條規則之後「不要」停止。持續進行，直到每一個交易類別都已檢視。
+
+5. 走訪 `docs/enumeration/transaction-classes.txt` 中的完整清單，
+   為每個交易類別寫出一個檔案到
+   `docs/business-rules/transactions/[ClassName].md`。
+
+6. 該清單中的每一個交易類別都要有檔案，
+   包括那些沒有產出任何規則的類別。
+
+---
+
+# 規則發掘流程
+
+## 步驟 0
+
+推導領域變數。
+
+    sh tools/shell/factbase/domain_variables.sh \
         --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration \
         --out <repo>/docs/business-rules/domain-variables.txt
 
-This produces the set of DB columns, input fields and configuration keys the
-business owns, each with its evidence.
+這會產出業務所擁有的 DB 欄位、輸入欄位與組態鍵的集合，
+每一項都附帶證據。
 
-The list is derived from code and is therefore incomplete wherever a field
-name is built dynamically. Add such names by hand and record why.
+該清單是從程式碼推導而來，因此凡是動態組出欄位名稱之處都會不完整。
+請以人工補上那些名稱，並記錄原因。
 
-No rule extraction begins before this file exists.
-
----
-
-## Step 0b
-
-Apply the test.
-
-For every candidate condition, ask:
-
-> Which domain variable does this condition read or write?
-
-Names one          -> business rule. Record the variable in the evidence.
-
-Names none         -> technical logic. Record it in
-                      `docs/business-rules/technical-logic.md` with a count
-                      per unit, not as a rule.
-
-Cannot tell        -> record as a rule with confidence Low and state what
-                      evidence is missing. Do not drop it silently.
-
-See shared/business-rule-criteria.md for the always-technical and
-always-business lists.
+在此檔案存在之前，不得開始任何規則抽取。
 
 ---
 
-## Step 1
+## 步驟 0b
 
-Analyse Conditional Logic
+套用判定測試。
 
-Search:
+對每一個候選條件，問：
+
+> 這個條件讀取或寫入了哪一個領域變數？
+
+指名了一個   -> 業務規則。把該變數記錄在證據中。
+
+一個都沒有   -> 技術邏輯。記錄於
+                `docs/business-rules/technical-logic.md`，
+                以逐單元計數的形式，而不是當成規則。
+
+判斷不出來   -> 記錄成信心度 Low 的規則，並說明缺少了什麼證據。
+                不要默默地把它丟掉。
+
+「永遠屬於技術邏輯」與「永遠屬於業務規則」的清單，
+見 shared/business-rule-criteria.md。
+
+---
+
+## 步驟 1
+
+分析條件邏輯
+
+搜尋：
 
 if
 
@@ -441,60 +441,60 @@ switch
 
 case
 
-ternary
+三元運算
 
 guard clause
 
-validation method
+驗證方法
 
 
-Example:
+範例：
 
-Source:
+原始碼：
 
 if(amount > 1000000)
 
 requireApproval();
 
 
-Convert:
+轉換為：
 
-Rule:
+規則：
 
-Large transaction requires approval.
+大額交易需要核准。
 
-Domain variable:
+領域變數：
 
-TRSFAMT (input-field), LIMIT_CTL.DAILY_MAX (db-column)
+TRSFAMT（input-field）、LIMIT_CTL.DAILY_MAX（db-column）
 
-Evidence:
+證據：
 
 Class
 
 Method
 
-Line range
+行號範圍
 
-Outcome when true, outcome when false
+條件成立時的結果，以及不成立時的結果
 
-Counter-example, which is NOT a rule:
+反例，這「不是」規則：
 
-Source:
+原始碼：
 
 if(acctNo == null) return;
 
-No domain variable is read for a business decision; this is a guard. It is
-recorded in technical-logic.md and appears in the module document's
-Processing Flow, not here.
+沒有為了業務決策而讀取任何領域變數；這是一個 guard。
+它應記錄於 technical-logic.md，並出現在模組文件的
+Processing Flow 中，而不是這裡。
 
 
 ---
 
-# Step 2
+# 步驟 2
 
-Analyse Validation
+分析驗證
 
-Search:
+搜尋：
 
 Validator
 
@@ -509,26 +509,26 @@ assert
 throw exception
 
 
-Identify:
+辨識：
 
-Input limitation
+輸入限制
 
-Required field
+必填欄位
 
-Format restriction
+格式限制
 
-Range limitation
+範圍限制
 
-Dependency rule
+相依規則
 
 
 ---
 
-# Step 3
+# 步驟 3
 
-Analyse Status Rules
+分析狀態規則
 
-Search:
+搜尋：
 
 enum
 
@@ -541,65 +541,65 @@ transition
 workflow
 
 
-Identify:
+辨識：
 
-Allowed states
+允許的狀態
 
-Forbidden transitions
+禁止的轉換
 
-State conditions
+狀態條件
 
 
-Example:
+範例：
 
 PENDING
 
 →
 APPROVED
 
-Only after manager approval.
+僅在主管核准之後。
 
 ---
 
-# Step 4
+# 步驟 4
 
-Analyse Calculation Rules
+分析計算規則
 
-Search:
+搜尋：
 
-Arithmetic
+算術運算
 
-Formula
+公式
 
-Percentage
+百分比
 
-Interest
+利息
 
-Amount
+金額
 
-Balance
+餘額
 
-Rate
+費率
 
 
-Document:
+記錄：
 
-Input
+輸入
 
-Formula
+公式
 
-Output
+輸出
 
-Evidence
+證據
 
 
 ---
 
-# Step 5
+# 步驟 5
 
-Analyse Authorization Rules
+分析授權規則
 
-Search:
+搜尋：
 
 Role
 
@@ -607,29 +607,29 @@ Permission
 
 Authority
 
-User Level
+使用者層級
 
-Access Control
+存取控制
 
 
-Document:
+記錄：
 
-Actor
+行為者
 
-Permission
+權限
 
-Condition
+條件
 
-Evidence
+證據
 
 
 ---
 
-# Step 6
+# 步驟 6
 
-Analyse Database Rules
+分析資料庫規則
 
-Search:
+搜尋：
 
 CHECK
 
@@ -642,24 +642,24 @@ Function
 Constraint
 
 
-Document:
+記錄：
 
-Rule
+規則
 
-Object
+物件
 
-Condition
+條件
 
-Evidence
+證據
 
 
 ---
 
-# Step 7
+# 步驟 7
 
-Analyse Configuration Rules
+分析組態規則
 
-Search:
+搜尋：
 
 threshold
 
@@ -674,54 +674,52 @@ properties
 yaml
 
 
-Document:
+記錄：
 
-Configuration
+組態
 
-Meaning
+意義
 
-Usage
+用法
 
-Evidence
+證據
 
 
 ---
 
-# Step 8
+# 步驟 8
 
-Analyse Exception Rules
+分析例外規則
 
-Search:
+搜尋：
 
 Exception
 
-Error Code
+錯誤碼
 
-Error Message
+錯誤訊息
 
 Catch
 
 
-Convert:
+只有在證據支持時，才把
 
-Technical Exception
+技術例外
 
-into
+轉換為
 
-Business Constraint
-
-only if evidence supports it.
+業務限制。
 
 
 ---
 
-# Business Rule Document Format
+# 業務規則文件格式
 
-Each rule is a section inside its owning file, not a standalone document.
+每一條規則都是其所屬檔案中的一個章節，而不是獨立文件。
 
-Use `## BR-NNN` as the section heading so the anchor is stable.
+以 `## BR-NNN` 作為章節標題，使錨點保持穩定。
 
-Each rule must contain:
+每一條規則都必須包含：
 
 ```
 
@@ -730,17 +728,17 @@ Each rule must contain:
 BR-001
 
 
-## Name
+## 名稱
 
-Rule Name
-
-
-## Description
-
-Human readable rule.
+規則名稱
 
 
-## Category
+## 說明
+
+人類可讀的規則。
+
+
+## 分類
 
 Validation
 
@@ -755,17 +753,17 @@ Restriction
 Integration
 
 
-## Condition
+## 條件
 
-When does this rule apply?
-
-
-## Action
-
-What happens?
+這條規則在什麼情況下適用？
 
 
-## Evidence
+## 動作
+
+會發生什麼？
+
+
+## 證據
 
 Source:
 
@@ -780,17 +778,17 @@ SQL:
 Configuration:
 
 
-## Implemented At
+## 實作於
 
-../../modules/transactions/[ClassName].md#method-[name], step N
+../../modules/transactions/[ClassName].md#method-[name]，步驟 N
 
 
-## Source
+## 原始碼
 
 path/to/Class.java:120-128
 
 
-## Confidence
+## 信心度
 
 High / Medium / Low
 
@@ -798,67 +796,65 @@ High / Medium / Low
 
 ---
 
-# Output Rules
+# 輸出規則
 
-Never write:
+絕不寫：
 
-"The system probably..."
+「系統大概……」
 
-"The developer intended..."
+「開發者的意圖是……」
 
-"It seems..."
+「看起來……」
 
-Use:
+只有在有證據時，才使用：
 
-"The code enforces..."
-
-only when evidence exists.
+「程式碼施行了……」
 
 
 ---
 
-# Forbidden
+# 禁止事項
 
-Do not:
+不要：
 
-invent business meaning
+憑空造出業務意義
 
-guess domain terminology
+臆測領域術語
 
-rename entities without evidence
+在沒有證據的情況下為實體改名
 
-infer user requirements
-
----
-
-# Quality Checklist
-
-☐ Rule has ID
-
-☐ Rule has description
-
-☐ Rule has condition
-
-☐ Rule has action
-
-☐ Rule has evidence
-
-☐ Rule links to its implementing method subsection (Implemented At)
-
-☐ Confidence assigned
-
-☐ No assumptions
-
-☐ No invented business meaning
-
-☐ Source traceable
-
-☐ One file per transaction class under docs/business-rules/transactions/
-
-☐ File count matches docs/enumeration/transaction-classes.txt line count
-
-☐ Every BR-ID resolvable from business-rule-index.md
+推測使用者需求
 
 ---
 
-End.
+# 品質檢查清單
+
+☐ 規則有 ID
+
+☐ 規則有說明
+
+☐ 規則有條件
+
+☐ 規則有動作
+
+☐ 規則有證據
+
+☐ 規則連結到實作它的方法小節（Implemented At）
+
+☐ 已指派信心度
+
+☐ 沒有任何假設
+
+☐ 沒有憑空造出的業務意義
+
+☐ 來源可追溯
+
+☐ docs/business-rules/transactions/ 底下每個交易類別一個檔案
+
+☐ 檔案數量與 docs/enumeration/transaction-classes.txt 的行數相符
+
+☐ 每一個 BR-ID 都能由 business-rule-index.md 解析
+
+---
+
+結束。

@@ -1,42 +1,42 @@
-# Database Specification
+# 資料庫規格
 
 ---
 
-## Database Technology
+## 資料庫技術
 
 ---
 
-## Schemas
+## Schema
 
 ---
 
-## Tables
+## 資料表
 
-| Table | Purpose |
-
----
-
-## Views
+| 資料表 | 用途 |
 
 ---
 
-## Sequences
+## 檢視表
 
 ---
 
-## Entities
+## 序號產生器
 
 ---
 
-## Repository Layer
+## 實體
 
 ---
 
-## Transactions
+## Repository 層
 
 ---
 
-## ER Diagram
+## 交易
+
+---
+
+## ER 圖
 
 ```mermaid
 erDiagram
@@ -44,4 +44,4 @@ erDiagram
 
 ---
 
-## Evidence
+## 證據

@@ -2,10 +2,10 @@
 name: fact-extraction
 
 description: |
-  Build the deterministic fact base for the repository before any
-  documentation Skill runs. Parses source, resolves the type hierarchy,
-  computes the transitive closure, and verifies the result against
-  compiled artefacts. Produces facts only; describes nothing.
+  在任何文件產生 Skill 執行之前，先為儲存庫建立具決定性的事實庫。
+  解析原始碼、解析型別階層、計算遞移閉包，
+  並對照編譯產出物驗證結果。
+  只產出事實；不描述任何東西。
 
 version: 1.0.0
 
@@ -50,50 +50,49 @@ outputs:
   - docs/verification-tier.txt
 ---
 
-# Objective
+# 目標
 
-Establish, by parsing, every fact that later Skills would otherwise establish
-by reading.
+以解析的方式確立每一項事實，否則後續 Skill 就只能靠閱讀去確立它們。
 
-Apply shared/fact-layer.md.
+套用 shared/fact-layer.md。
 
-This Skill runs a program. It does not analyse code itself.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- run the Layer 1 extractor over the declared source roots
-
-- build the factbase and its transitive-closure tables
-
-- run the bytecode oracle when compiled artefacts exist
-
-- report the resolution statistics and every unresolved supertype
-
-- record the commit and per-file content hashes
-
-- stop the pipeline when the oracle disagrees with the source scan
-
-This Skill SHALL NOT
-
-- describe what any class does
-
-- name a business concept
-
-- decide which classes are transaction units
-
-- interpret anything
+本 Skill 執行的是程式。它自己不分析程式碼。
 
 ---
 
-# Inputs
+# 職責
 
-Source Code
+本 Skill「應當」
 
-Compiled classes, jars, wars (when present)
+- 對已宣告的原始碼根目錄執行 Layer 1 抽取器
+
+- 建立 factbase 及其遞移閉包表格
+
+- 當存在編譯產出物時，執行 bytecode 判準
+
+- 回報解析統計數據以及每一個未解析的父型別
+
+- 記錄 commit 與逐檔案的內容雜湊值
+
+- 當判準與原始碼掃描不一致時，停止流水線
+
+本 Skill「不得」
+
+- 描述任何類別在做什麼
+
+- 為業務概念命名
+
+- 判定哪些類別是交易單元
+
+- 詮釋任何東西
+
+---
+
+# 輸入
+
+原始碼
+
+編譯後的 class、jar、war（若有）
 
 docs/overview/repository-inventory.md
 
@@ -101,7 +100,7 @@ docs/overview/technology-stack.md
 
 ---
 
-# Deliverables
+# 交付物
 
 docs/facts/
 
@@ -133,119 +132,117 @@ bytecode-verification.md
 
 # Prompt
 
-# Fact Extraction Skill
+# 事實抽取 Skill
 
-## Step 1
+## 步驟 1
 
-Identify the source roots.
+指出原始碼根目錄。
 
-Read `docs/overview/project-structure.md`.
+閱讀 `docs/overview/project-structure.md`。
 
-Exclude build output, dependencies and generated sources.
+排除建置輸出、相依套件與產生的原始碼。
 
-Record the roots used.
+記錄所使用的根目錄。
 
-## Step 2
+## 步驟 2
 
-Extract.
+抽取。
 
-    sh tools/factbase/extract_java.sh \
+    sh tools/shell/factbase/extract_java.sh \
         --repo <repo> --out <repo>/docs/facts --source-root <root>
 
-Report the counts the tool prints.
+回報工具印出的各項數量。
 
-Report every entry in `manifest.psv` under `parse_errors`. A parse error is
-a hole in the factbase and SHALL be named, not summarised.
+回報 `manifest.psv` 中 `parse_errors` 底下的每一筆條目。
+解析錯誤是 factbase 中的破洞，「應當」逐一指名，不得摘要帶過。
 
-## Step 3
+## 步驟 3
 
-Build the factbase.
+建立 factbase。
 
-    sh tools/factbase/build_factbase.sh \
+    sh tools/shell/factbase/build_factbase.sh \
         --facts <repo>/docs/facts --facts <repo>/docs/facts
 
-Report `resolution_stats`.
+回報 `resolution_stats`。
 
-An `ambiguous` count above zero means two types share a simple name and a
-supertype reference could not be resolved. Name them.
+`ambiguous` 計數大於零，表示有兩個型別共用同一個簡單名稱，
+導致某個父型別參照無法解析。請指名它們。
 
-An `external` count is normal: it is how a base class that ships in a jar is
-recorded. Those become `EXTERNAL:<SimpleName>` nodes and the closure still
-forms through them.
+`external` 計數屬正常：那正是「基底類別隨 jar 出貨」的記錄方式。
+它們會成為 `EXTERNAL:<SimpleName>` 節點，而閉包仍會經由它們形成。
 
-## Step 4
+## 步驟 4
 
-Verify against bytecode.
+對照 bytecode 驗證。
 
-    sh tools/factbase/verify_bytecode.sh \
+    sh tools/shell/factbase/verify_bytecode.sh \
         --repo <repo> --facts <repo>/docs/facts \
         --out <repo>/docs/facts/bytecode-verification.md
 
-Three outcomes, and all three SHALL be reported literally:
+三種結果，且三者都「應當」照字面回報：
 
-`VERIFIED` - compiled classes agree with the source scan.
+`VERIFIED` —— 編譯後的 class 與原始碼掃描一致。
 
-`FAILED` - a class exists in bytecode that the scan did not find, or a
-supertype disagrees. STOP. The enumeration cannot be trusted. Report the
-disagreements and resolve them before continuing.
+`FAILED` —— bytecode 中存在掃描沒找到的類別，或某個父型別不一致。
+停止。列舉不可信。回報這些不一致並解決之後才能繼續。
 
-`UNAVAILABLE` - no compiled artefact was found. Continue, but every later
-report SHALL state that the enumeration rests on lexical extraction alone.
-Do not write the word "verified" anywhere in that run.
+`UNAVAILABLE` —— 找不到任何編譯產出物。可以繼續，
+但之後的每一份報告「應當」聲明該列舉僅立基於詞法抽取。
+該次執行的任何地方都不要寫「verified」這個字。
 
-## Step 5
+## 步驟 5
 
-Declare the verification tier.
+宣告驗證層級。
 
-    sh tools/verification_tier.sh \
+    sh tools/shell/verification_tier.sh \
         --facts <repo>/docs/facts --out <repo>/docs/verification-tier.txt
 
-Apply shared/verification-tiers.md.
+套用 shared/verification-tiers.md。
 
-`A` - factbase built and the oracle VERIFIED it.
+`A` —— 已建立 factbase，且判準將其驗證為 VERIFIED。
 
-`B` - factbase built, no compiled artefacts to check it against.
+`B` —— 已建立 factbase，但沒有可供比對的編譯產出物。
 
-`BLOCKED` - the oracle disagrees with the scan. STOP.
+`BLOCKED` —— 判準與掃描不一致。停止。
 
-If this Skill could not be run at all -- the environment cannot execute
-commands -- the run is Tier C. Write `docs/verification-tier.txt` by hand
-with `tier|C` and a `reason` naming the specific limitation, and carry the
-Tier C rules into every later Skill.
+若本 Skill 根本無法執行 —— 該環境無法執行指令 ——
+則該次執行屬於層級 C。手寫 `docs/verification-tier.txt`，
+內容為 `tier|C` 以及一個指明具體限制的 `reason`，
+並把層級 C 的規則帶進之後的每一個 Skill。
 
-The tier is quoted in every generated document's metadata block.
-
----
-
-## Step 6
-
-Report.
-
-State
-
-- source roots scanned
-- file, type, method, call and literal counts
-- parse errors, listed
-- resolution statistics
-- oracle status, quoted exactly
+該層級會被引用於每一份產生文件的中繼資料區塊中。
 
 ---
 
-# Completion Criteria
+## 步驟 6
 
-`docs/facts/types.psv` exists and is non-empty.
+回報。
 
-`docs/facts/ancestor.psv` exists.
+說明
 
-`docs/facts/bytecode-verification.md` exists and its status is recorded.
-
-Oracle status is not `FAILED`.
-
-`docs/verification-tier.txt` exists and names tier A or B.
+- 掃描過的原始碼根目錄
+- 檔案、型別、方法、呼叫與常值的數量
+- 解析錯誤，逐一列出
+- 解析統計數據
+- 判準狀態，逐字引用
 
 ---
 
-# Required By
+# 完成判準
+
+`docs/facts/types.psv` 存在且非空。
+
+`docs/facts/ancestor.psv` 存在。
+
+`docs/facts/bytecode-verification.md` 存在，且其狀態已記錄。
+
+判準狀態不是 `FAILED`。
+
+`docs/verification-tier.txt` 存在，並載明層級 A 或 B。
+
+---
+
+# 被下列 Skill 依賴
 
 artifact-enumeration
 
@@ -261,28 +258,28 @@ gap-analysis
 
 ---
 
-# Quality Checklist
+# 品質檢查清單
 
-☐ Source roots recorded
+☐ 已記錄原始碼根目錄
 
-☐ Extractor run and counts reported
+☐ 已執行抽取器並回報數量
 
-☐ Parse errors listed individually
+☐ 解析錯誤已逐項列出
 
-☐ Factbase built
+☐ 已建立 factbase
 
-☐ Resolution statistics reported
+☐ 已回報解析統計數據
 
-☐ Ambiguous resolutions named
+☐ 已指名含糊的解析結果
 
-☐ Bytecode oracle run or its absence recorded
+☐ 已執行 bytecode 判準，或已記錄其缺席
 
-☐ Oracle status quoted verbatim
+☐ 已逐字引用判準狀態
 
-☐ Verification tier declared and persisted
+☐ 已宣告並持久化驗證層級
 
-☐ No class described
+☐ 未描述任何類別
 
-☐ No business meaning assigned
+☐ 未指派任何業務意義
 
-End.
+結束。

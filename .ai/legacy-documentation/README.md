@@ -1,16 +1,16 @@
 # Legacy Documentation Skills
 
-AI-powered reverse engineering framework for legacy software systems.
+以 AI 驅動的老舊軟體系統逆向工程框架。
 
-Generate architecture documentation, module documentation,
-database specifications, API documentation,
-business rules and functional specifications from an existing codebase.
+從既有的程式碼庫產生架構文件、模組文件、
+資料庫規格、API 文件、
+業務規則與功能規格。
 
 ---
 
-# Features
+# 功能特性
 
-Supports
+支援
 
 - Java
 
@@ -42,117 +42,117 @@ Supports
 
 ---
 
-Produces
+產出
 
-- Architecture Documentation
+- 架構文件
 
-- Module Documentation
+- 模組文件
 
-- Database Documentation
+- 資料庫文件
 
-- API Documentation
+- API 文件
 
-- Business Rules
+- 業務規則
 
-- Sequence Diagrams
+- 循序圖
 
-- Functional Specification
+- 功能規格
 
-- Technical Specification
+- 技術規格
 
-- Gap Analysis
-
----
-
-Repository
-
-↓
-
-Fact Extraction (parse; build factbase; verify against bytecode)
-
-↓
-
-Inventory
-
-↓
-
-Technology Discovery
-
-↓
-
-Architecture Discovery
-
-↓
-
-Artifact Enumeration (queried from the factbase)
-
-↓
-
-Prioritization
-
-↓
-
-Archetype Clustering
-
-↓
-
-Reflexion Check
-
-↓
-
-Module Analysis
-
-↓
-
-Database Analysis
-
-↓
-
-Interface Analysis
-
-↓
-
-Business Rule Extraction
-
-↓
-
-Sequence Discovery
-
-↓
-
-Specification Generation
-
-↓
-
-Characterization Tests
-
-↓
-
-Gap Analysis (depth and staleness, by tool)
+- 落差分析
 
 ---
 
-Documentation is
+程式碼庫
 
-- labelled with the strength of its own verification (tier A, B or C)
+↓
 
-- derived from a parsed fact base, not from reading
+事實抽取（解析；建立 factbase；對照 bytecode 驗證）
 
-- independently verified against compiled artefacts
+↓
 
-- checked by executable gates, not by assertion
+清冊盤點
 
-- evidence-based
+↓
 
-- implementation-independent
+技術探索
 
-- traceable
+↓
 
-- version-pinned, so a citation can be told from a citation that has rotted
+架構探索
+
+↓
+
+產出物列舉（由 factbase 查詢而來）
+
+↓
+
+優先排序
+
+↓
+
+原型分群
+
+↓
+
+反思檢查
+
+↓
+
+模組分析
+
+↓
+
+資料庫分析
+
+↓
+
+介面分析
+
+↓
+
+業務規則抽取
+
+↓
+
+循序探索
+
+↓
+
+規格產生
+
+↓
+
+特徵化測試
+
+↓
+
+落差分析（深度與陳舊度，由工具判定）
 
 ---
 
-## Repository Structure
+本框架產出的文件
+
+- 標示自身驗證強度（層級 A、B 或 C）
+
+- 由解析出的事實庫推導而來，而非靠閱讀
+
+- 對照編譯產出物獨立驗證
+
+- 由可執行的關卡檢查，而非靠口頭宣稱
+
+- 以證據為本
+
+- 與實作方式無關
+
+- 可追溯
+
+- 版本鎖定，因此可分辨有效引用與已腐化的引用
+
+---
+
+## 儲存庫結構
 
 orchestrators/
 
@@ -162,17 +162,19 @@ skills/templates/
 
 shared/
 
-tools/          deterministic extraction and verification (POSIX shell + awk)
+tools/          決定性的抽取與驗證
+tools/shell/         POSIX shell + awk
+tools/powershell/    PowerShell 7
 
 examples/
 
-examples/fixtures/   golden cases; `sh tools/selftest.sh`
+examples/fixtures/   黃金案例；`sh tools/shell/selftest.sh`
 
 integrations/
 
 ---
 
-## Supported AI
+## 支援的 AI
 
 GitHub Copilot
 
@@ -190,40 +192,39 @@ Windsurf
 
 ---
 
-## Philosophy
+## 理念
 
-Unknown is preferable to guessing.
+「未知」優於「臆測」。
 
-Evidence is mandatory.
+證據是強制要求。
 
-Every statement must be traceable.
+每一句陳述都必須可追溯。
 
-Every Skill has a single responsibility.
+每個 Skill 只負一項責任。
 
-A parser establishes facts. A model assigns meaning. Never the other way
-round.
+由解析器確立事實。由模型賦予意義。順序絕不可顛倒。
 
-A completion claim that no program can refute is not a completion claim.
+沒有任何程式能夠推翻的完成宣稱，就不算完成宣稱。
 
-Six depth-complete documents beat 458 shallow ones.
-
----
-
-## Requirements
-
-A POSIX shell and `awk`. Nothing to install.
-
-Where even that is unavailable, the library still runs, at Tier C: the whole
-method, none of the verification, and every report stamped
-`VERIFICATION: NONE`. See `shared/verification-tiers.md`.
-
-`javap`, `javac` and `jar`, when compiled artefacts are to be used as an
-independent oracle. Their absence is recorded, not worked around.
-
-Nothing else. No interpreter, no dependencies, no build step, no network.
+六份深度完備的文件，勝過 458 份淺薄的文件。
 
 ---
 
-## License
+## 環境需求
+
+一個 POSIX shell 與 `awk`。無須安裝任何東西。
+
+即使連這些都沒有，本函式庫仍可執行，但落在層級 C：方法完整保留、
+驗證全部缺席，且每一份報告都會標記
+`VERIFICATION: NONE`。見 `shared/verification-tiers.md`。
+
+當需要以編譯產出物作為獨立判準時，則需 `javap`、`javac` 與 `jar`。
+它們的缺席會被記錄下來，而不會被繞過。
+
+除此之外別無所需。不需直譯器、不需相依套件、不需建置步驟、不需網路。
+
+---
+
+## 授權
 
 MIT

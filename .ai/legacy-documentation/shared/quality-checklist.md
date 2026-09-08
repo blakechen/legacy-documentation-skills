@@ -1,56 +1,54 @@
-# Global Quality Checklist
+# 全域品質檢查清單
 
-Every Skill shall verify:
+每個 Skill 都應驗證：
 
-- Evidence recorded
-- References valid
-- No hallucinations
-- No duplicated findings
-- No undocumented assumptions
-- Unknown used when evidence missing
-- Terminology consistent
-- Markdown valid
-- Mermaid valid (if present)
-- Output files generated
-- Traceability preserved
+- 已記錄證據
+- 引用有效
+- 無幻覺內容
+- 無重複的發現
+- 無未記錄的假設
+- 缺少證據時已寫 Unknown
+- 術語一致
+- Markdown 格式正確
+- Mermaid 語法正確（若有）
+- 已產生輸出檔案
+- 可追溯性已保留
 
 ---
 
-# Mechanical Gates
+# 機械式關卡
 
-Assertion is not verification. Every gate below is a command with an exit
-status, and the Skill that owns it SHALL run it. See
-shared/mechanical-verification.md.
+「宣稱」不等於「驗證」。下列每一道關卡都是一個具有結束狀態碼的指令，
+擁有該關卡的 Skill「應當」實際執行它。見
+shared/mechanical-verification.md。
 
-| Gate | Command | Owner |
+| 關卡 | 指令 | 負責 Skill |
 |---|---|---|
-| Verification tier declared | `tools/verification_tier.sh` | fact-extraction |
-| Factbase built | `tools/factbase/build_factbase.sh` | fact-extraction |
-| Source scan independently checked | `tools/factbase/verify_bytecode.sh` | fact-extraction |
-| Enumeration derived from the factbase | `tools/factbase/enumerate.sh` | artifact-enumeration |
-| Units ordered by value | `tools/factbase/prioritize.sh` | artifact-enumeration |
-| Clone families collapsed | `tools/factbase/archetypes.sh` | archetype-clustering |
-| Domain variables derived | `tools/factbase/domain_variables.sh` | business-rule-extraction |
-| Architecture model tested | `tools/reflexion/reflexion.sh` | reflexion-check |
-| Documents depth-complete | `tools/verify/depth_checks.sh` | gap-analysis |
-| Documents match current source | `tools/verify/staleness.sh` | gap-analysis |
+| 已宣告驗證層級 | `tools/shell/verification_tier.sh` | fact-extraction |
+| 已建立 factbase | `tools/shell/factbase/build_factbase.sh` | fact-extraction |
+| 原始碼掃描已獨立檢查 | `tools/shell/factbase/verify_bytecode.sh` | fact-extraction |
+| 列舉由 factbase 推導 | `tools/shell/factbase/enumerate.sh` | artifact-enumeration |
+| 單元已依價值排序 | `tools/shell/factbase/prioritize.sh` | artifact-enumeration |
+| 已收斂 clone 家族 | `tools/shell/factbase/archetypes.sh` | archetype-clustering |
+| 已推導領域變數 | `tools/shell/factbase/domain_variables.sh` | business-rule-extraction |
+| 架構模型已受檢驗 | `tools/shell/reflexion/reflexion.sh` | reflexion-check |
+| 文件達到深度完備 | `tools/shell/verify/depth_checks.sh` | gap-analysis |
+| 文件符合現行原始碼 | `tools/shell/verify/staleness.sh` | gap-analysis |
 
-A Skill that reports a gate as passed without the command output is in
-violation of this checklist.
+若某個 Skill 在沒有指令輸出的情況下回報關卡通過，即違反本檢查清單。
 
-Where the commands cannot be run at all, the run is Tier C: declare it, stamp
-every document, and drop every claim the gates would have supported. See
-shared/verification-tiers.md. Silently skipping a gate is the violation;
-declaring that it could not run is not.
+若這些指令根本無法執行，該次執行屬於層級 C：請宣告它、為每一份文件蓋上戳記，
+並放棄每一項原本要靠關卡支撐的宣稱。見 shared/verification-tiers.md。
+默默略過關卡才是違規；聲明它無法執行則不是。
 
 ---
 
-# Self-Test
+# 自我測試
 
-The tools themselves are covered by a fixture:
+工具本身有 fixture 覆蓋：
 
-    sh tools/selftest.sh
+    sh tools/shell/selftest.sh
 
-A change to a tool that alters the expected output in
-`examples/fixtures/java-dispatcher/expected/` is a regression until those
-files are updated deliberately.
+若對工具的變更改變了
+`examples/fixtures/java-dispatcher/expected/` 中的預期輸出，
+在那些檔案被刻意更新之前，一律視為迴歸。

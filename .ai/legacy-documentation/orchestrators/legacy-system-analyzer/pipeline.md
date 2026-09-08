@@ -1,109 +1,109 @@
-# Pipeline
+# 流水線
 
 Stage 0
 
-Fact Extraction
+事實抽取
 
 ↓
 
-Bytecode Oracle (independent verification)
+Bytecode 判準（獨立驗證）
 
 ↓
 
-Verification Tier declared and persisted
+宣告並持久化驗證層級
 
-Layers 1 and 2 of shared/fact-layer.md. Deterministic. No model.
+即 shared/fact-layer.md 的 Layer 1 與 Layer 2。具決定性。不涉及模型。
 
 ---
 
 Stage 1
 
-Inventory
+清冊盤點
 
 ↓
 
-Technology Discovery
+技術探索
 
 ↓
 
-Architecture Discovery + Custom Framework Detection
+架構探索 + 自製框架偵測
 
 ---
 
 Stage 1.5
 
-Artifact Enumeration (queried from the factbase, not searched)
+產出物列舉（由 factbase 查詢而來，不是用搜尋的）
 
-Transaction Class Enumeration (transitive closure + reflection)
-
-↓
-
-DB Object Class Enumeration
+交易類別列舉（遞移閉包 + 反射）
 
 ↓
 
-Servlet Enumeration
+DB 物件類別列舉
 
 ↓
 
-Prioritization (reachability + churn + runtime usage)
+Servlet 列舉
 
 ↓
 
-Archetype Clustering (collapse copy-and-paste families)
+優先排序（可達性 + 變更頻率 + 執行期使用量）
+
+↓
+
+原型分群（收斂複製貼上家族）
 
 ---
 
 Stage 1.6
 
-Reflexion Check
+反思檢查
 
-A person's model of the system, tested against the factbase.
+某個人心中的系統模型，以 factbase 加以檢驗。
 
-Divergence and absence resolved before Stage 2.
+分歧與缺席在 Stage 2 之前解決。
 
 ---
 
 Stage 2
 
-Module Analysis (per-module + per-unit, in priority order)
+模組分析（逐模組 + 逐單元，依優先序）
 
 ↓
 
-Database Analysis (from DB object enumeration)
+資料庫分析（來自 DB 物件列舉）
 
 ↓
 
-Interface Analysis
+介面分析
 
 ---
 
 Stage 3
 
-Domain Variable Derivation
+領域變數推導
 
 ↓
 
-Business Rule Extraction (per unit, domain-variable test applied)
+業務規則抽取（逐單元，套用領域變數判定測試）
 
 ↓
 
-Sequence Discovery (per unit)
+循序探索（逐單元）
 
 ---
 
 Stage 4
 
-Per-Unit Specification Generation
+逐單元規格產生
 
 ↓
 
-System Specification Generation
+系統規格產生
 
 ↓
 
-Characterization Test Generation
+特徵化測試產生
 
 ↓
 
-Gap Analysis (staleness, then depth, both by tool)
+落差分析（先陳舊度、再深度，兩者皆由工具判定）

@@ -1,26 +1,26 @@
-# Evidence Rules
+# 證據規則
 
-## Objective
+## 目標
 
-Ensure every conclusion produced by any Skill is supported by verifiable evidence.
-
----
-
-## Principles
-
-Evidence always takes precedence over inference.
-
-Unknown is preferable to guessing.
-
-Never fabricate information.
-
-Every important statement shall be traceable.
+確保任何 Skill 產出的每一個結論，都有可查證的證據支撐。
 
 ---
 
-## Acceptable Evidence
+## 原則
 
-### Source Code
+證據永遠優先於推論。
+
+「未知」優於「臆測」。
+
+絕不捏造資訊。
+
+每一句重要陳述都應可追溯。
+
+---
+
+## 可接受的證據
+
+### 原始碼
 
 - Class
 - Interface
@@ -29,23 +29,23 @@ Every important statement shall be traceable.
 - Namespace
 - Annotation
 
-### Configuration
+### 組態
 
 - application.yml
 - application.properties
 - XML
 - JSON
 - YAML
-- Environment Variables
+- 環境變數
 
-### Build
+### 建置
 
 - pom.xml
 - build.gradle
 - package.json
 - Dockerfile
 
-### Database
+### 資料庫
 
 - SQL
 - DDL
@@ -53,99 +53,97 @@ Every important statement shall be traceable.
 - Trigger
 - Constraint
 
-### Integration
+### 整合
 
 - REST Endpoint
 - SOAP WSDL
-- MQ Configuration
-- Kafka Configuration
-- Scheduler
+- MQ 組態
+- Kafka 組態
+- 排程器
 
 ---
 
-## Evidence Format
+## 證據格式
 
-Source
+來源
 
-Location
+位置
 
-Artifact
+產出物
 
-Line Range
+行號範圍
 
 Factbase commit
 
-Confidence
+信心度
 
-### Version pinning
+### 版本鎖定
 
-A line citation is true of one version of a file. Record the version.
+行號引用只對某一個版本的檔案為真。請記錄版本。
 
-Every generated document SHALL carry, in its metadata block
+每一份產生的文件「應當」在其中繼資料區塊中載明
 
     Factbase commit: <sha>
 
-and the per-unit source hashes SHALL be recorded by
-`tools/verify/staleness.sh --record` after the unit passes its depth checks.
+而逐單元的原始碼雜湊值，「應當」在該單元通過深度檢查之後，
+由 `tools/shell/verify/staleness.sh --record` 記錄下來。
 
-See shared/incremental-update.md. Without this, a citation cannot be
-distinguished from a citation that has rotted.
+見 shared/incremental-update.md。沒有這些，就無法分辨
+一個有效引用與一個已經腐化的引用。
 
 ---
 
-## Missing Evidence
+## 缺少證據
 
-If evidence cannot be located
+若找不到證據
 
-Output
+輸出
 
 Unknown
 
-Do not infer.
+不要推測。
 
 ---
 
-## The Citation Rule
+## 引用規則
 
-Every assertion about behaviour SHALL carry a citation, or SHALL be written
-as Unknown.
+每一句關於行為的斷言「應當」附上引用，否則「應當」寫成 Unknown。
 
-    <assertion>   requires   path/to/File.java:<line>-<line>
-                             or a table from the enumeration
-                             or a domain variable from the derived list
-                             or a configuration key with its file
+    <斷言>   需要   path/to/File.java:<line>-<line>
+                    或列舉中的一張資料表
+                    或推導清單中的一個領域變數
+                    或一個組態鍵及其檔案
 
-An assertion with no citation is not a low-confidence assertion. It is not an
-assertion; it is Unknown.
+沒有引用的斷言不是低信心度的斷言。它根本不是斷言；它是 Unknown。
 
-### Why this replaces a banned-word list
+### 為什麼這條規則取代了禁用詞清單
 
-Earlier versions of this rule banned hedging words: "it appears", "probably",
-"should". The words were the target, not the problem.
+本規則的早期版本禁止模糊措辭：「看起來」、「大概」、「應該」。
+被瞄準的是那些詞，但問題不在那裡。
 
-Removing the hedge from an unsupported claim does not make the claim
-supported. It makes it read as certain, which is worse: the reader loses the
-only signal that the writer was unsure.
+把沒有依據之主張中的模糊措辭拿掉，並不會讓那個主張獲得依據，
+只會讓它讀起來很確定，而那更糟：
+讀者失去了唯一能看出作者其實沒把握的訊號。
 
-Hedging language is a symptom. The citation requirement addresses the cause.
+模糊措辭是症狀。引用要求處理的是病因。
 
-So:
+因此：
 
-- an assertion with a citation needs no hedge; write it plainly
-- an assertion without a citation is written as Unknown, with what is missing
-- where evidence supports a range of readings, state the readings and cite
-  the evidence for each
+- 有引用的斷言不需要模糊措辭；直接寫清楚
+- 沒有引用的斷言寫成 Unknown，並說明缺了什麼
+- 若證據可以支持多種解讀，就把各種解讀寫出來，
+  並分別引用支撐各自的證據
 
-Never write "the developer intended". Intent is not an observable artefact.
+絕不要寫「開發者的意圖是」。意圖不是可觀察的產出物。
 
 ---
 
-## Traceability
+## 可追溯性
 
-Every generated document shall include
+每一份產生的文件都應包含
 
-Evidence
+證據
 
-Source Artifact
+來源產出物
 
-Reference
+參照

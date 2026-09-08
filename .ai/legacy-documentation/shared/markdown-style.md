@@ -1,51 +1,51 @@
-# Markdown Style
+# Markdown 風格
 
-## Heading Levels
+## 標題層級
 
-# Title
+# 標題
 
-## Section
+## 章節
 
-### Subsection
+### 小節
 
-#### Detail
-
----
-
-## Lists
-
-Use unordered lists unless order is important.
+#### 細節
 
 ---
 
-## Tables
+## 清單
 
-Prefer tables for structured information.
-
----
-
-## Code Blocks
-
-Always specify language when known.
+除非順序重要，否則使用無序清單。
 
 ---
 
-## Diagrams
+## 表格
 
-Wrap Mermaid in fenced code blocks.
-
----
-
-## Links
-
-Use relative paths.
+結構化資訊優先使用表格。
 
 ---
 
-## Empty Sections
+## 程式碼區塊
 
-Write
+已知語言時，一律標明語言。
+
+---
+
+## 圖表
+
+將 Mermaid 包在 fenced 程式碼區塊中。
+
+---
+
+## 連結
+
+使用相對路徑。
+
+---
+
+## 空章節
+
+寫
 
 Unknown
 
-Never leave blank headings.
+絕不留下空白標題。

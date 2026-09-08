@@ -1,8 +1,8 @@
-# Validation Notes
+# 驗證備註
 
-Expected Flow
+預期流程
 
-Batch
+批次
 
 ↓
 
@@ -10,9 +10,9 @@ DB2
 
 ↓
 
-Report
+報表
 
-Special focus
+特別關注
 
 COPYBOOK
 
@@ -22,4 +22,4 @@ VSAM
 
 Stored Procedure
 
-Batch Scheduling
+批次排程

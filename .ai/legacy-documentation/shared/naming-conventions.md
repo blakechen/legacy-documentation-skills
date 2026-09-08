@@ -1,12 +1,12 @@
-# Naming Conventions
+# 命名慣例
 
-## Documents
+## 文件
 
-Use lowercase.
+使用小寫。
 
-Use hyphens.
+使用連字號。
 
-Example
+範例
 
 system-overview.md
 
@@ -16,15 +16,15 @@ business-rule-index.md
 
 ---
 
-## Modules
+## 模組
 
-Prefer repository names.
+優先採用儲存庫中的名稱。
 
-Avoid translated names.
+避免使用翻譯過的名稱。
 
 ---
 
-## Business Rules
+## 業務規則
 
 BR-001
 
@@ -34,13 +34,13 @@ BR-003
 
 ---
 
-## APIs
+## API
 
-Use
+使用
 
 METHOD Path
 
-Example
+範例
 
 GET /customers
 
@@ -48,16 +48,16 @@ POST /loan/apply
 
 ---
 
-## Database
+## 資料庫
 
-Keep original table names.
+保留原始資料表名稱。
 
-Do not rename columns.
+不要為欄位改名。
 
 ---
 
-## Diagrams
+## 圖表
 
-Use stable participant names.
+使用穩定的參與者名稱。
 
-Avoid aliases unless necessary.
+除非必要，避免使用別名。

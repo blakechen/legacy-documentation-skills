@@ -1,10 +1,10 @@
-# IBM WebSphere Example
+# IBM WebSphere 範例
 
-## Scenario
+## 情境
 
-Traditional enterprise banking application.
+傳統的企業銀行應用程式。
 
-## Technology
+## 技術
 
 - Java 8
 - IBM WebSphere
@@ -16,22 +16,22 @@ Traditional enterprise banking application.
 - JSP
 - Servlet
 
-## Expected Architecture
+## 預期架構
 
-Layered
+分層
 
-Integration-heavy
+整合密集
 
-MQ-based
+以 MQ 為基礎
 
-## Expected Outputs
+## 預期輸出
 
-Architecture
+架構
 
-Database
+資料庫
 
-Integration
+整合
 
-Business Rules
+業務規則
 
-Specifications
+規格

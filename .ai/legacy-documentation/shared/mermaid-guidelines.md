@@ -1,12 +1,12 @@
-# Mermaid Guidelines
+# Mermaid 指引
 
-## Objective
+## 目標
 
-Generate consistent Mermaid diagrams.
+產生一致的 Mermaid 圖表。
 
 ---
 
-## Supported Diagram Types
+## 支援的圖表類型
 
 flowchart
 
@@ -20,52 +20,52 @@ stateDiagram
 
 ---
 
-## Rules
+## 規則
 
-Only generate verified relationships.
+只產生已驗證的關聯。
 
-Do not invent nodes.
+不要憑空造出節點。
 
-Use original component names.
+使用原始的元件名稱。
 
-Avoid decorative styling.
+避免裝飾性樣式。
 
-Keep diagrams readable.
+保持圖表可讀。
 
 ---
 
 ## Flowchart
 
-Use for
+用於
 
-Architecture
+架構
 
-Module Relationships
+模組關聯
 
 ---
 
 ## Sequence Diagram
 
-Use
+使用
 
-Verified interactions only.
+僅限已驗證的互動。
 
-Include actors.
+納入參與者（actor）。
 
-Show activation when appropriate.
+適當時顯示 activation。
 
 ---
 
 ## ER Diagram
 
-Use verified entities.
+使用已驗證的實體。
 
-Unknown cardinality is acceptable.
+未知的基數（cardinality）是可以接受的。
 
-Do not infer relationships.
+不要推測關聯。
 
 ---
 
-## Validation
+## 驗證
 
-Generated Mermaid must render successfully.
+產生的 Mermaid 必須能成功繪製。

@@ -1,10 +1,10 @@
-# Validation Notes
+# 驗證備註
 
-Expected Architecture
+預期架構
 
-Microservice
+微服務
 
-Expected Integration
+預期整合
 
 REST
 
@@ -12,11 +12,11 @@ JWT
 
 OpenAPI
 
-Expected Database
+預期資料庫
 
 PostgreSQL
 
-Expected Deployment
+預期部署
 
 Docker
 

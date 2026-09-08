@@ -1,34 +1,32 @@
-# Reflexion Model
+# 反思模型（Reflexion Model）
 
-## Objective
+## 目標
 
-Test the recovered architecture against a person's belief about the system,
-and report where the two disagree.
+以「某個人對系統的信念」檢驗還原出來的架構，並回報兩者不一致之處。
 
-Murphy, Notkin and Sullivan, *Software Reflexion Models*, FSE 1995.
-
----
-
-## The Problem
-
-Every Skill in this library works bottom-up: it reads code and builds a
-picture. Bottom-up recovery has no way to notice what it never found, and no
-way to notice that what it found is not what the system is for.
-
-Someone at the site knows what the system does. That knowledge is the only
-input to this pipeline that is independent of the code, and until now the
-pipeline had no place to put it.
+Murphy、Notkin 與 Sullivan，*Software Reflexion Models*，FSE 1995。
 
 ---
 
-## Method
+## 問題所在
 
-### 1. State the hypothesis
+本函式庫中的每個 Skill 都是由下而上運作：讀程式碼，然後建立一幅圖像。
+由下而上的還原無從察覺自己「從未找到的東西」，
+也無從察覺「找到的東西並不是這個系統存在的目的」。
 
-A person who knows the system -- operations, a business analyst, a long-serving
-developer -- writes a module map BEFORE reading the recovered documentation.
+現場總有人知道這個系統在做什麼。那份知識是本流水線中
+唯一獨立於程式碼之外的輸入，而在此之前，流水線沒有地方安置它。
 
-Ten to fifteen modules. Thirty minutes.
+---
+
+## 方法
+
+### 1. 陳述假說
+
+一位懂這個系統的人 —— 維運人員、業務分析師，或資深開發者 ——
+在「閱讀還原出的文件之前」寫下一份模組地圖。
+
+十到十五個模組。三十分鐘。
 
 `docs/architecture/hypothesis-map.txt`
 
@@ -45,67 +43,61 @@ Ten to fifteen modules. Thirty minutes.
     edge Web -> Transfer
     edge Inquiry -> Persistence
 
-Mapping rules are regular expressions over the fully qualified type name,
-evaluated in file order; first match wins.
+對應規則是針對完整型別名稱的正規表示式，依檔案順序求值；先match者勝出。
 
-### 2. Compute
+### 2. 計算
 
-`tools/reflexion/reflexion.sh` maps every type onto a module and compares
-the expected edges with the edges the factbase actually contains.
+`tools/shell/reflexion/reflexion.sh` 會把每個型別對應到某個模組，
+並比較「預期的邊」與 factbase 中「實際存在的邊」。
 
-### 3. Read the three results
+### 3. 讀出三種結果
 
-**Convergence** - expected and present. Confirms the belief. The least
-interesting outcome.
+**Convergence（收斂）** —— 預期存在，實際也存在。確認了該信念。
+最不有趣的結果。
 
-**Divergence** - present, not expected. A relationship nobody had written
-down. Either an undocumented fact about the system, or a defect: a layering
-violation, a shortcut, a leftover.
+**Divergence（分歧）** —— 實際存在，但不在預期中。一段沒人寫下來的關聯。
+它要嘛是關於這個系統的未記錄事實，要嘛是一項缺陷：
+分層違規、抄捷徑，或殘留物。
 
-**Absence** - expected, not present. Either the belief was wrong, or the
-relationship travels by a route the scan cannot see: a scheduler, a queue, a
-stored procedure, a file drop.
+**Absence（缺席）** —— 預期存在，實際卻沒有。要嘛是信念錯了，
+要嘛是這段關聯走的是掃描看不見的路徑：
+排程器、佇列、stored procedure，或檔案投遞。
 
-**Unmapped types** - matched no rule. Not a neutral result. Either the model
-is missing a module, or the type is not part of the system the model
-describes. Both are worth knowing.
-
----
-
-## Rule
-
-The reflexion check SHALL run after enumeration and before specification
-generation.
-
-Every divergence and every absence SHALL be resolved in
-`docs/architecture/reflexion-report.md` with one of
-
-- a correction to the hypothesis map, and why
-- a finding recorded in the gap analysis, and why
-- a stated limit of the scan, naming the mechanism it cannot see
-
-An unresolved divergence is an open question about the system, not a tool
-error to be ignored.
+**Unmapped types（未對應型別）** —— 沒有符合任何規則。這不是中性的結果。
+要嘛是模型漏了一個模組，要嘛是該型別根本不屬於模型所描述的系統。
+兩者都值得知道。
 
 ---
 
-## Why this catches extraction errors
+## 規則
 
-The hypothesis is written from knowledge the extractor does not have. When a
-module the analyst is certain exists maps to nothing, the likely cause is not
-that the analyst is wrong. It is that the enumeration missed a family of
-classes.
+反思檢查「應當」在列舉之後、規格產生之前執行。
 
-This is the only check in the library that can find something the pipeline
-never looked for.
+每一項分歧與每一項缺席，「應當」在
+`docs/architecture/reflexion-report.md` 中以下列其中一種方式解決
+
+- 修正假說地圖，並說明原因
+- 在落差分析中記錄成一項發現，並說明原因
+- 陳述掃描的限制，並指名它看不見的機制
+
+未解決的分歧是關於這個系統的未決問題，而不是可以忽略的工具錯誤。
 
 ---
 
-## Anti-Pattern
+## 為什麼這能抓到抽取錯誤
 
-Generating the hypothesis map from the package structure is FORBIDDEN as a
-substitute for a person writing one.
+假說是根據抽取器所沒有的知識寫成的。
+當分析師確信存在的某個模組對應不到任何東西時，
+最可能的原因不是分析師錯了，而是列舉漏掉了一整族類別。
 
-A map derived from the code cannot disagree with the code. Running the tool
-against such a map produces a clean report that means nothing, and the clean
-report is worse than no report because it will be believed.
+這是本函式庫中唯一能找出「流水線從未去找的東西」的檢查。
+
+---
+
+## 反模式
+
+以套件結構產生假說地圖來取代由人撰寫，是「被禁止」的。
+
+從程式碼推導出來的地圖不可能與程式碼不一致。
+拿這種地圖去跑工具，會產出一份乾淨卻毫無意義的報告，
+而這份乾淨的報告比沒有報告更糟，因為它會被相信。

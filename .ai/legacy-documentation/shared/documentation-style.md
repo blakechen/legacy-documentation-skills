@@ -1,62 +1,62 @@
-# Documentation Style Guide
+# 文件風格指南
 
-## Goals
+## 目標
 
-Readable
+可讀
 
-Deterministic
+具決定性
 
-Evidence-based
+以證據為本
 
-Implementation-independent
-
----
-
-## Writing Style
-
-Use short sentences. Short sentences, not short documents.
-
-Brevity applies to sentence construction only. It is never a reason to omit a
-processing step, a branch, a field mapping, or a source excerpt.
-
-Prefer active voice.
-
-Avoid marketing language.
-
-Avoid subjective wording.
-
-Describe observable facts.
+與實作方式無關
 
 ---
 
-## Terminology
+## 書寫風格
 
-Use repository terminology whenever possible.
+使用短句。是短句，不是短文件。
 
-Do not rename domain concepts.
+簡潔只適用於句子的構造。它絕不能成為省略處理步驟、分支、
+欄位對應或原始碼摘錄的理由。
 
-Do not invent abbreviations.
+優先使用主動語態。
+
+避免行銷語言。
+
+避免主觀措辭。
+
+描述可觀察的事實。
 
 ---
 
-## Unknown Information
+## 術語
 
-Write
+盡可能沿用程式碼庫中的術語。
+
+不要為領域概念改名。
+
+不要自創縮寫。
+
+---
+
+## 未知資訊
+
+寫
 
 Unknown
 
-Do not leave sections empty.
+不要留下空白章節。
 
 ---
 
-## References
+## 參照
 
-Reference related documents whenever applicable.
+只要適用，就參照相關文件。
 
-Use relative paths.
+使用相對路徑。
 
 ---
 
-## Consistency
+## 一致性
 
-Keep terminology identical across all generated documents.
+在所有產生的文件之間保持術語完全一致。

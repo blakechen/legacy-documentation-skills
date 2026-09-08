@@ -1,97 +1,92 @@
-# Mechanical Verification
+# 機械式驗證
 
-## Objective
+## 目標
 
-Make the completion criteria of this library decidable by a program.
-
----
-
-## Rule
-
-A completion claim that no program can refute is not a completion claim.
-
-Where no program CAN be run, say so. See shared/verification-tiers.md: a run
-that could not execute the gates is Tier C, and Tier C output carries
-`VERIFICATION: NONE`. Producing the same-looking report without that stamp is
-the failure this rule exists to prevent.
-
-Every gate in this library SHALL be expressed as a command with an exit
-status, and the orchestrator SHALL run it rather than assert its outcome.
+讓本函式庫的完成判準可由程式判定。
 
 ---
 
-## The Gates
+## 規則
 
-| Gate | Command | Pass |
+沒有任何程式能夠推翻的完成宣稱，就不算完成宣稱。
+
+若「無法」執行任何程式，就要如實說出來。見 shared/verification-tiers.md：
+一次無法執行關卡的執行屬於層級 C，而層級 C 的輸出會標記
+`VERIFICATION: NONE`。產出外觀相同、卻沒有這個戳記的報告，
+正是本規則存在所要防止的失敗。
+
+本函式庫的每一道關卡「應當」表達為一個具有結束狀態碼的指令，
+而 orchestrator「應當」實際執行它，而不是宣稱它的結果。
+
+---
+
+## 各道關卡
+
+| 關卡 | 指令 | 通過條件 |
 |---|---|---|
-| Factbase exists | `build_factbase.sh` | `docs/facts/ancestor.psv` written |
-| Enumeration is derived, not guessed | `enumerate.sh` | three master lists written from the factbase |
-| Enumeration is independently checked | `verify_bytecode.sh` | exit 0 and `Status: VERIFIED`, or a recorded `UNAVAILABLE` |
-| Documents are depth-complete | `depth_checks.sh` | exit 0, rate 100% |
-| Documents describe the current source | `staleness.sh` | exit 0 |
-| The architecture model survives contact | `reflexion.sh` | divergences and absences each explained |
+| factbase 存在 | `build_factbase.sh` | 已寫出 `docs/facts/ancestor.psv` |
+| 列舉是推導而來，不是猜的 | `enumerate.sh` | 由 factbase 寫出三份主清單 |
+| 列舉已經獨立檢查 | `verify_bytecode.sh` | 結束碼 0 且 `Status: VERIFIED`，或已記錄的 `UNAVAILABLE` |
+| 文件達到深度完備 | `depth_checks.sh` | 結束碼 0，比率 100% |
+| 文件描述的是現行原始碼 | `staleness.sh` | 結束碼 0 |
+| 架構模型經得起接觸現實 | `reflexion.sh` | 每一項分歧與缺席都已獲得解釋 |
 
 ---
 
-## The Four Depth Checks
+## 四項深度檢查
 
-Run by `tools/verify/depth_checks.sh`.
+由 `tools/shell/verify/depth_checks.sh` 執行。
 
 ### structure
 
-Every public method declared in the source class has a `### Method:`
-subsection, and every subsection names a real public method. Each subsection
-has a Processing Flow with at least three numbered steps, a non-empty
-Pseudocode block, an excerpt citation or the explicit no-critical-logic
-sentence, and a Field Mapping table with at least one row.
+原始碼類別中宣告的每一個公開方法都有一個 `### Method:` 小節，
+且每一個小節都指向真實存在的公開方法。每個小節都要有
+至少三個編號步驟的 Processing Flow、非空的 Pseudocode 區塊、
+一段摘錄引用或那句明確的無關鍵邏輯字面句，
+以及一張至少一列的 Field Mapping 表。
 
-The method list comes from the factbase, not from the document.
+方法清單來自 factbase，而不是來自文件本身。
 
 ### excerpts
 
-Every quoted code block is byte-identical to the lines it cites.
+每一個引用的程式碼區塊，都與它所引之行逐位元組相同。
 
-A block that matches only after re-indentation is a warning. A block whose
-content differs, whose range is out of bounds, or whose file does not exist
-is a failure.
+必須重新縮排才相符的區塊，屬於警告。內容不同、範圍越界，
+或所引檔案不存在的區塊，則屬於失敗。
 
-This is the single strongest hallucination detector in the library: quoted
-code that does not exist in the file it cites is an invention, and no
-plausible prose can disguise it.
+這是本函式庫中最強的幻覺偵測器：
+引用的程式碼若在所引檔案中根本不存在，那就是捏造，
+再看似合理的文字也掩蓋不了。
 
 ### branches
 
-The number of control constructs in the Pseudocode is compared with the
-number of decision points in the method's source.
+比對 Pseudocode 中控制結構的數量，與該方法原始碼中決策點的數量。
 
-- More constructs than the source has decision points: FAIL. Logic that is
-  not in the source has been introduced.
-- Fewer than 60% of the source's structural decisions: FAIL. Branches have
-  been dropped.
+- 控制結構多於原始碼的決策點：FAIL。引入了原始碼中沒有的邏輯。
+- 少於原始碼結構性決策數的 60%：FAIL。有分支被漏掉了。
 
-The upper bound counts `&&` and `||`, because one pseudocode `IF` may
-legitimately cover a compound condition. The lower bound does not.
+上限計入 `&&` 與 `||`，因為一個虛擬碼的 `IF` 合理地可以涵蓋一個複合條件。
+下限則不計入。
 
 ### fields
 
-Every name in a Field Mapping row appears in the method's source text, and
-every `DB column` target names a table present in
-`docs/enumeration/db-object-classes.txt`.
+Field Mapping 每一列中的每個名稱都出現在該方法的原始碼文字中，
+且每一個 `DB column` 目標所指的資料表都存在於
+`docs/enumeration/db-object-classes.txt` 中。
 
 ---
 
-## What these checks decide
+## 這些檢查判定什麼
 
-Consistency between a document and the code it cites.
+判定文件與它所引用之程式碼之間的一致性。
 
-## What they do not decide
+## 它們不判定什麼
 
-Whether the business meaning is right.
+不判定業務意義是否正確。
 
-A document can pass every check and still assign the wrong purpose to a
-correctly described method. Mechanical verification removes the failures that
-are cheap to detect so that human review can spend itself on the ones that
-are not.
+一份文件可以通過每一項檢查，卻仍為一個描述無誤的方法指派錯誤的用途。
+機械式驗證排除的是那些便宜就能偵測到的失敗，
+好讓人工審閱把力氣花在那些不便宜的失敗上。
 
-Do not report a passing run as "verified documentation". Report it as
-"consistent with source; meaning not verified".
+不要把通過的執行結果回報為「已驗證的文件」。
+請回報為「consistent with source; meaning not verified」。

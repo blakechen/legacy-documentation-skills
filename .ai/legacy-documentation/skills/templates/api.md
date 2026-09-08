@@ -1,12 +1,12 @@
-# API Specification
+# API 規格
 
 ---
 
-## Interface Name
+## 介面名稱
 
 ---
 
-## Type
+## 類型
 
 REST
 
@@ -22,40 +22,40 @@ gRPC
 
 ---
 
-## Endpoint
+## 端點
 
 ---
 
-## Request
+## 請求
 
 ---
 
-## Response
+## 回應
 
 ---
 
-## Authentication
+## 認證
 
 ---
 
-## Retry Strategy
+## 重試策略
 
 ---
 
-## Error Handling
+## 錯誤處理
 
 ---
 
-## Related Modules
+## 相關模組
 
 ---
 
-## Related Business Rules
+## 相關業務規則
 
 ---
 
-## Related Sequence
+## 相關循序圖
 
 ---
 
-## Evidence
+## 證據

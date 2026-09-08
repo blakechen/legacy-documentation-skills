@@ -1,96 +1,87 @@
-# Archetypes
+# 原型（Archetypes）
 
-## Objective
+## 目標
 
-Document a family of copy-and-paste units once, and record what each member
-changes.
-
----
-
-## The Observation
-
-Legacy transaction classes are not written; they are copied. A system with
-458 transaction classes typically holds a few dozen shapes, each duplicated
-with a different table, field set and error code.
-
-Producing 458 independent full-depth documents is expensive, and for a reader
-it is worse than the alternative: the thing worth knowing is the shape and
-the delta, and 458 near-identical documents hide both.
+對一整個「複製貼上」而來的單元家族只撰寫一次文件，並記錄每個成員改了什麼。
 
 ---
 
-## Method
+## 觀察到的現象
 
-`tools/factbase/archetypes.sh` normalises each unit into a token stream --
-identifiers, literals and type names collapsed, invoked method names kept --
-takes 5-gram shingles, and clusters by Jaccard similarity.
+老舊系統的交易類別不是寫出來的，而是複製出來的。一個擁有 458 個交易類別的系統，
+通常只有數十種形狀，每一種都被複製成不同的資料表、欄位集合與錯誤碼。
 
-This finds type-1 and type-2 clones: identical code, and code that differs
-only by names and literals. That is what copy-and-paste produces.
-
-It does not find type-4 semantic clones. Two units that solve the same
-problem with different code will not cluster, and SHALL NOT be assumed
-equivalent because they did not.
+產出 458 份各自獨立的全深度文件既昂貴，對讀者而言也比另一種做法更糟：
+真正值得知道的是「形狀」與「差異」，而 458 份幾乎相同的文件會把兩者都埋掉。
 
 ---
 
-## Documentation Rule
+## 方法
 
-For a multi-member archetype:
+`tools/shell/factbase/archetypes.sh` 會把每個單元正規化成一串 token ——
+識別字、常值與型別名稱一律收斂，被呼叫的方法名稱則保留 ——
+取 5-gram shingle，再以 Jaccard 相似度分群。
 
-### The representative
+這能找出 type-1 與 type-2 clone：完全相同的程式碼，
+以及只有名稱與常值不同的程式碼。那正是複製貼上會產生的東西。
 
-Gets an ordinary full-depth document under
-`docs/modules/transactions/<Representative>.md`, satisfying every element of
-`shared/logic-depth.md`.
+它找不出 type-4 語意 clone。兩個以不同程式碼解決同一問題的單元不會被分到同一群，
+而且「沒有被分在一起」不得被當成「兩者不等價」的依據以外的任何推論。
 
-### Every other member
+---
 
-Gets a **delta document** at `docs/modules/transactions/<Member>.md`
-containing
+## 文件規則
 
-1. `Archetype: ARCH-NNN` and a link to the representative's document
-2. the measured similarity
-3. a Differences table
+對於多成員的原型：
 
-   | Aspect | Representative | This unit | Evidence |
+### 代表單元
+
+取得一份位於 `docs/modules/transactions/<Representative>.md` 的一般全深度文件，
+滿足 `shared/logic-depth.md` 的每一項要素。
+
+### 其餘每個成員
+
+取得一份位於 `docs/modules/transactions/<Member>.md` 的**差異文件**，內容包含
+
+1. `Archetype: ARCH-NNN` 以及指向代表單元文件的連結
+2. 量測到的相似度
+3. 一張差異表
+
+   | 面向 | 代表單元 | 本單元 | 證據 |
    |---|---|---|---|
 
-   with one row for every difference in: target table, domain fields, error
-   codes, validation constants, called services, output target
-4. its own Field Mapping table, in full -- the fields are the difference,
-   so they are never inherited by reference
-5. an explicit statement of what is identical, naming the representative's
-   sections that apply unchanged
+   下列每一項差異各佔一列：目標資料表、領域欄位、錯誤碼、
+   驗證常數、被呼叫的服務、輸出目標
+4. 它自己的完整 Field Mapping 表 —— 欄位正是差異所在，
+   因此絕不以參照方式繼承
+5. 明確說明哪些部分完全相同，並指名代表單元中原封不動適用的章節
 
-A delta document is depth-complete when the Differences table is complete.
-
----
-
-## Verification
-
-Completeness of a delta is checked against the factbase, not by reading:
-
-- every domain variable the member touches appears in its Field Mapping or in
-  the Differences table
-- the member's public method set matches the representative's, or the
-  difference is a row in the table
-
-A member whose similarity to its representative is below the clustering
-threshold SHALL NOT be documented as a delta. It gets a full document.
+當差異表完整時，差異文件即達到深度完備。
 
 ---
 
-## Single-member archetypes
+## 驗證
 
-Get an ordinary full-depth document. Nothing changes for them.
+差異文件的完整性是對照 factbase 檢查，而不是靠閱讀：
+
+- 該成員觸及的每一個領域變數，都出現在它的 Field Mapping 或差異表中
+- 該成員的公開方法集合與代表單元相同，否則差異即為表中一列
+
+若某成員與其代表單元的相似度低於分群門檻，
+即「不得」以差異文件的形式記錄。它必須取得一份完整文件。
 
 ---
 
-## Anti-Pattern
+## 單一成員的原型
 
-Using an archetype to avoid reading a member is FORBIDDEN. The delta is
-produced by comparing the member's source against the representative's
-source, not by assuming similarity implies sameness.
+取得一般的全深度文件。對它們而言沒有任何改變。
 
-Clustering tells you where to look. It does not tell you what you will find.
+---
+
+## 反模式
+
+以原型為藉口而不去閱讀成員的原始碼，是「被禁止」的。
+差異必須由比對成員原始碼與代表單元原始碼而得出，
+而不是假設「相似即相同」。
+
+分群告訴你該往哪裡看。它不會告訴你你將看到什麼。

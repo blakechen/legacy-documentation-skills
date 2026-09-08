@@ -1,88 +1,87 @@
-# Module
+# 模組
 
-> This template is MANDATORY for every file under `docs/modules/`.
+> 本模板對 `docs/modules/` 底下的每一個檔案都是「必要」的。
 >
-> Per-unit depth requirements: see `shared/logic-depth.md`.
+> 逐單元的深度要求：見 `shared/logic-depth.md`。
 
 ---
 
-## Overview
+## 概觀
 
-Three to six sentences. State what business function this module performs, who or
-what triggers it, and what it produces.
+三到六句話。說明本模組執行什麼業務功能、由誰或由什麼觸發、以及產出什麼。
 
-Name the primary unit type (transaction class, controller, batch job) and the unit count.
-
----
-
-## Responsibilities
-
-One bullet per responsibility. Each bullet names the packages or classes that carry it.
+指明主要單元類型（交易類別、controller、批次工作）與單元數量。
 
 ---
 
-## Directory Structure
+## 職責
+
+每項職責一個項目符號。每個項目都要指名承擔該職責的套件或類別。
 
 ---
 
-## Package Structure
+## 目錄結構
 
 ---
 
-## Entry Points
-
-| Entry Point | Type | Trigger | Primary Unit Doc |
-|-------------|------|---------|------------------|
+## 套件結構
 
 ---
 
-## Public Interfaces
+## 進入點
+
+| 進入點 | 類型 | 觸發方式 | 主要單元文件 |
+|--------|------|----------|--------------|
 
 ---
 
-## Internal Components
+## 公開介面
 
 ---
 
-## Transaction Class Index
-
-One row per primary unit owned by this module.
-
-Every row links to a depth-complete document under `transactions/`.
-See `shared/logic-depth.md`.
-
-| Class | Entry URL / Trigger | Purpose | Methods | Document |
-|-------|---------------------|---------|---------|----------|
+## 內部元件
 
 ---
 
-## Key Processing Flows
+## 交易類別索引
 
-For each significant flow that crosses more than one class in this module, give a
-numbered narrative naming the classes and methods in call order.
+本模組擁有的每個主要單元一列。
 
-Link each step to the owning `transactions/<Class>.md#method-<name>` section.
+每一列都連結到 `transactions/` 底下一份深度完備的文件。
+見 `shared/logic-depth.md`。
 
----
-
-## Dependencies
-
----
-
-## Configuration
+| 類別 | 進入 URL／觸發方式 | 用途 | 方法數 | 文件 |
+|------|--------------------|------|--------|------|
 
 ---
 
-## Related Database Objects
+## 主要處理流程
+
+針對每個跨越本模組多個類別的重要流程，
+以編號敘述依呼叫順序指名各個類別與方法。
+
+將每個步驟連結到所屬的 `transactions/<Class>.md#method-<name>` 章節。
 
 ---
 
-## Related Business Rules
+## 相依關係
 
 ---
 
-## Related Sequence
+## 組態設定
 
 ---
 
-## Evidence
+## 相關資料庫物件
+
+---
+
+## 相關業務規則
+
+---
+
+## 相關循序圖
+
+---
+
+## 證據

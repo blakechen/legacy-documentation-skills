@@ -1,48 +1,48 @@
-# System Overview
+# 系統概觀
 
 ---
 
-## Purpose
+## 目的
 
-Describe the overall purpose of the system.
-
----
-
-## Scope
-
-Describe the system scope.
+描述本系統的整體目的。
 
 ---
 
-## Technology Summary
+## 範圍
 
-| Category | Technology |
-|----------|------------|
-
----
-
-## Major Modules
-
-| Module | Description |
+描述系統範圍。
 
 ---
 
-## External Systems
+## 技術摘要
 
-| System | Protocol |
-
----
-
-## Repository Summary
-
-| Item | Count |
+| 類別 | 技術 |
+|------|------|
 
 ---
 
-## References
+## 主要模組
 
-Architecture
+| 模組 | 說明 |
 
-Modules
+---
 
-Specifications
+## 外部系統
+
+| 系統 | 協定 |
+
+---
+
+## 儲存庫摘要
+
+| 項目 | 數量 |
+
+---
+
+## 參考資料
+
+架構
+
+模組
+
+規格

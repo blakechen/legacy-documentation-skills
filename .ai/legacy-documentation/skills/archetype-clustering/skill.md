@@ -2,9 +2,9 @@
 name: archetype-clustering
 
 description: |
-  Group primary units into archetypes by structural similarity so that a
-  family of copy-and-paste units is documented once at full depth and each
-  member is documented as a delta.
+  依結構相似度把主要單元分群成原型，
+  使一整族複製貼上的單元只需以全深度記錄一次，
+  其餘每個成員則以差異文件記錄。
 
 version: 1.0.0
 
@@ -33,37 +33,37 @@ outputs:
   - docs/enumeration/archetype-report.md
 ---
 
-# Objective
+# 目標
 
-Find the shapes behind the unit list.
+找出單元清單背後的那些「形狀」。
 
-Apply shared/archetypes.md.
-
----
-
-# Responsibilities
-
-This Skill SHALL
-
-- cluster every enumerated primary unit by structural similarity
-
-- choose a representative for each cluster
-
-- record each member's similarity to its representative
-
-- report how many full-depth documents the clustering avoids
-
-This Skill SHALL NOT
-
-- assume two units in a cluster behave identically
-
-- write a member's document from the representative's source
-
-- treat clustering as a reason to skip reading a member
+套用 shared/archetypes.md。
 
 ---
 
-# Inputs
+# 職責
+
+本 Skill「應當」
+
+- 依結構相似度將每一個被列舉的主要單元分群
+
+- 為每一群選出一個代表單元
+
+- 記錄每個成員與其代表單元的相似度
+
+- 回報這次分群省下了多少份全深度文件
+
+本 Skill「不得」
+
+- 假設同一群中的兩個單元行為完全相同
+
+- 用代表單元的原始碼去寫某個成員的文件
+
+- 把分群當成不必閱讀成員原始碼的理由
+
+---
+
+# 輸入
 
 docs/facts/types.psv
 
@@ -71,11 +71,11 @@ docs/facts/ancestor.psv
 
 docs/enumeration/transaction-classes.txt
 
-Source Code
+原始碼
 
 ---
 
-# Deliverables
+# 交付物
 
 docs/enumeration/archetypes.txt
 
@@ -85,65 +85,61 @@ docs/enumeration/archetype-report.md
 
 # Prompt
 
-# Archetype Clustering Skill
+# 原型分群 Skill
 
-## Step 1
+## 步驟 1
 
-Cluster.
+分群。
 
-    sh tools/factbase/archetypes.sh \
+    sh tools/shell/factbase/archetypes.sh \
         --repo <repo> --facts <repo>/docs/facts \
         --enumeration <repo>/docs/enumeration
 
-Default threshold 0.75. Lower it only with a stated reason, and record the
-value used.
+預設門檻 0.75。只有在提出明確理由時才調低，並記錄所使用的值。
 
-## Step 2
+## 步驟 2
 
-Read the report.
+閱讀報告。
 
-For every multi-member archetype, confirm by opening two members that the
-clustering reflects real duplication and not an artefact of short files.
+對每一個多成員原型，打開其中兩個成員確認：
+這個分群反映的是真實的重複，而不是短檔案造成的假象。
 
-Record the confirmation. A cluster nobody looked at is a guess.
+記錄這項確認。沒有人看過的群集只是一個猜測。
 
-## Step 3
+## 步驟 3
 
-Assign documentation mode.
+指派文件模式。
 
-For each archetype
+對每一個原型
 
-- representative: full-depth document, all four elements of
-  shared/logic-depth.md
-- other members: delta document per shared/archetypes.md
-- single-member archetype: ordinary full-depth document
+- 代表單元：全深度文件，含 shared/logic-depth.md 的全部四項要素
+- 其他成員：依 shared/archetypes.md 撰寫差異文件
+- 單一成員原型：一般的全深度文件
 
-Write the assignment into `docs/enumeration/archetype-report.md`.
+把這項指派寫入 `docs/enumeration/archetype-report.md`。
 
-## Step 4
+## 步驟 4
 
-Hand the plan to the orchestrator.
+把計畫交給 orchestrator。
 
-The representative of each archetype SHALL be documented before any of its
-members, because a delta has nothing to reference until the representative
-exists.
+每個原型的代表單元「應當」在其任何成員之前先被記錄，
+因為在代表單元存在之前，差異文件沒有可參照的對象。
 
 ---
 
-# Completion Criteria
+# 完成判準
 
-`docs/enumeration/archetypes.txt` exists with one entry per enumerated unit.
+`docs/enumeration/archetypes.txt` 存在，且每個被列舉的單元各有一筆條目。
 
-Every unit is assigned to exactly one archetype.
+每個單元都被指派到恰好一個原型。
 
-Every multi-member archetype has a named representative.
+每個多成員原型都有一個指名的代表單元。
 
-At least two members of each multi-member archetype have been opened and the
-clustering confirmed.
+每個多成員原型都至少有兩個成員被打開檢視過，且分群已獲確認。
 
 ---
 
-# Required By
+# 被下列 Skill 依賴
 
 module-analysis
 
@@ -155,18 +151,18 @@ gap-analysis
 
 ---
 
-# Quality Checklist
+# 品質檢查清單
 
-☐ Threshold recorded
+☐ 已記錄門檻值
 
-☐ Every unit assigned
+☐ 每個單元都已指派
 
-☐ Representatives named
+☐ 已指名代表單元
 
-☐ Clustering confirmed by reading, per cluster
+☐ 每一群的分群結果都已透過閱讀確認
 
-☐ Documentation mode assigned per unit
+☐ 已為每個單元指派文件模式
 
-☐ No member documented from the representative's source alone
+☐ 沒有任何成員是僅憑代表單元的原始碼寫成的
 
-End.
+結束。
