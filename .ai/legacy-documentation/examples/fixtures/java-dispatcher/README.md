@@ -24,5 +24,10 @@
     src/       受分析的應用程式
     expected/  黃金列舉輸出
 
-> `expected/` 底下的兩份 `TransferTrx.md` 是機器驗證用的測試資料，
-> 會被 `depth_checks.sh` 逐字解析並與原始碼比對，因此維持英文原文。
+> `expected/` 底下的兩份 `TransferTrx.md` 是機器驗證用的測試資料。
+> 敘述文字已改為中文，但下列內容維持原樣，因為工具會逐字比對它們：
+> `### Method:`、Processing Flow、Pseudocode、Key Source Excerpts、
+> Field Mapping、Branches and Conditions 這幾個標題；`java` 區塊的引文
+> （必須與原始碼逐位元組相同）；虛擬碼；Field Mapping 與
+> Branches and Conditions 兩張表的欄位值 —— 其中 Condition 欄
+> 會被 `gen_skeletons.awk` 轉成測試方法名稱。

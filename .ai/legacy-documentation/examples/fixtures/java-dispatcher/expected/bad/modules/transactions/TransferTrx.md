@@ -1,35 +1,35 @@
-# Transaction Specification
+# 交易規格
 
-## Transaction Class
+## 交易類別
 
 `com.example.bank.trx.TransferTrx`
 
-## Entry URL
+## 進入 URL
 
-Reached through `TrxDispatcherServlet` with `TRXCODE=T100`.
+經由 `TrxDispatcherServlet` 以 `TRXCODE=T100` 進入。
 
-## Routing Parameters
+## 路由參數
 
-| Parameter | Value |
-|-----------|-------|
+| 參數 | 值 |
+|------|----|
 | TRXCODE | T100 |
 
-## Purpose
+## 用途
 
-Debits a customer account by a requested transfer amount after checking the
-amount against the customer's daily limit.
+在把請求的轉帳金額與客戶的每日上限比對之後，
+從客戶帳戶扣款。
 
-## State Methods (Index)
+## State Methods（索引）
 
-| Method | Purpose (one line) | Entry Condition | Next State / Output |
-|--------|--------------------|-----------------|---------------------|
-| `execute` | Validate the amount and debit the account | Dispatched on TRXCODE=T100 | Error code E0031/E0032, or a debit |
+| 方法 | 用途（一行） | 進入條件 | 下一個狀態／輸出 |
+|------|--------------|----------|------------------|
+| `execute` | 驗證金額並對帳戶扣款 | 由 TRXCODE=T100 分派 | 錯誤碼 E0031／E0032，或一筆扣款 |
 
-## End-to-End Processing Flow
+## 端到端處理流程
 
-1. `TrxDispatcherServlet.doPost` reads TRXCODE and asks `TrxFactory.create` for the unit.
-2. `TrxFactory.create` maps T100 to `TransferTrx` and instantiates it by name.
-3. `TransferTrx.execute` runs the limit checks and the debit.
+1. `TrxDispatcherServlet.doPost` 讀取 TRXCODE，並向 `TrxFactory.create` 索取該單元。
+2. `TrxFactory.create` 把 T100 對應到 `TransferTrx`，並依名稱將其實例化。
+3. `TransferTrx.execute` 執行上限檢查與扣款。
 
 ## Processing Detail
 
@@ -39,15 +39,15 @@ amount against the customer's daily limit.
 
 **Source**: `src/com/example/bank/trx/TransferTrx.java:12-26`
 
-**Invoked when**: the dispatcher resolves TRXCODE=T100.
+**Invoked when**: dispatcher 解析出 TRXCODE=T100 時。
 
 #### Processing Flow
 
-1. Reads request field TRSFAMT and parses it into `amount` as a decimal value.
-2. Reads request field CUSTID, sets it as the key of LIMIT_CTL and selects the row.
-3. If `amount` is greater than LIMIT_CTL.DAILY_MAX, records error code E0031 and returns; otherwise continues to step 4.
-4. If `amount` is zero or negative, records error code E0032 and returns; otherwise continues to step 5.
-5. Reads request field ACCTNO, sets it as the key of ACCT_MST and debits the account by `amount`.
+1. 讀取請求欄位 TRSFAMT，並將它解析成十進位數值 `amount`。
+2. 讀取請求欄位 CUSTID，將它設為 LIMIT_CTL 的鍵並選取該資料列。
+3. 若 `amount` 大於 LIMIT_CTL.DAILY_MAX，記錄錯誤碼 E0031 並返回；否則繼續執行步驟 4。
+4. 若 `amount` 為零或負數，記錄錯誤碼 E0032 並返回；否則繼續執行步驟 5。
+5. 讀取請求欄位 ACCTNO，將它設為 ACCT_MST 的鍵，並依 `amount` 對該帳戶扣款。
 
 #### Pseudocode
 
@@ -84,15 +84,15 @@ END
         }
 ```
 
-Explanation: the daily-limit test; failing it ends the transaction with E0031.
+說明：這是每日上限的檢查；未通過即以 E0031 結束本筆交易。
 
 #### Field Mapping
 
 | Input Field | Source | Intermediate | Transformation | Target | Target Kind |
 |-------------|--------|--------------|----------------|--------|-------------|
-| TRSFAMT | request | amount | parsed to decimal | ACCT_MST.BALANCE | DB column |
-| CUSTBRANCH | request | branch | key lookup | BRANCH_MST.BR_NO | DB column |
-| ACCTNO | request | acct | key lookup | ACCT_MST.ACCT_NO | DB column |
+| TRSFAMT | request | amount | 解析為十進位數 | ACCT_MST.BALANCE | DB column |
+| CUSTBRANCH | request | branch | 以鍵查詢 | BRANCH_MST.BR_NO | DB column |
+| ACCTNO | request | acct | 以鍵查詢 | ACCT_MST.ACCT_NO | DB column |
 
 #### Branches and Conditions
 
@@ -101,9 +101,9 @@ Explanation: the daily-limit test; failing it ends the transaction with E0031.
 | 1 | amount > DAILY_MAX | E0031, return | continue | TransferTrx.java:16 |
 | 2 | amount <= 0 | E0032, return | continue | TransferTrx.java:20 |
 
-#### Database Access In This Method
+#### 本方法中的資料庫存取
 
-| # | Table | Operation | Key / Where | Columns Read | Columns Written | Evidence |
-|---|-------|-----------|-------------|--------------|-----------------|----------|
+| # | 資料表 | 操作 | 鍵／Where | 讀取欄位 | 寫入欄位 | 證據 |
+|---|--------|------|-----------|----------|----------|------|
 | 1 | LIMIT_CTL | SELECT | CUST_ID | DAILY_MAX | - | TransferTrx.java:14-15 |
 | 2 | ACCT_MST | UPDATE | ACCT_NO | BALANCE | BALANCE | TransferTrx.java:24-25 |
