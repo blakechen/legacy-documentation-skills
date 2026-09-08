@@ -1,168 +1,74 @@
-# Tools
+# 工具
 
-The deterministic half of this library.
+本函式庫中屬於「決定性」的那一半，提供兩種實作。
 
-POSIX shell and awk. No interpreter to install, no dependencies, no build
-step, no network. `javap`, `javac` and `jar` are used when present, and their
-absence is reported rather than worked around.
+| 目錄 | 執行環境 | 進入點 |
+|---|---|---|
+| `shell/` | POSIX `sh` + `awk` | `sh tools/shell/selftest.sh` |
+| `powershell/` | PowerShell 7 | `pwsh tools/powershell/selftest.ps1` |
 
-Everything here answers a question that a language model reading source code
-answers plausibly and sometimes wrongly. See `shared/fact-layer.md`.
+挑你的平台上原本就有的那一個。兩者都不需要安裝套件、
+不需要建置步驟，也不需要網路。`javap`、`javac` 與 `jar`
+在存在時會被使用，缺席時則如實回報，而不是繞過去。
+
+這裡的每一項工具，回答的都是「語言模型閱讀原始碼時會答得看似合理、
+但有時是錯的」那類問題。見 `shared/fact-layer.md`。
 
 ---
 
-## Layer 1 — facts
+## 兩者是同一套工具
 
-| Tool | Does |
+同樣的工具、同樣的檔名、同樣的記錄格式、同樣的結束碼。
+PowerShell 那一半是移植，不是重新實作：
+對 `examples/fixtures/java-dispatcher` 這個 fixture 而言，
+每一個產生的 `.psv` 與 `.txt` 檔在兩者之間都是**逐位元組相同**的，
+而兩邊的 selftest 也執行同樣的 24 項檢查。
+
+這件事之所以重要，是因為 factbase 會被提交與 diff。
+一個同時有 Windows 與 macOS 機器的團隊，可以用任一半對同一個儲存庫執行，
+並得到同一個檔案，因此重跑不會出現由作業系統造成的 diff。
+
+只有兩件事不同，而且兩者都是明說的，不是藏起來的：
+
+* 產生的報告會指名寫出它的工具，
+  因此 `enumeration-report.md` 會寫 `enumerate.sh` 或 `enumerate.ps1`；
+* 命令列遵循各語言的慣例 —— shell 那一半是 `--facts <dir>`，
+  PowerShell 那一半是 `-Facts <dir>`。
+
+## 哪個檔案對哪個
+
+| Shell | PowerShell |
 |---|---|
-| `lib/mask.awk` | Comment and literal masking. Library, loaded alongside another awk program. |
-| `factbase/extract_java.awk` | The scanner: frame stack over masked source. |
-| `factbase/extract_java.sh` | Source tree → `docs/facts/*.psv` |
-| `factbase/hierarchy.awk` | Name resolution and transitive closure. |
-| `factbase/resolve_calls.awk` | Call sites → target types where unambiguous. |
-| `factbase/build_factbase.sh` | Runs both; writes `supertype.psv`, `ancestor.psv`, `calls-resolved.psv` |
-| `factbase/verify_bytecode.sh` | Independent oracle: `javap` versus the factbase |
-| `verification_tier.sh` | Records how strong this run's verification actually was |
+| `lib/common.sh` | `lib/common.ps1` |
+| `lib/mask.awk` | `lib/mask.ps1` |
+| `factbase/extract_java.sh` + `.awk` | `factbase/extract_java.ps1` |
+| `factbase/hierarchy.awk` | `factbase/hierarchy.ps1` |
+| `factbase/resolve_calls.awk` | `factbase/resolve_calls.ps1` |
+| `factbase/build_factbase.sh` | `factbase/build_factbase.ps1` |
+| `factbase/verify_bytecode.sh` | `factbase/verify_bytecode.ps1` |
+| `factbase/enumerate.sh` | `factbase/enumerate.ps1` |
+| `factbase/prioritize.sh` | `factbase/prioritize.ps1` |
+| `factbase/archetypes.sh` + `.awk` | `factbase/archetypes.ps1` |
+| `factbase/domain_variables.sh` | `factbase/domain_variables.ps1` |
+| `verify/depth_checks.sh` + `.awk` | `verify/depth_checks.ps1` |
+| `verify/staleness.sh` | `verify/staleness.ps1` |
+| `chartest/gen_skeletons.sh` + `.awk` | `chartest/gen_skeletons.ps1` |
+| `reflexion/reflexion.sh` | `reflexion/reflexion.ps1` |
+| `verification_tier.sh` | `verification_tier.ps1` |
+| `selftest.sh` | `selftest.ps1` |
 
-## Layer 2 — structure
+凡是 shell 那一半把工具拆成「驅動程式 + awk 程式」之處，
+PowerShell 那一半都是單一檔案：PowerShell 沒有 `awk -f a -f b` 的對應寫法，
+而兩個檔案之間若只隔著一次函式呼叫，那樣的結構不值得保留。
 
-| Tool | Does |
-|---|---|
-| `factbase/enumerate.sh` | Factbase → the three enumeration master lists |
-| `factbase/prioritize.sh` | Reachability + git churn + usage → `priority.txt` |
-| `factbase/archetypes.sh` + `.awk` | Clone clustering → `archetypes.txt` |
-| `factbase/domain_variables.sh` | DB columns, input fields, config keys |
-| `reflexion/reflexion.sh` | A person's module map versus the call graph |
+## 修改工具
 
-## Verification
+只改其中一半並不算完成，另一半也必須做同樣的修改，
+因為上面的承諾就是兩者一致。請跑兩邊的 selftest：
 
-| Tool | Does |
-|---|---|
-| `verify/depth_checks.awk` | The four depth checks over one document |
-| `verify/depth_checks.sh` | Runs them per unit → `depth-report.md` |
-| `verify/staleness.sh` | Binds documents to source versions; incremental re-runs |
-| `chartest/gen_skeletons.sh` + `.awk` | Documented branches → executable test skeletons |
+    sh   tools/shell/selftest.sh
+    pwsh tools/powershell/selftest.ps1
 
-## Self-test
-
-    sh tools/selftest.sh
-
-Runs the whole chain against `examples/fixtures/java-dispatcher` and compares
-with `expected/`. 24 checks, including three that must FAIL or block: a
-plausible but wrong document, a class missing from the factbase, and an
-oracle that disagrees with the scan. A tool change that
-alters the expected output is a regression until those files are updated on
-purpose.
-
----
-
-## The factbase
-
-Plain pipe-separated text, one record per line, no header. Greppable,
-diffable, and reviewable in a pull request.
-
-| File | Fields |
-|---|---|
-| `files.psv` | path, package, lines |
-| `hashes.psv` | path, sha256 |
-| `types.psv` | fqn, simple, kind, owner, path, line, bodyStart, bodyEnd, modifiers, package, extends, implements, imports |
-| `methods.psv` | type, name, path, line, endLine, ctor, public, abstract, inAnon, if, for, while, case, catch, and, or, ternary, total, modifiers |
-| `calls.psv` | fromType, fromMethod, receiver, callee, kind, path, line |
-| `calls-resolved.psv` | the above plus the resolved target type |
-| `literals.psv` | path, line, value |
-| `supertype.psv` | child, parent, parentRaw, relation, resolution |
-| `ancestor.psv` | type, ancestor, depth — the transitive closure |
-| `resolution.psv` | resolution kind, count |
-| `manifest.psv` | key, value |
-
-A `|` inside a literal is written as `&#124;`.
-
-Query it with the tools you already have:
-
-    # every subclass of StdTrxObject at any depth
-    awk -F'|' '$2 == "EXTERNAL:StdTrxObject" { print $1, $3 }' docs/facts/ancestor.psv
-
-    # public methods with more than 10 decision points
-    awk -F'|' '$7 == 1 && $18 > 10 { print $1 "." $2, $18 }' docs/facts/methods.psv
-
----
-
-## Order
-
-    extract_java.sh  ->  build_factbase.sh  ->  verify_bytecode.sh
-                                                  ->  verification_tier.sh
-                                            ->  enumerate.sh
-                                                  ->  prioritize.sh
-                                                  ->  archetypes.sh
-                                                  ->  domain_variables.sh
-                                            ->  reflexion.sh
-
-    (documents are written)
-
-    ->  depth_checks.sh  ->  staleness.sh --record
-    ->  gen_skeletons.sh
-
----
-
-## A worked example
-
-    REPO=/path/to/legacy-app
-
-    sh tools/factbase/extract_java.sh --repo $REPO \
-        --out $REPO/docs/facts --source-root src/main/java
-    sh tools/factbase/build_factbase.sh --facts $REPO/docs/facts
-    sh tools/factbase/verify_bytecode.sh --repo $REPO \
-        --facts $REPO/docs/facts \
-        --out $REPO/docs/facts/bytecode-verification.md
-
-    sh tools/verification_tier.sh --facts $REPO/docs/facts \
-        --out $REPO/docs/verification-tier.txt
-
-    sh tools/factbase/enumerate.sh \
-        --facts $REPO/docs/facts --out $REPO/docs/enumeration
-    sh tools/factbase/prioritize.sh --repo $REPO \
-        --facts $REPO/docs/facts --enumeration $REPO/docs/enumeration
-    sh tools/factbase/archetypes.sh --repo $REPO \
-        --facts $REPO/docs/facts --enumeration $REPO/docs/enumeration
-
-Then write documents, then:
-
-    sh tools/verify/depth_checks.sh --repo $REPO \
-        --facts $REPO/docs/facts \
-        --docs $REPO/docs/modules/transactions \
-        --enumeration $REPO/docs/enumeration \
-        --out $REPO/docs/gap-analysis/depth-report.md
-
----
-
-## Portability
-
-Written for POSIX `sh` and POSIX `awk`. Exercised on macOS: BSD awk, BSD sed,
-bash 3.2. Not yet run under GNU awk or busybox awk -- the constructs that
-differ between them are avoided on purpose, but that is a design claim, not a
-test result. Run `sh tools/selftest.sh` on your target platform before relying
-on it there.
-
-Specifically avoided: `gensub`, `asort`, regex `RS`, `length(array)`, GNU-only
-`sed -i`, `\s` and `\d` in regular expressions, and process substitution.
-
-`sha256` is spelled three different ways across systems; `lib/common.sh` tries
-`shasum`, `sha256sum` and `openssl` in turn and falls back to `cksum`, which
-it labels as such so nobody mistakes it for a cryptographic hash.
-
----
-
-## Limits
-
-`extract_java.awk` is a lexical scanner over masked source. It does not
-resolve generics, overloads or types. It marks what it cannot resolve rather
-than guessing, and the bytecode oracle exists because a lexical scanner alone
-should not be trusted with the enumeration.
-
-Text blocks (`""" ... """`) are not masked. Legacy code predates them.
-
-Java only, today. A new language needs a new Layer 1 extractor emitting the
-same records. Nothing above Layer 1 changes.
-
-Where no extractor exists for a language, `shared/confidence-scoring.md`
-forbids reporting findings about that language's code as High confidence.
+兩者都必須回報 `passed: 24   failed: 0`。
+若某項變更改動了 `examples/fixtures/java-dispatcher/expected/` 中的預期輸出，
+在那些檔案被刻意更新之前，一律視為迴歸。

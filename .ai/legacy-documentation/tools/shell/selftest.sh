@@ -1,7 +1,7 @@
 #!/bin/sh
 # Regression test for the fact layer and the verification layer.
 #
-#   sh tools/selftest.sh
+#   sh tools/shell/selftest.sh
 #
 # Runs the whole tool chain against examples/fixtures/java-dispatcher and
 # compares the result with examples/fixtures/java-dispatcher/expected.
@@ -10,7 +10,7 @@
 # expected files are updated on purpose. Without this, every edit to the
 # extractor is a guess.
 
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
 FX="$ROOT/examples/fixtures/java-dispatcher"
 EXP="$FX/expected"
 WORK=$(mktemp -d -t ldsk-selftest.XXXXXX)
@@ -25,9 +25,9 @@ check_diff() {
 }
 
 echo "== 1. fact extraction =="
-sh "$ROOT/tools/factbase/extract_java.sh" --repo "$FX" --out "$WORK/facts" \
+sh "$ROOT/tools/shell/factbase/extract_java.sh" --repo "$FX" --out "$WORK/facts" \
    --source-root src > "$WORK/extract.log"
-sh "$ROOT/tools/factbase/build_factbase.sh" --facts "$WORK/facts" > "$WORK/build.log"
+sh "$ROOT/tools/shell/factbase/build_factbase.sh" --facts "$WORK/facts" > "$WORK/build.log"
 awk -F'|' '$2 == "EXTERNAL:StdTrxObject" { print $1 "|" $3 }' \
     "$WORK/facts/ancestor.psv" | sort > "$WORK/closure.txt"
 check_diff "$EXP/facts/closure.txt" "$WORK/closure.txt" \
@@ -37,7 +37,7 @@ if grep -q '^external|' "$WORK/facts/resolution.psv"; then
 else bad "a base class outside the source tree resolves to an EXTERNAL node"; fi
 
 echo "== 2. enumeration =="
-sh "$ROOT/tools/factbase/enumerate.sh" --facts "$WORK/facts" --out "$WORK/enum" \
+sh "$ROOT/tools/shell/factbase/enumerate.sh" --facts "$WORK/facts" --out "$WORK/enum" \
    > "$WORK/enum.log"
 for f in transaction-classes.txt db-object-classes.txt servlet-classes.txt; do
     check_diff "$EXP/enumeration/$f" "$WORK/enum/$f" "$f"
@@ -47,13 +47,13 @@ if grep -q 'UnknownTrx' "$WORK/enum/enumeration-report.md"; then
 else bad "dangling class reference reported"; fi
 
 echo "== 3. archetypes =="
-sh "$ROOT/tools/factbase/archetypes.sh" --repo "$FX" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/factbase/archetypes.sh" --repo "$FX" --facts "$WORK/facts" \
    --enumeration "$WORK/enum" > /dev/null
 check_diff "$EXP/enumeration/archetypes.txt" "$WORK/enum/archetypes.txt" \
            "copy-and-paste units cluster into one archetype"
 
 echo "== 4. prioritisation =="
-sh "$ROOT/tools/factbase/prioritize.sh" --repo "$FX" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/factbase/prioritize.sh" --repo "$FX" --facts "$WORK/facts" \
    --enumeration "$WORK/enum" > /dev/null
 if tail -1 "$WORK/enum/priority.txt" | grep -q '^6|LegacyFxTrx.*|no|'; then
     ok "dead unit ranks last and is marked unreachable"
@@ -63,7 +63,7 @@ if grep -q '^[1-5]|.*|yes|' "$WORK/enum/priority.txt"; then
 else bad "reflection-registered units are reachable"; fi
 
 echo "== 5. domain variables =="
-sh "$ROOT/tools/factbase/domain_variables.sh" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/factbase/domain_variables.sh" --facts "$WORK/facts" \
    --enumeration "$WORK/enum" --out "$WORK/domain-variables.txt" > /dev/null
 check_diff "$EXP/business-rules/domain-variables.txt" "$WORK/domain-variables.txt" \
            "domain variables recovered from field definitions and readers"
@@ -72,7 +72,7 @@ echo "== 6. depth checks: a correct document passes =="
 mkdir -p "$WORK/enum1"
 grep '^TransferTrx' "$WORK/enum/transaction-classes.txt" > "$WORK/enum1/transaction-classes.txt"
 cp "$WORK/enum/db-object-classes.txt" "$WORK/enum1/"
-if sh "$ROOT/tools/verify/depth_checks.sh" --repo "$FX" --facts "$WORK/facts" \
+if sh "$ROOT/tools/shell/verify/depth_checks.sh" --repo "$FX" --facts "$WORK/facts" \
      --docs "$EXP/docs/modules/transactions" --enumeration "$WORK/enum1" \
      --out "$WORK/depth-good.md" > /dev/null; then
     ok "good document reaches 100% depth-complete"
@@ -80,7 +80,7 @@ else bad "good document reaches 100% depth-complete"
      sed -n '/## Findings/,$p' "$WORK/depth-good.md"; fi
 
 echo "== 7. depth checks: a plausible but wrong document fails =="
-sh "$ROOT/tools/verify/depth_checks.sh" --repo "$FX" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/verify/depth_checks.sh" --repo "$FX" --facts "$WORK/facts" \
    --docs "$EXP/bad/modules/transactions" --enumeration "$WORK/enum1" \
    --out "$WORK/depth-bad.md" > /dev/null
 RC=$?
@@ -103,7 +103,7 @@ if command -v javac > /dev/null 2>&1 && command -v jar > /dev/null 2>&1 &&
     # Only the application's own classes are compared. The framework jar is
     # deliberately outside the scanned tree: it is not part of the factbase,
     # exactly as it is not part of the source tree.
-    sh "$ROOT/tools/factbase/verify_bytecode.sh" --repo "$WORK/app" \
+    sh "$ROOT/tools/shell/factbase/verify_bytecode.sh" --repo "$WORK/app" \
        --facts "$WORK/facts" --out "$WORK/bytecode.md" > /dev/null
     RC=$?
     if [ "$RC" = 0 ] && grep -q 'Status: VERIFIED' "$WORK/bytecode.md"; then
@@ -114,7 +114,7 @@ if command -v javac > /dev/null 2>&1 && command -v jar > /dev/null 2>&1 &&
     mkdir -p "$WORK/facts.broken"
     cp "$WORK/facts"/*.psv "$WORK/facts.broken/"
     grep -v 'CardInquiryTrx' "$WORK/facts/types.psv" > "$WORK/facts.broken/types.psv"
-    sh "$ROOT/tools/factbase/verify_bytecode.sh" --repo "$WORK/app" \
+    sh "$ROOT/tools/shell/factbase/verify_bytecode.sh" --repo "$WORK/app" \
        --facts "$WORK/facts.broken" --out "$WORK/bytecode-bad.md" > /dev/null
     RC=$?
     if [ "$RC" = 2 ] && grep -q 'Status: FAILED' "$WORK/bytecode-bad.md"; then
@@ -125,12 +125,12 @@ else
 fi
 
 echo "== 9. staleness =="
-sh "$ROOT/tools/verify/staleness.sh" --repo "$FX" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/verify/staleness.sh" --repo "$FX" --facts "$WORK/facts" \
    --docs "$EXP/docs/modules/transactions" --enumeration "$WORK/enum1" \
    --state "$WORK/unit-state.psv" --record > /dev/null
 cp "$FX/src/com/example/bank/trx/TransferTrx.java" "$WORK/TransferTrx.bak"
 printf '\n// touched by selftest\n' >> "$FX/src/com/example/bank/trx/TransferTrx.java"
-sh "$ROOT/tools/verify/staleness.sh" --repo "$FX" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/verify/staleness.sh" --repo "$FX" --facts "$WORK/facts" \
    --docs "$EXP/docs/modules/transactions" --enumeration "$WORK/enum1" \
    --state "$WORK/unit-state.psv" --out "$WORK/staleness.md" > /dev/null
 RC=$?
@@ -139,7 +139,7 @@ cp "$WORK/TransferTrx.bak" "$FX/src/com/example/bank/trx/TransferTrx.java"
               || bad "changed source marks its document stale (rc=$RC)"
 
 echo "== 10. reflexion =="
-sh "$ROOT/tools/reflexion/reflexion.sh" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/reflexion/reflexion.sh" --facts "$WORK/facts" \
    --map "$EXP/docs/architecture/hypothesis-map.txt" \
    --out "$WORK/reflexion.md" > "$WORK/reflexion.log"
 if grep -q '1 divergence, 1 absence' "$WORK/reflexion.log"; then
@@ -147,7 +147,7 @@ if grep -q '1 divergence, 1 absence' "$WORK/reflexion.log"; then
 else bad "reflexion finds the seeded divergence and absence"; cat "$WORK/reflexion.log"; fi
 
 echo "== 11. characterization tests =="
-sh "$ROOT/tools/chartest/gen_skeletons.sh" \
+sh "$ROOT/tools/shell/chartest/gen_skeletons.sh" \
    --docs "$EXP/docs/modules/transactions" --enumeration "$WORK/enum1" \
    --out-dir "$WORK/chartest" > /dev/null
 if grep -q 'execute_whenAmountDAILYMAX' \
@@ -158,14 +158,14 @@ else bad "documented branches become named tests"; fi
 echo "== 12. verification tier =="
 # Tier B: a factbase with no oracle report beside it.
 rm -f "$WORK/facts/bytecode-verification.md"
-sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts" \
+sh "$ROOT/tools/shell/verification_tier.sh" --facts "$WORK/facts" \
    --out "$WORK/tier-b.txt" > /dev/null
 grep -q '^tier|B$' "$WORK/tier-b.txt" \
     && ok "no oracle report yields tier B" || bad "no oracle report yields tier B"
 
 # Tier C: no factbase to speak of.
 mkdir -p "$WORK/nofacts"; : > "$WORK/nofacts/types.psv"
-sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/nofacts" \
+sh "$ROOT/tools/shell/verification_tier.sh" --facts "$WORK/nofacts" \
    --out "$WORK/tier-c.txt" > /dev/null
 grep -q '^tier|C$' "$WORK/tier-c.txt" \
     && ok "an empty factbase yields tier C" || bad "an empty factbase yields tier C"
@@ -173,13 +173,13 @@ grep -q '^tier|C$' "$WORK/tier-c.txt" \
 if [ -f "$WORK/bytecode.md" ]; then
     # Tier A: the oracle verified the scan.
     cp "$WORK/bytecode.md" "$WORK/facts/bytecode-verification.md"
-    sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts" \
+    sh "$ROOT/tools/shell/verification_tier.sh" --facts "$WORK/facts" \
        --out "$WORK/tier-a.txt" > /dev/null
     grep -q '^tier|A$' "$WORK/tier-a.txt" \
         && ok "a VERIFIED oracle yields tier A" || bad "a VERIFIED oracle yields tier A"
     # A disagreeing oracle is not a tier; it blocks.
     cp "$WORK/bytecode-bad.md" "$WORK/facts.broken/bytecode-verification.md"
-    sh "$ROOT/tools/verification_tier.sh" --facts "$WORK/facts.broken" \
+    sh "$ROOT/tools/shell/verification_tier.sh" --facts "$WORK/facts.broken" \
        --out "$WORK/tier-blocked.txt" > /dev/null
     RC=$?
     if [ "$RC" = 2 ] && grep -q '^tier|BLOCKED$' "$WORK/tier-blocked.txt"; then
